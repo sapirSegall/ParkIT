@@ -1,0 +1,396 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="inc/bootstrap.min.css" rel="stylesheet" />
+    <script src="inc/jquery-3.2.1.min.js"></script>
+    <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
+    <link href="inc/bootstrap.js" rel="stylesheet" />
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> <!--pie graph-->
+ 
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
+
+
+    <style>
+        h2 {
+            color: white;
+        }
+    </style>
+    <script>
+        $(function () {
+            // on document ready
+            ResetUser();
+            ShowPage(1);
+        });
+
+        function ShowPage(n) {
+            $(".page").hide();
+            $(".page").eq(n).show();
+            if (n == 0) {/*registertion page*/
+                $("#aReg").hide();
+                $("#aLogin").show();
+                $("#aLogout").hide();
+            }
+            else if (n == 1) {/* login page*/
+                $("#aReg").show();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }
+            else if (n == 2) {/*weclome page*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").show();
+                $("#userName").text(activeUser.user + " [" + activeUser.mail + "]");
+            }
+            else if (n == 3) {/*error login*/
+                $("#aReg").show();
+                $("#aLogin").show();
+                $("#aLogout").hide();
+            }
+            else if (n == 4) {  /*driver home page*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }
+            else if (n == 5) {  /*scan*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }
+            else if (n == 6) {  /*blocked car*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }
+            else if (n == 7) {  /*exit time*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }
+        }
+
+        var activeUser;
+
+        function ResetUser() {
+            activeUser = {
+                mail: "",
+                user: "",
+                pass: ""
+            };
+            $("input").val("");
+        }
+
+        function Register() {
+            activeUser = {
+                mail: $("#inpMail").val(),
+                user: $("#inpUser").val(),
+                pass: $("#inpPassword").val()
+            }
+            localStorage[activeUser.user] = JSON.stringify(activeUser);
+            ShowPage(2);
+        }
+
+        function Login() {
+            var u = {
+                user: $("#inpUser1").val(),
+                pass: $("#inpPassword1").val()
+            }
+            if (localStorage[u.user] == undefined) {
+                ShowPage(3);
+            } else {
+                activeUser = JSON.parse(localStorage[u.user]);
+                if (activeUser.pass == u.pass) {
+
+                    ShowPage(2);
+                } else {
+                    ShowPage(3);
+
+                }
+            }
+        }
+
+        function blockedCar() {
+
+
+
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="top:12px">
+        <h2 id="title" style="margin-bottom:0px">Registration Form</h2>
+    </nav> -->
+        <!--logo:-->
+        <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
+         position: absolute; bottom: 0px; right: 30px;">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">ParkIT</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="ShowPage(4)">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowPage(5)">Scan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowPage(6)">Blocked</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowPage(7)">Exit time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+
+        <div style="width: 500px; margin: 30px auto">
+            <!--page  registration n=0-->
+            <div class="page" data-ttl="Registration Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpMail">Email address</label>
+                            <input type="email" class="form-control" id="inpMail" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpUser">Username</label>
+                            <input type="text" class="form-control" id="inpUser" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword">Password</label>
+                            <input type="password" class="form-control" id="inpPassword" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Register()">Submit</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+
+            <!--page login n=1 -->
+            <div class="page" data-ttl="Login Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpUser1">Username</label>
+                            <input type="text" class="form-control" id="inpUser1" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword1">Password</label>
+                            <input type="password" class="form-control" id="inpPassword1" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Login()">Submit</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+
+            <!--page welcome page n=2 -->
+            <div class="alert alert-info page" data-ttl="Welcome Page">
+                <p>Welcome <strong id="userName"></strong> !</p>
+            </div>
+
+            <!--page error login n=3 -->
+            <div class="alert alert-warning page" data-ttl="Error Login">
+                <strong>Error login!</strong>
+            </div>
+
+            <!--page driver info n=4 -->
+            <div class="page" data-ttl="driverMenu">
+                <form>
+                    <fieldset>
+                        <div class="container text-center">
+
+                            <h2><label>Parking No. 56</label></h2>
+                            <img src="whiteCar.png" width="100" height="40">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr class="table-success">
+                                        <td>Type</td>
+                                        <td>carType</td>
+                                    </tr>
+                                    <tr class="table-light">
+                                        <td>Number</td>
+                                        <td>carNumber</td>
+                                    </tr>
+                                    <tr class="table-dark">
+                                        <td>Series</td>
+                                        <td>carSeries</td>
+                                    </tr>
+                                    <tr class="table-light">
+                                        <td>Color</td>
+                                        <td>carColor</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td>Estimate Exit Time</td>
+                                        <td>exitTime</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <button type="button" class="btn btn-primary btn-lg" style="border: none; padding: 12px 16px; cursor: pointer;">
+                                Call to Valet
+                            </button>
+                            <button type="button" class="btn btn-primary btn-lg" style="border: none; padding: 12px 16px; cursor: pointer;">
+                                Email to Valet
+                            </button>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
+            <!--page scan n=5 -->
+            <div class="page" data-ttl="scan">
+                <form>
+                    <fieldset>
+                        <div class="container text-center">
+                            <h2><label>Scan the Bar-Code</label></h2>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <!--page blocked n=6 -->
+            <div class="page" data-ttl="blocked">
+                <form>
+                    <fieldset>
+                        <div class="container text-center">
+                            <h2><label>Send a request to move the blocking car</label></h2>
+                            <div>
+                                <!-- Trigger/Open The Modal -->
+                                <button type="button" id="myBtn" class="btn btn-primary" onclick="ShowPage(4)">Send</button>
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <span class="close">&times;</span>
+                                            <h2></h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>The request has been sent and will be processed by the valet</p>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            // Get the modal
+                            var modal = document.getElementById('myModal');
+
+                            // Get the button that opens the modal
+                            var btn = document.getElementById("myBtn");
+
+                            // Get the <span> element that closes the modal
+                            var span = document.getElementsByClassName("close")[0];
+
+                            // When the user clicks on the button, open the modal
+                            btn.onclick = function () {
+                                modal.style.display = "block";
+                            }
+
+                            // When the user clicks on <span> (x), close the modal
+                            span.onclick = function () {
+                                modal.style.display = "none";
+                            }
+
+                            // When the user clicks anywhere outside of the modal, close it
+                            window.onclick = function (event) {
+                                if (event.target == modal) {
+                                    modal.style.display = "none";
+                                }
+                            }</script>
+                    </fieldset>
+                </form>
+            </div>
+
+            <!--page exit time n=7 -->
+            <div class="page" data-ttl="Exit time">
+                <form>
+                    <fieldset>
+                        <div class="container text-center">
+                            <h2><label>Update your exit time:</label></h2>
+                            <input type="time" name="usr_time">
+                            <div>
+                                <!-- Trigger/Open The Modal -->
+                                <button type="button" id="myBtn" class="btn btn-primary" onclick="ShowPage(4)">Send</button>
+                                <!-- The Modal -->
+                                <div id="myModal" class="modal">
+                                    <!-- Modal content -->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <span class="close">&times;</span>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>The time is changed</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            // Get the modal
+                            var modal = document.getElementById('myModal');
+
+                            // Get the button that opens the modal
+                            var btn = document.getElementById("myBtn");
+
+                            // Get the <span> element that closes the modal
+                            var span = document.getElementsByClassName("close")[0];
+
+                            // When the user clicks on the button, open the modal
+                            btn.onclick = function () {
+                                modal.style.display = "block";
+                            }
+
+                            // When the user clicks on <span> (x), close the modal
+                            span.onclick = function () {
+                                modal.style.display = "none";
+                            }
+
+                            // When the user clicks anywhere outside of the modal, close it
+                            window.onclick = function (event) {
+                                if (event.target == modal) {
+                                    modal.style.display = "none";
+                                }
+                            }</script>
+                    </fieldset>
+                </form>
+            </div>
+
+
+            <!--buttons of one page appw'-->
+            <div>
+                <a id="aReg" href="#" onclick="ShowPage(0)">Registration form</a><br />
+                <a id="aLogin" href="#" onclick="ShowPage(1)">Login</a><br />
+                <a id="aLogout" href="#" onclick="ShowPage(1); ResetUser();">Logout</a><br />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

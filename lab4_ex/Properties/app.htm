@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="inc/bootstrap.min.css" rel="stylesheet" />
+    <script src="inc/jquery-3.2.1.min.js"></script>
+    <style>
+        h2 {
+            color: white;
+        }
+    </style>
+    <script>
+        $(function () {
+            // on document ready
+            ResetUser();
+            ShowPage(1);
+        });
+
+        function ShowPage(n) {
+            $(".page").hide();
+            $(".page").eq(n).show();
+            if (n == 0) {
+                $("#aReg").hide();
+                $("#aLogin").show();
+                $("#aLogout").hide();
+            }else if (n == 1) {
+                $("#aReg").show();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }else if (n == 2) {
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").show();
+                $("#userName").text(activeUser.user + " [" + activeUser.mail + "]");
+            } else {
+                $("#aReg").show();
+                $("#aLogin").show();
+                $("#aLogout").hide();
+            }
+        }
+
+        var activeUser;
+
+        function ResetUser() {
+            activeUser = {
+                mail: "",
+                user: "",
+                pass: ""
+            };
+            $("input").val("");
+        }
+
+        function Register() {
+            activeUser = {
+                mail: $("#inpMail").val(),
+                user: $("#inpUser").val(),
+                pass: $("#inpPassword").val()
+            }
+            localStorage[activeUser.user] = JSON.stringify(activeUser);
+            ShowPage(2);
+        }
+
+        function Login() {
+            var u = {
+                user: $("#inpUser1").val(),
+                pass: $("#inpPassword1").val()
+            }
+            if (localStorage[u.user] == undefined) {
+                ShowPage(3);
+            } else {
+                activeUser = JSON.parse(localStorage[u.user]);
+                if (activeUser.pass == u.pass) {
+                    ShowPage(2);
+                } else {
+                    ShowPage(3);
+                }
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="top:12px">
+            <h2 id="title" style="margin-bottom:0px">Registration Form</h2>
+        </nav>
+
+        <div style="width: 500px; margin: 30px auto">
+            <div class="page" data-ttl="Registration Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpMail">Email address</label>
+                            <input type="email" class="form-control" id="inpMail" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpUser">Username</label>
+                            <input type="text" class="form-control" id="inpUser" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword">Password</label>
+                            <input type="password" class="form-control" id="inpPassword" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Register()">Submit</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+
+            <div class="page" data-ttl="Login Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpUser1">Username</label>
+                            <input type="text" class="form-control" id="inpUser1" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword1">Password</label>
+                            <input type="password" class="form-control" id="inpPassword1" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Login()">Submit</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+
+
+            <div class="alert alert-info page" data-ttl="Welcome Page">
+                <p>Welcome <strong id="userName"></strong> !</p>
+            </div>
+
+            <div class="alert alert-warning page" data-ttl="Error Login">
+                <strong>Error login!</strong>
+            </div>
+
+            <div>
+                <a id="aReg" href="#" onclick="ShowPage(0)">Registration form</a><br />
+                <a id="aLogin" href="#" onclick="ShowPage(1)">Login</a><br />
+                <a id="aLogout" href="#" onclick="ShowPage(1); ResetUser();">Logout</a><br />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
