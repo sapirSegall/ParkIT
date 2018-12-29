@@ -16,6 +16,8 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
     <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.8.0/dist/JsBarcode.all.min.js"></script>
+
 
 
     <style>
@@ -76,8 +78,27 @@
             }
         }
 
-        var activeUser;
-        var activeDriver = {carType: 'ewe'};
+        var activeUser = {
+            user: '',
+            pass: ''
+        };
+        var activeDriver = {
+            carType: '',
+            carNumber: '',
+            carSeries: '',
+            carColor: '',
+            parkingNumber: '',
+            exitTime: ''
+        };
+        var request = {
+            requestNumber: '',
+            requestTime: '',
+
+            parkingSlotNumber: '',
+        }
+
+
+
 
         function ResetUser() {
             activeUser = {
@@ -115,6 +136,15 @@
                     u.mail = await getEmail(u.user);
                     activeUser = u;
                     activeDriver = await getDriver(activeUser.user);
+                    document.getElementById("car_type").innerHTML = activeDriver.carType;
+                    document.getElementById("car_number").innerHTML = activeDriver.carNumber;
+                    document.getElementById("car_series").innerHTML = activeDriver.carSeries;
+                    document.getElementById("car_color").innerHTML = activeDriver.carColor;
+                    document.getElementById("exit_time").innerHTML = activeDriver.exitTime;
+
+
+                    var barcode_ = activeDriver.barcode;
+                    JsBarcode("#barcode", barcode_);
                     ShowPage(4);
                 } else {
                     ShowPage(1);
@@ -131,18 +161,12 @@
 
 
         }
-
-
-
     </script>
 </head>
 
 <body>
-    <!-- <h1>id=ourDB</h1>-->
-
-
     <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
-    <script>
+    <script id="firebase">
         // Initialize Firebase
         var config = {
             apiKey: "AIzaSyBPEANHVPLwavh8zzcQSbtC9G0m0dW58Yo",
@@ -160,6 +184,7 @@
                 firstName: newDriver.firstName,
                 lastName: newDriver.lastName,
                 email: newDriver.email,
+                exitTime: newDriver.exitTime,
                 phoneNumber: newDriver.phoneNumber,
                 carNumber: newDriver.carNumber,
                 carType: newDriver.carType,
@@ -208,8 +233,36 @@
             });
             console.log(`add the new driver to the db ${newDriver}`);
         }
+        function createRequest(employeeNum, newRequest) {
+            database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
+                requestTime: newRequest.requestTime,
+                parkingSlotNumber: newRequest.parkingSlotNumber,
+            }).catch(function (error) {
+                console.log('Error writing new message to Realtime Database:', error);
+            });
+            console.log(`add the new request to the db ${newRequest}`);
+        }
+        async function getRequestsByDriver(employeeNum) {
+            var requests = [];
+            await database.ref('/Requests/' + employeeNum).once('value').then(function (snapshot) {
+                requests = snapshot.val();
+            });
+            return requests;
+        }
+        async function saveParkingNumber(employeeNum, parkingNumber) {
+            activeDriver.parkingNumber = parkingNumber;
+            debugger;
+            updateDriver(activeUser.user, activeDriver);
 
+        }
     </script>
+    <script>
+        function getParkingNumber(){
+            return 65;
+        }
+    </script>
+    
+    
     <div class="container">
         <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="top:12px">
             <h2 id="title" style="margin-bottom:0px">Registration Form</h2>
@@ -302,7 +355,7 @@
             </div>
 
             <!--page driver info n=4 -->
-            <div class="page" data-ttl="driverMenu">
+            <div id="driverMenu" class="page" data-ttl="driverMenu">
                 <form>
                     <fieldset>
                         <div class="container text-center">
@@ -313,28 +366,26 @@
                                 <tbody>
                                     <tr class="table-success">
                                         <td>Type</td>
-                                        <td id="carType"></td>
-
+                                        <td id="car_type"></td>
                                     </tr>
                                     <tr class="table-light">
                                         <td>Number</td>
-                                        <td>carNumber</td>
+                                        <td id="car_number"></td>
                                     </tr>
                                     <tr class="table-dark">
                                         <td>Series</td>
-                                        <td>carSeries</td>
+                                        <td id="car_series"></td>
                                     </tr>
                                     <tr class="table-light">
                                         <td>Color</td>
-                                        <td>carColor</td>
+                                        <td id="car_color"></td>
                                     </tr>
                                     <tr class="table-success">
                                         <td>Estimate Exit Time</td>
-                                        <td>exitTime</td>
+                                        <td id="exit_time"></td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <script>document.getElementById("carType").innerHTML = activeDriver.carType;</script>
                             <br>
                             <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='tel:+972-525-818-989'" style="border: none; padding: 12px 16px; cursor: pointer;">
                                 Call to Valet
@@ -343,7 +394,6 @@
                             <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='https://mail.google.com/mail/u/0/#inbox?compose=DmwnWsTQQSpKsPGJbjrTLGcKqsFwqBJSWTFpGBtFSdPDNLptHzZJsCTvccMKRFmbtfTFfGwRwVXB'" style="border: none; padding: 12px 16px; cursor: pointer;">
                                 Email to Valet
                             </button>
-
 
                         </div>
 
@@ -357,6 +407,12 @@
                     <fieldset>
                         <div class="container text-center">
                             <h2><label>Scan the Bar-Code</label></h2>
+                            <svg id="barcode"></svg>
+                            <br />
+                            <button type="button" class="btn btn-primary btn-lg" onclick="ShowPage(8)" style="border: none; padding: 12px 16px; cursor: pointer;">
+                                Scan
+                            </button>
+
                         </div>
                     </fieldset>
                 </form>
@@ -370,7 +426,34 @@
                             <h2><label>Send a request to move the blocking car</label></h2>
                             <div>
                                 <!-- Trigger/Open The Modal -->
-                                <button type="button" id="myBtn" class="btn btn-primary" onclick="ShowPage(4)">Send</button>
+                                <button type="button" id="myBtn" class="btn btn-primary" onclick="sendRequest()">Send</button>
+                                <script>
+                                    async function getRequestNumber() {
+                                        var random = Math.floor(Math.random() * 900000) + 100000;
+                                        var requests = await getRequestsByDriver(activeUser.user);
+                                        if (!requests) {
+                                            return random;
+                                        }
+                                        // if random is one of the existing requests numbers generate new one
+                                        while (Object.keys(requests).includes(random)) {
+                                            random = Math.floor(Math.random() * 900000) + 100000;
+                                        }
+                                        return random;
+                                    }
+                                    async function sendRequest() {
+                                        var newRequest = {
+                                            requestNumber: await getRequestNumber(),
+                                            requestTime: new Date().toLocaleTimeString('en-US', {
+                                                hour12: false,
+                                                hour: "numeric",
+                                                minute: "numeric"
+                                            }),
+                                            parkingSlotNumber: 111
+                                        };
+                                        createRequest(activeUser.user, newRequest);
+                                        modal.style.display = "block";
+                                    }
+                                </script>
                                 <!-- The Modal -->
                                 <div id="myModal" class="modal">
 
@@ -392,16 +475,10 @@
                             // Get the modal
                             var modal = document.getElementById('myModal');
 
-                            // Get the button that opens the modal
-                            var btn = document.getElementById("myBtn");
 
                             // Get the <span> element that closes the modal
                             var span = document.getElementsByClassName("close")[0];
 
-                            // When the user clicks on the button, open the modal
-                            btn.onclick = function () {
-                                modal.style.display = "block";
-                            }
 
                             // When the user clicks on <span> (x), close the modal
                             span.onclick = function () {
@@ -418,7 +495,7 @@
                 </form>
             </div>
 
-            <!--page exit time n=7 -->
+            <!--page update exit time n=7 -->
             <div class="page" data-ttl="Exit time">
                 <form>
                     <fieldset>
@@ -426,25 +503,76 @@
                             <h2><label>Update your exit time:</label></h2>
                             <div>
                                 <input type="time" id="exitTime">
-                                <button type="button" class="btn btn-primary" onclick="getExitTime()">Update</button>
+                                <button type="button" id="updateBtn" class="btn btn-primary" onclick="getExitTime()">Update</button>
                                 <script type="text/javascript">
                                     function getExitTime() {
-                                        var text = document.getElementById('exitTime').value;
-                                        console.log(`print the exit time: ${text}`);
+                                        var newTime = document.getElementById('exitTime').value;
+                                        activeDriver.exitTime = newTime;
+                                        updateDriver(activeUser.user, activeDriver);
                                     }
                                 </script>
+
                             </div>
                         </div>
+
                     </fieldset>
                 </form>
             </div>
 
+            <!--page insert exit time n=8 -->
+            <div class="page" data-ttl="Exit time">
+                <form>
+                    <fieldset>
+                        <div class="container text-center">
+                            <h2><label>Insert exit time:</label></h2>
+                            <div>
+                                <input type="time" id="insertExitTime">
+                                <button type="button" id="insertBtn" class="btn btn-primary" onclick="insertTime()">OK</button>
+                                <script type="text/javascript">
+                                    async function insertTime() {
+                                        var newTime = document.getElementById('insertExitTime').value;
+                                        activeDriver.exitTime = newTime;
+                                        updateDriver(activeUser.user, activeDriver);
+                                        var parkingNumber = await getParkingNumber();
+                                        document.getElementById("parking_number").innerHTML = parkingNumber;
+                                        ShowPage(9);
+                                    }
+                                </script>
+
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+
+
+            <!--page parking number n=9 -->
+            <div class="page" data-ttl="Parking Number">
+                <form>
+                    <fieldset>
+                        <div class="container text-center">
+                            <h2><label>Go to parking number  </label><label id="parking_number"></label></h2>
+                            <div>
+                                <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap()">Done</button>
+                                <script>
+                                    function saveWrap() {
+                                        saveParkingNumber(activeUser.user, document.getElementById("parking_number").textContent);
+                                    }
+                                </script>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
 
             <!--buttons of one page appw'-->
             <div>
                 <a id="aReg" href="#" onclick="ShowPage(0)">Registration form</a><br />
                 <a id="aLogin" href="#" onclick="ShowPage(1)">Login</a><br />
                 <a id="aLogout" href="#" onclick="ShowPage(1); ResetUser();">Logout</a><br />
+
             </div>
         </div>
     </div>
