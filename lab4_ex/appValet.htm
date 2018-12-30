@@ -1,0 +1,697 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>parkIT</title>
+    <meta charset="utf-8" />
+    <link href="inc/bootstrap.min.css" rel="stylesheet" />
+    <script src="inc/jquery-3.2.1.min.js"></script>
+    <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
+    <link href="inc/bootstrap.js" rel="stylesheet" />
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> <!--pie graph-->
+    <!--links from listOfRequest.html, listofnotification.htm-->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+    <style>
+        /*from one page app'*/
+        h2 {
+            color: white;
+        }
+    </style>
+
+    <style> /*from bootstap website*/
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 450px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
+
+
+    <script>
+        $(function () {
+            // on document ready
+            ResetUser();
+            ShowPage(1);
+        });
+
+        function ShowPage(n) {
+            $(".page").hide();
+            $(".page").eq(n).show();
+            if (n == 0) {
+                $("#aReg").hide();
+                $("#aLogin").show();
+                $("#aLogout").hide();
+                $("#aInfo").hide();
+            } else if (n == 1) {
+                $("#aReg").show();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+                $("#aInfo").hide();
+                $("#aEmail").hide();
+                $("#aCall").hide();
+            } else if (n == 2) {
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").show();
+                $("#aInfo").hide();
+                $("#aEmail").hide();
+                $("#aCall").hide();
+                $("#userName").text(activeUser.user + " [" + activeUser.mail + "]");
+            } else if (n == 3) {
+                $("#aReg").show();
+                $("#aLogin").show();
+                $("#aLogout").hide();
+                $("#aInfo").hide();
+                $("#aEmail").hide();
+                $("#aCall").hide();
+            } else if (n == 4) {  /*valet home page*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+                $("#aInfo").hide();
+                $("#aEmail").hide();
+                $("#aCall").hide();
+            }
+            else if (n == 5) {  /*requestList*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            }
+            else if (n == 6) {  /*notificationList*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+            } else if (n == 7) {  /*searchcar*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+                $("#aInfo").show();
+            } else if (n == 8) {    /*user info*/
+                $("#aReg").hide();
+                $("#aLogin").hide();
+                $("#aLogout").hide();
+                $("#aInfo").hide();
+                $("#aEmail").show();
+                $("#aCall").show();
+            } 
+        }
+
+        var activeUser;
+
+        function ResetUser() {
+            activeUser = {
+                mail: "",
+                user: "",
+                pass: ""
+            };
+            $("input").val("");
+        }
+
+        function Register() {
+            activeUser = {
+                mail: $("#inpMail").val(),
+                user: $("#inpUser").val(),
+                pass: $("#inpPassword").val()
+            }
+            localStorage[activeUser.user] = JSON.stringify(activeUser);
+            ShowPage(2);
+        }
+
+        function Login() {
+            var u = {
+                user: $("#inpUser1").val(),
+                pass: $("#inpPassword1").val()
+            }
+            if (localStorage[u.user] == undefined) {
+                ShowPage(3);
+            } else {
+                activeUser = JSON.parse(localStorage[u.user]);
+                if (activeUser.pass == u.pass) {
+
+                    ShowPage(4);
+                } else {
+                    ShowPage(3);
+
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!--<div class="container"> -->
+    <div class="container-fluid text-center">
+        <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="top:12px">
+            <h2 id="title" style="margin-bottom:0px">Registration Form</h2>
+        </nav> -->
+        <!--logo:-->
+        <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
+         position: absolute; bottom: 0px; right: 30px;">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" onclick="ShowPage(4)">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowPage(5)">Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ShowPage(6)">Notifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <!--<input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button> -->
+                    <input class="form-control mr-sm-2" type="text" id="myInput" onkeyup="myFunction(); ShowPage(7);" placeholder="Search for names.." title="Type in a name">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+        <!--
+                <div class="container-fluid text-center">
+                    <div class="row content">
+                        <div class="col-sm-2 sidenav">
+                            <p><a href="#">Link</a></p>
+                            <p><a href="#">Link</a></p>
+                            <p><a href="#">Link</a></p>
+                        </div>
+                        <div class="col-sm-8 text-left">
+
+                        </div>
+                        <div class="col-sm-2 sidenav">
+                            <div class="well">
+                                <p>ADS</p>
+                            </div>
+                            <div class="well">
+                                <p>ADS</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        -->
+        <!--page n=0-->
+        <div style="width: 500px; margin: 30px auto">
+            <div class="page" data-ttl="Registration Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpMail">Email address</label>
+                            <input type="email" class="form-control" id="inpMail" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpUser">Username</label>
+                            <input type="text" class="form-control" id="inpUser" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword">Password</label>
+                            <input type="password" class="form-control" id="inpPassword" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Register()">Submit</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+
+            <!--page n=1-->
+            <div class="col-sm-8 text-left">
+                <div class="page" data-ttl="Login Form">
+                    <form>
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="inpUser1">Username</label>
+                                <input type="text" class="form-control" id="inpUser1" placeholder="Enter username">
+                            </div>
+                            <div class="form-group">
+                                <label for="inpPassword1">Password</label>
+                                <input type="password" class="form-control" id="inpPassword1" placeholder="Enter password">
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="Login()">Submit</button>
+                            </div>
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+
+            <!--page n=2-->
+            <div class="alert alert-info page" data-ttl="Welcome Page">
+                <p>Welcome <strong id="userName"></strong> !</p>
+            </div>
+
+            <!--page n=3-->
+            <div class="alert alert-warning page" data-ttl="Error Login">
+                <strong>Error login!</strong>
+            </div>
+
+            <!--
+    <div class="row">
+        <div class="col-sm-3 col-md-6 col-lg-4" style="background-color:yellow;">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+        <div class="col-sm-9 col-md-6 col-lg-8" style="background-color:pink;">
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        </div>
+    </div>
+        -->
+
+            <!--page home-graph n=4:-->
+            <div class="page" data-ttl="valetMenu">
+                <div class="row">
+                    <form >
+                        <fieldset>
+                            <div id="chartContainer" style="height: 300px; width: 300%; "></div>
+                            <script>
+                                window.onload = function () {
+                                    var chart = new CanvasJS.Chart("chartContainer", {
+                                        animationEnabled: true,
+                                        title: {
+                                            text: ""
+                                        },
+                                        data: [{
+                                            type: "pie",
+                                            startAngle: 240,
+                                            yValueFormatString: "##0.00\"%\"",
+                                            indexLabel: "{label} {y}",
+                                            dataPoints: [
+                                                { y: 42, label: "Company Cars" },
+                                                { y: 55, label: "Private Cars" },
+                                                { y: 2, label: "Empty Parking Slots" },
+                                            ]
+                                        }]
+                                    });
+                                    chart.render();
+                                }
+                            </script>
+                        </fieldset>
+
+                    </form>
+                </div>
+                <button type="button" class="btn btn-primary btn-lg" style="border: none; padding: 12px 16px; cursor: pointer;
+         position: absolute; bottom: 40px; left: 40px;">
+                    Map
+                </button>
+            </div>
+
+            <!--page requestList n=5:-->
+            <div class="col-sm-8 text-left">
+                <div class="page" data-ttl="requestList">
+                    <form>
+                        <fieldset>
+                            <div class="container text-center" style="height: 700px; width: 250%;">
+
+                                <table data-toggle="table"
+                                       data-classes="table table-hover table-condensed"
+                                       data-row-style="rowColors"
+                                       data-striped="true"
+                                       data-sort-name="Quality"
+                                       data-sort-order="desc"
+                                       data-pagination="true"
+                                       data-select-item-name="myRadioName">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="state" data-radio="true"></th>
+                                            <th class="col-xs-1" data-field="RequestNo" data-sortable="true">Request No.</th>
+                                            <th class="col-xs-1" data-field="RequestTime" data-sortable="true">Request Time</th>
+                                            <th class="col-xs-1" data-field="BlockedCar" data-sortable="true">Blocked Car No.</th>
+                                            <th class="col-xs-1" data-field="ParkingSlot1" data-sortable="true">Parking Slot No.</th>
+                                            <th class="col-xs-1" data-field="BlockingCar" data-sortable="true">Blocking Car No.</th>
+                                            <th class="col-xs-1" data-field="ParkingSlot2" data-sortable="true">Parking Slot No.</th>
+                                            <!--<th class="col-xs-6" data-field="Quantity">Parking Slot No.</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="tr-id-2" class="tr-class-2">
+                                            <td></td>
+                                            <td>Wheat</td>
+                                            <td>Good</td>
+                                            <td>200 Bags</td>
+                                            <td>Wheat</td>
+                                            <td>Good</td>
+                                            <td>200 Bags</td>
+                                        </tr>
+                                        <tr id="tr-id-2" class="tr-class-2">
+                                            <td></td>
+                                            <td>Rice</td>
+                                            <td>Good</td>
+                                            <td>100 Bags</td>
+                                            <td>Rice</td>
+                                            <td>Good</td>
+                                            <td>100 Bags</td>
+                                        </tr>
+                                        <tr id="tr-id-2" class="tr-class-2">
+                                            <td></td>
+                                            <td>Rice</td>
+                                            <td>Good</td>
+                                            <td>100 Bags</td>
+                                            <td>Rice</td>
+                                            <td>Good</td>
+                                            <td>100 Bags</td>
+                                        </tr>
+                                        <tr id="tr-id-2" class="tr-class-2">
+                                            <td></td>
+                                            <td>Sugar</td>
+                                            <td>Prime</td>
+                                            <td>200 Bags</td>
+                                            <td>Sugar</td>
+                                            <td>Prime</td>
+                                            <td>200 Bags</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <input type="submit" name="submit" value=Submit><br> <!--i added-->
+                            </div>
+
+                            <script>
+                                function queryParams() {
+                                    return {
+                                        type: 'owner',
+                                        sort: 'updated',
+                                        direction: 'desc',
+                                        per_page: 100,
+                                        page: 1
+                                    };
+                                }
+                                function rowColors(row, index) {
+                                    var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+                                    if (index % 2 === 0 && index / 2 < classes.length) {
+                                        return {
+                                            classes: classes[index / 2]
+                                        };
+                                    }
+                                    return {};
+                                }
+                            </script>
+
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+            <!--end of page n=5-->
+            <!--page notifications list n=6:-->
+            <div class="page" data-ttl="notifications list">
+                <form>
+                    <fieldset>
+                        <div class="container text-center" style="height: 700px; width: 250%; ">
+
+                            <table data-toggle="table"
+                                   data-classes="table table-hover table-condensed"
+                                   data-row-style="rowColors"
+                                   data-striped="true"
+                                   data-sort-name="Quality"
+                                   data-sort-order="desc"
+                                   data-pagination="true"
+                                   data-select-item-name="myRadioName">
+                                <thead>
+                                    <tr>
+                                        <th data-field="state" data-radio="true"></th>
+                                        <th class="col-xs-4" data-field="NotificationNo" data-sortable="true">Notification No.</th>
+                                        <th class="col-xs-8" data-field="NotificationTime" data-sortable="true">Notification Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="tr-id-2" class="tr-class-2">
+                                        <td></td>
+                                        <td>1</td>
+                                        <td>17:45</td>
+                                    </tr>
+                                    <tr id="tr-id-2" class="tr-class-2">
+                                        <td></td>
+                                        <td>2</td>
+                                        <td>17:53</td>
+                                    </tr>
+                                    <tr id="tr-id-2" class="tr-class-2">
+                                        <td></td>
+                                        <td>3</td>
+                                        <td>17:59</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <script>
+                            function queryParams() {
+                                return {
+                                    type: 'owner',
+                                    sort: 'updated',
+                                    direction: 'desc',
+                                    per_page: 100,
+                                    page: 1
+                                };
+                            }
+                            function rowColors(row, index) {
+                                var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+                                if (index % 1 === 0 && index / 1 < classes.length) {
+                                    return {
+                                        classes: classes[index / 1]
+                                    };
+                                }
+                                return {};
+                            }
+                        </script>
+                    </fieldset>
+
+                </form>
+
+            </div>
+            <!--end of page n=6-->
+            <!--page search car n=7:-->
+            <div class="page" data-ttl="search car">
+                <form>
+                    <fieldset>
+                        <!--<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name"> -->
+
+                        <div class="container text-center" style="height: 700px; width: 250%; ">
+
+                            <table id="myTable" data-toggle="table"
+                                   data-classes="table table-hover table-condensed"
+                                   data-row-style="rowColors"
+                                   data-striped="true"
+                                   data-sort-name="Quality"
+                                   data-sort-order="desc"
+                                   data-pagination="true"
+                                   data-select-item-name="myRadioName">
+                                <thead>
+                                    <tr>
+                                        <th data-field="state" data-radio="true"></th>
+                                        <th class="col-xs-8" data-field="NotificationNo" data-sortable="true">Name</th>
+                                        <th class="col-xs-4" data-field="NotificationTime" data-sortable="true">Car No.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="tr-id-2" class="tr-class-2">
+                                        <td></td>
+                                        <td>Tal Chen</td>
+                                        <td>2016698</td>
+                                    </tr>
+                                    <tr id="tr-id-2" class="tr-class-2">
+                                        <td></td>
+                                        <td>Sapir Segall</td>
+                                        <td>3017749</td>
+                                    </tr>
+                                    <tr id="tr-id-2" class="tr-class-2">
+                                        <td></td>
+                                        <td>Menachem Choen</td>
+                                        <td>9128854</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <script>
+                            function queryParams() {
+                                return {
+                                    type: 'owner',
+                                    sort: 'updated',
+                                    direction: 'desc',
+                                    per_page: 100,
+                                    page: 1
+                                };
+                            }
+                            function rowColors(row, index) {
+                                var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+                                if (index % 1 === 0 && index / 1 < classes.length) {
+                                    return {
+                                        classes: classes[index / 1]
+                                    };
+                                }
+                                return {};
+                            }
+                        </script>
+
+                        <script>
+                            function myFunction() {
+                                var input, filter, table, tr, td, i, txtValue;
+                                input = document.getElementById("myInput");
+                                filter = input.value.toUpperCase(); //no perform a case-sensitive search
+                                table = document.getElementById("myTable");
+                                tr = table.getElementsByTagName("tr");
+                                for (i = 0; i < tr.length; i++) {
+                                    td = tr[i].getElementsByTagName("td")[1]; //[1] filter by...
+                                    if (td) {
+                                        txtValue = td.textContent || td.innerText;
+                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                            tr[i].style.display = "";
+                                        } else {
+                                            tr[i].style.display = "none";
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+
+                    </fieldset>
+
+                </form>
+
+            </div>
+            <!--end of page n=7-->
+            <!--page user info n=8:-->
+            <div class="page" data-ttl="valetMenu">
+                
+                <form>
+                    <div class="row">
+                        <fieldset>
+                            <!--sapir:-->
+                            <div class="row">
+                                <p><label>User Name</label></p>
+                                <p><label>Email</label></p>
+                                <p></p><label>Phone Number</label></p>
+
+                                <img src="whiteCar.png" width="100" height="40">
+                                
+                            </div>
+                            <div class="row">
+                                <table border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td>Type</td>
+                                            <td>Company Car</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Series</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Color</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Code</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Year Of Manufacture</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Estimate Exit Time</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+                </form>
+                
+                <div class="row">
+                    <a id="aCall" href="#" onclick="ShowPage(8)" style="border: none; padding: 10px 14px; cursor: pointer;
+         position: absolute; bottom: 300px; background-color:gainsboro">Contact By Call</a><br />
+                    <a id="aEmail" href="#" onclick="ShowPage(8)" style="border: none; padding: 10px 14px; cursor: pointer;
+          bottom: 300px; background-color:gainsboro">Contact By Email</a><br />
+                </div>
+                </div>
+
+
+
+
+
+
+                <!--buttons of one page appw'-->
+                <div>
+                    <a id="aReg" href="#" onclick="ShowPage(0)"style="background-color:gainsboro">Registration form</a><br />
+                    <a id="aLogin" href="#" onclick="ShowPage(1)" style="background-color:gainsboro">Login</a><br />
+                    <a id="aLogout" href="#" onclick="ShowPage(1); ResetUser();" style="background-color:gainsboro">Logout</a><br />
+                    <a id="aInfo" href="#" onclick="ShowPage(8)" style="border: none; padding: 12px 16px; cursor: pointer;
+         position: absolute; bottom: 300px;background-color:gainsboro">SELECT</a><br /> <!--goes to info-->
+                    
+                    
+                </div>
+            </div>
+    </div>
+
+
+    <!--
+        <footer class="container-fluid text-center">
+            <p>Footer Text</p>
+        </footer>
+        -->
+</body>
+    </html>
+    
