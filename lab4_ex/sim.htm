@@ -50,67 +50,55 @@
     </style>
 
     <script>
+       
+        //code befor my changes:
         /*
-        var obj1 = {
-            'A': 1,
-            'B': 2,
-            'C': 3
-        };
-
-        var obj2 = {
-            'A': 1,
-            'B': 2,
-            'C': 3
-        };
-
-        var obj3 = {
-            'A': 1,
-            'B': 2,
-            'C': 3
-        };
-
-        var arr = [];
-
-        arr.push(obj1);
-        arr.push(obj2);
-        arr.push(obj3);
-
-        var BArr = [];
-
-        for (var i = 0; i < arr.length; i++) {
-            BArr.push(arr[i].B);
-        }
-
-
-
-        var slot = {
-            'ParkingSlotNum': [null,null],
-            'userID': null,
-            'exitT': null
-        };
-        var arrS = [];
-        ;
-        for (var i = 0; i < 25; i++) {
-            arrS.push(slot);
-            slot.userID = i;
+        var mainarr= [];
+        for (var i = 0; i < 10; i++) {
+            var arr = [];
+            for (var j = 0; j < 2; j++) {
+                arr.push(i, j);
+            }
+            var obj = {
+                'num1': 1,
+                'num2': 2,
+                'array': arr,
+            };
+            mainarr.push(obj);
         }
         */
-        //document.write(arrS[6].userID)
-        
+
+        //create the array of objects:
+        var mainarr = [];
+        for (var i = 0; i < 10; i++) {
+            for (var j = 0; j < 10; j++) {
+                var arr = [];
+                arr.push(i, j);
+                var obj = {
+                    'exitT': null, //exit time
+                    'userID': null, //user id. if null- the parking slot is empty
+                    'ParkingSlotNum': arr, //parking slot number
+                };
+                mainarr.push(obj);
+            }
+        }
+        var b = 3; //just for debugg
+
         
 
         var Config = {
-            x: 9, //number of rows
-            y: 9, //number of cols
-            IsParking: [[0,0], [0,1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8],
-                        [4, 0],[4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [4, 8],
-                        [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8,5], [8, 6], [8, 7], [8,8]
-                        [7, 0], [7, 1], [7, 2], [7, 3], [7, 4],[7,5], [7, 6], [7, 7]],
-            isBlockingParking: [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8],
-                                [3,0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [3, 8],
-                                [5,0], [5, 1], [5, 2], [5, 3],[5,4], [5, 5], [5, 6], [5, 7], [5, 8],],
-            IsPassover: [[2, 0], [2, 1],[2,2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7],[2,8],
-                         [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8]],
+            x: 10, //number of rows
+            y: 10, //number of cols
+            IsParking: [[0,0], [0,1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8],[0,9],
+                [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [4, 8],[4,9],
+                [5, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7], [5, 8],[5,9],
+                [9, 0], [9, 1], [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8],[9,9]],
+            isBlockingParking: [[1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8],[1,9],
+                                [3,0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [3, 8],[3,9],
+                [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8],[6,9],
+                [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 6], [8, 7], [8, 8],[8,9]],
+            IsPassover: [[2, 0], [2, 1],[2,2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7],[2,8],[2,9],
+                [7, 0], [7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7],[7,8],[7,9]],
             IsNone: [[1, 4], [2, 4], [4, 4], [5, 4], [7, 4], [8, 4]]
         };
         
@@ -119,59 +107,42 @@
 
         var arrCars= [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 10, 10]; //from 6:00 to 00:00 (18 hours)
 
-        //parking slot object
+        /*
         var parkingSlot = {
-            ParkingSlotNum: [[0,0], [0,1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8],
-                             [1,0],[1,1],[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8],
-                             [2, 0], [2, 1], [2,2],[2, 3], [2, 4], [2, 5], [2, 6], [2, 7],[2,8],
-                             [3, 0], [3, 1], [3, 2],[3,3], [3, 4], [3, 5], [3, 6], [3, 7],[3,8],
-                             [4,0],[4, 1], [4, 2], [4, 3],[4,4], [4, 5], [4, 6], [4, 7], [4, 8],
-                             [5,0],[5, 1], [5, 2], [5, 3], [5,4],[5, 5], [5, 6], [5, 7], [5, 8],
-                            [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8],
-                            [7, 0], [7, 1], [7, 2], [7, 3], [7, 4],[7,5], [7, 6], [7, 7],[7,8],
-                            [8, 0], [8, 1], [8, 2], [8, 3], [8, 4],[8,5], [8, 6], [8, 7],[8,8]],
-            userID: [null, null, null, null, null, null, null, null,null,
-                     null, null, null, null, null, null, null, null,null,
-                     null, null, null, null, null, null, null, null,null,
-                null, null, null, null, null, null, null, null,null,
-                null, null, null, null, null, null, null, null,null,
-                null, null, null, null, null, null, null, null,null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null],
-            exitT: [null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null],
+            ParkingSlotNum: [[0,0], [0,1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8],[0,9],
+                             [1,0],[1,1],[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8],[1,9],
+                             [2, 0], [2, 1], [2,2],[2, 3], [2, 4], [2, 5], [2, 6], [2, 7],[2,8],[2,9],
+                             [3, 0], [3, 1], [3, 2],[3,3], [3, 4], [3, 5], [3, 6], [3, 7],[3,8],[3,9],
+                             [4,0],[4, 1], [4, 2], [4, 3],[4,4], [4, 5], [4, 6], [4, 7], [4, 8],[4,9],
+                             [5,0],[5, 1], [5, 2], [5, 3], [5,4],[5, 5], [5, 6], [5, 7], [5, 8],[5,9],
+                            [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8],[6,9],
+                            [7, 0], [7, 1], [7, 2], [7, 3], [7, 4],[7,5], [7, 6], [7, 7],[7,8],[7,9],
+                [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 6], [8, 7], [8, 8], [8, 9],
+                [9, 0], [9, 1], [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9]],
+            userID: [null, null, null, null, null, null, null, null,null,null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null,null,],
+            exitT: [null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null,],
             
         };
-        //document.write(parkingSlot.userID[3]);
-        
-        var maxCars = 81;
-        var rows = 9; var cols = 9;
-        var pLot = [81]; //array of parking lot
-
-        pLot[0] = parkingSlot;
-
-        
-        /*intilaize the Parking Slots Number
-            for (var m = 0; m < rows; m++)
-                for (var f = 0; f < cols; f++) {
-                    pLot[m * 10 + f] = parkingSlot;
-                    
-                   
-                    pLot[m * 10 + f].ParkingSlotNum[0] = m;
-                    //document.write(pLot[m * 10 + f].ParkingSlotNum[0]);
-                    pLot[m * 10 + f].ParkingSlotNum[1] = f;
-                    //document.write(pLot[m * 10 + f].ParkingSlotNum[0]);
-                }
-        document.write(pLot[0].ParkingSlotNum[0]);
         */
+        
+        var maxCars = 100;
+        var rows = 10; var cols = 10;
             
 
         $(function () {
@@ -222,6 +193,8 @@
                 }
             }
         }*/
+
+
         var flag = 0;
         function Fill() {
             
@@ -236,52 +209,59 @@
 
                     switch (1) {
                         case 1:
-                            if (flag == 0) {
+                            
                                 for (k = 0; k < rows; k++) {
                                     for (p = 0; p < cols; p++) {
-                                        if (parkingSlot.userID[k * 10 + p] == null) {
-                                            parkingSlot.exitT = exitTime;
+                                        if (mainarr[k * 10 + p].userID == null) {
+                                            mainarr[k * 10 + p].exitT = exitTime;
                                             for (var n = 0; n < Config.IsParking.length; n++) {
-                                                if ((Config.IsParking[n][0] == parkingSlot.ParkingSlotNum[k * 10 + p][0])
-                                                    && (Config.IsParking[n][1] == parkingSlot.ParkingSlotNum[k * 10 + p][1])) {
+                                                if ((Config.IsParking[n][0] == mainarr[k * 10 + p].ParkingSlotNum[0])
+                                                    && (Config.IsParking[n][1] == mainarr[k * 10 + p].ParkingSlotNum[1])) {
                                                     $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isParking");
-                                                    parkingSlot.userID[k * 10 + p] = 305;
-                                                    if (Config.IsParking[n][0] == 8 && Config.IsParking[n][1] == 8) {
-                                                        flag = 1;
-                                                        endOfInsert();
+                                                    mainarr[k * 10 + p].userID = 30;
+                                                    if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {
+                                                        
+                                                        //flag = 1;
+                                                        //document.write(flag);
+                                                        func();
 
                                                     }
-                                                    endOfInsert();
+                                                    endOfInsert();//to ran just after click fill
                                                 }
-                                                
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            function continueToBlocking() {
-                            for (k = 0; k < rows; k++) {
-                                //document.write(k);//01234
-                                for (p = 0; p < cols; p++) {
-                                    //document.write(k);//10 iter of 01234
-                                    if (parkingSlot.userID[k * 10 + p] == null) {
-                                        
-                                        parkingSlot.exitT = exitTime;
-                                        //document.write(k);//10 iter of 01234
 
-                                        for (var n = 0; n < Config.isBlockingParking.length; n++) {
-                                            //document.write(k);
-                                            if ((Config.isBlockingParking[n][0] == parkingSlot.ParkingSlotNum[k * 10 + p][0])
-                                             && (Config.isBlockingParking[n][1] == parkingSlot.ParkingSlotNum[k * 10 + p][1])) {
-                                                $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isBlockingParking");
-                                                parkingSlot.userID[k * 10 + p] = 305;
-                                                endOfInsert();
                                             }
                                         }
                                     }
                                 }
+                            
+                           //else if (flag == 1) {
+                                function func() {
+                                    
+                                    for (k = 0; k < rows; k++) {
+                                        //document.write(k);//01234
+                                        for (p = 0; p < cols; p++) {
+                                            //document.write(k);//10 iter of 01234
+                                            if (mainarr[k * 10 + p].userID == null) {
+
+                                                mainarr[k * 10 + p].exitT = exitTime;
+                                                //document.write(k);//10 iter of 01234
+
+                                                for (var n = 0; n < Config.isBlockingParking.length; n++) {
+                                                    //document.write(k);
+                                                    if ((Config.isBlockingParking[n][0] == mainarr[k * 10 + p].ParkingSlotNum[0])
+                                                        && (Config.isBlockingParking[n][1] == mainarr[k * 10 + p].ParkingSlotNum[1])) {
+                                                        $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isBlockingParking");
+                                                        mainarr[k * 10 + p].userID = 305;
+                                                        //document.write(flag);
+                                                        endOfInsert();
+                                                       
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                            }
+                  //  }
 
                             function endOfInsert()
                                      { break; }
@@ -295,7 +275,7 @@
                    }
                 }
         }
-        Fill();
+        //Fill();
         
 
         function Clear() {
