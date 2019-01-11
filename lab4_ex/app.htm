@@ -1,15 +1,16 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>           
 <html>
 <head>
     <title></title>
     <meta charset="utf-8" />
-
+    <script type="text/javascript" src="globals.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+    <script type="text/javascript" src="dataBaseApi.js"></script>
     <link href="inc/bootstrap.min.css" rel="stylesheet" />
     <script src="inc/jquery-3.2.1.min.js"></script>
     <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
     <!--  <link href="inc/bootstrap.js" rel="stylesheet" />-->
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> <!--pie graph-->
-
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
     <script src="//code.jquery.com/jquery.js"></script>
@@ -17,8 +18,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
     <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.8.0/dist/JsBarcode.all.min.js"></script>
-
-
 
     <style>
         h2 {
@@ -31,74 +30,6 @@
             ResetUser();
             ShowPage(1);
         });
-
-        function ShowPage(n) {
-            $(".page").hide();
-            $(".page").eq(n).show();
-            if (n == 0) {/*registertion page*/
-                $("#aReg").hide();
-                $("#aLogin").show();
-                $("#aLogout").hide();
-            }
-            else if (n == 1) {/* login page*/
-                $("#aReg").show();
-                $("#aLogin").hide();
-                $("#aLogout").hide();
-            }
-            else if (n == 2) {/*weclome page*/
-                $("#aReg").hide();
-                $("#aLogin").hide();
-                $("#aLogout").show();
-                $("#userName").text(activeUser.user + " [" + activeUser.mail + "]");
-            }
-            else if (n == 3) {/*error login*/
-                $("#aReg").show();
-                $("#aLogin").show();
-                $("#aLogout").hide();
-            }
-            else if (n == 4) {  /*driver home page*/
-                $("#aReg").hide();
-                $("#aLogin").hide();
-                $("#aLogout").hide();
-            }
-            else if (n == 5) {  /*scan*/
-                $("#aReg").hide();
-                $("#aLogin").hide();
-                $("#aLogout").hide();
-            }
-            else if (n == 6) {  /*blocked car*/
-                $("#aReg").hide();
-                $("#aLogin").hide();
-                $("#aLogout").hide();
-            }
-            else if (n == 7) {  /*exit time*/
-                $("#aReg").hide();
-                $("#aLogin").hide();
-                $("#aLogout").hide();
-            }
-        }
-
-        var activeUser = {
-            user: '',
-            pass: ''
-        };
-        var activeDriver = {
-            carType: '',
-            carNumber: '',
-            carSeries: '',
-            carColor: '',
-            parkingNumber: '',
-            exitTime: ''
-        };
-        var request = {
-            requestNumber: '',
-            requestTime: '',
-
-            parkingSlotNumber: '',
-        }
-
-
-
 
         function ResetUser() {
             activeUser = {
@@ -124,181 +55,36 @@
                 user: $("#inpUser1").val(),
                 pass: $("#inpPassword1").val()
             }
-            // if (localStorage[u.user] == undefined) {
             var passwordFromDB = await getPassword(u.user);
-            console.log(`passwordFromDB: ${passwordFromDB}`);
             if (passwordFromDB == undefined) {
                 ShowPage(3);
             } else {
-                // activeUser = JSON.parse(localStorage[u.user]);
-                // if (activeUser.pass == u.pass) {
                 if (passwordFromDB == u.pass) {
+                    u.type = await getUserType(u.user);
                     u.mail = await getEmail(u.user);
                     activeUser = u;
-                    activeDriver = await getDriver(activeUser.user);
-                    document.getElementById("car_type").innerHTML = activeDriver.carType;
-                    document.getElementById("car_number").innerHTML = activeDriver.carNumber;
-                    document.getElementById("car_series").innerHTML = activeDriver.carSeries;
-                    document.getElementById("car_color").innerHTML = activeDriver.carColor;
-                    document.getElementById("exit_time").innerHTML = activeDriver.exitTime;
 
+                    if (u.type == "driver") {
+                        activeDriver = await getDriver(activeUser.user);
+                        $("#container").load("user.html");
+                    } else if (u.type == "admin") {
+                        $("#container").load("adminPage.html");
+                    }
 
-                    var barcode_ = activeDriver.barcode;
-                    JsBarcode("#barcode", barcode_);
-                    ShowPage(4);
                 } else {
                     ShowPage(1);
                     window.alert("wrong password!");
-
-
                 }
             }
-        }
-
-        function blockedCar() {
-
-
-
-
         }
     </script>
 </head>
 
 <body>
-    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
-    <script id="firebase">
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyBPEANHVPLwavh8zzcQSbtC9G0m0dW58Yo",
-            authDomain: "parkit-a2963.firebaseapp.com",
-            databaseURL: "https://parkit-a2963.firebaseio.com",
-            projectId: "parkit-a2963",
-            storageBucket: "parkit-a2963.appspot.com",
-            messagingSenderId: "407864105205"
-        };
-        firebase.initializeApp(config);
-        var database = firebase.database();
-
-        function createDriver(employeeNum, newDriver) {
-            database.ref('/Drivers/' + employeeNum).set({
-                firstName: newDriver.firstName,
-                lastName: newDriver.lastName,
-                email: newDriver.email,
-                exitTime: newDriver.exitTime,
-                phoneNumber: newDriver.phoneNumber,
-                carNumber: newDriver.carNumber,
-                carType: newDriver.carType,
-                carSeries: newDriver.carSeries,
-                carColor: newDriver.carColor,
-                carCode: newDriver.carCode,
-                barcode: newDriver.barcode
-            }).catch(function (error) {
-                console.log('Error writing new message to Realtime Database:', error);
-            });
-            console.log(`add the new driver to the db ${newDriver}`);
-        }
-        async function getDriver(employeeNum) {
-            var driver;
-            await database.ref('/Drivers/' + employeeNum).once('value').then(function (snapshot) {
-                driver = snapshot.val();
-            });
-            return driver;
-        }
-        function deleteDriver(driverEmail) {
-            console.log(`remove the driver from the db ${driverEmail}`);
-        }
-        function updateDriver(employeeNum, newDriver) {
-            createDriver(employeeNum, newDriver);
-        }
-        async function getPassword(employeeNum) {
-            var password;
-            await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
-                password = snapshot.val().password;
-            });
-            return password;
-        }
-        async function getEmail(employeeNum) {
-            var email;
-            await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
-                email = snapshot.val().email;
-            });
-            return email;
-        }
-        function createUser(employeeNum, newUser) {
-            firebase.database().ref('/Users/' + employeeNum).set({
-                employeeNum: newUser.employeeNum,
-                password: newUser.password,
-            }).catch(function (error) {
-                console.log('Error writing new message to Realtime Database:', error);
-            });
-            console.log(`add the new driver to the db ${newDriver}`);
-        }
-        function createRequest(employeeNum, newRequest) {
-            database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
-                requestTime: newRequest.requestTime,
-                parkingSlotNumber: newRequest.parkingSlotNumber,
-            }).catch(function (error) {
-                console.log('Error writing new message to Realtime Database:', error);
-            });
-            console.log(`add the new request to the db ${newRequest}`);
-        }
-        async function getRequestsByDriver(employeeNum) {
-            var requests = [];
-            await database.ref('/Requests/' + employeeNum).once('value').then(function (snapshot) {
-                requests = snapshot.val();
-            });
-            return requests;
-        }
-        async function saveParkingNumber(employeeNum, parkingNumber) {
-            activeDriver.parkingNumber = parkingNumber;
-            debugger;
-            updateDriver(activeUser.user, activeDriver);
-
-        }
-    </script>
-    <script>
-        function getParkingNumber(){
-            return 65;
-        }
-    </script>
-    
-    
-    <div class="container">
-        <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="top:12px">
-            <h2 id="title" style="margin-bottom:0px">Registration Form</h2>
-        </nav> -->
+    <div id ="container" class="container">
         <!--logo:-->
         <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
          position: absolute; bottom: 0px; right: 30px;">
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">ParkIT</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#" onclick="ShowPage(4)">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(5)">Scan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(6)">Blocked</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(7)">Exit time</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-
         <div style="width: 500px; margin: 30px auto">
             <!--page  registration n=0-->
             <div class="page" data-ttl="Registration Form">
@@ -352,219 +138,6 @@
             <!--page error login n=3 -->
             <div class="alert alert-warning page" data-ttl="Error Login">
                 <strong>Error login!</strong>
-            </div>
-
-            <!--page driver info n=4 -->
-            <div id="driverMenu" class="page" data-ttl="driverMenu">
-                <form>
-                    <fieldset>
-                        <div class="container text-center">
-
-                            <h2><label>Parking No. 56</label></h2>
-                            <img src="whiteCar.png" width="100" height="40">
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr class="table-success">
-                                        <td>Type</td>
-                                        <td id="car_type"></td>
-                                    </tr>
-                                    <tr class="table-light">
-                                        <td>Number</td>
-                                        <td id="car_number"></td>
-                                    </tr>
-                                    <tr class="table-dark">
-                                        <td>Series</td>
-                                        <td id="car_series"></td>
-                                    </tr>
-                                    <tr class="table-light">
-                                        <td>Color</td>
-                                        <td id="car_color"></td>
-                                    </tr>
-                                    <tr class="table-success">
-                                        <td>Estimate Exit Time</td>
-                                        <td id="exit_time"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <br>
-                            <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='tel:+972-525-818-989'" style="border: none; padding: 12px 16px; cursor: pointer;">
-                                Call to Valet
-                            </button>
-
-                            <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='https://mail.google.com/mail/u/0/#inbox?compose=DmwnWsTQQSpKsPGJbjrTLGcKqsFwqBJSWTFpGBtFSdPDNLptHzZJsCTvccMKRFmbtfTFfGwRwVXB'" style="border: none; padding: 12px 16px; cursor: pointer;">
-                                Email to Valet
-                            </button>
-
-                        </div>
-
-                    </fieldset>
-                </form>
-            </div>
-
-            <!--page scan n=5 -->
-            <div class="page" data-ttl="scan">
-                <form>
-                    <fieldset>
-                        <div class="container text-center">
-                            <h2><label>Scan the Bar-Code</label></h2>
-                            <svg id="barcode"></svg>
-                            <br />
-                            <button type="button" class="btn btn-primary btn-lg" onclick="ShowPage(8)" style="border: none; padding: 12px 16px; cursor: pointer;">
-                                Scan
-                            </button>
-
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-
-            <!--page blocked n=6 -->
-            <div class="page" data-ttl="blocked">
-                <form>
-                    <fieldset>
-                        <div class="container text-center">
-                            <h2><label>Send a request to move the blocking car</label></h2>
-                            <div>
-                                <!-- Trigger/Open The Modal -->
-                                <button type="button" id="myBtn" class="btn btn-primary" onclick="sendRequest()">Send</button>
-                                <script>
-                                    async function getRequestNumber() {
-                                        var random = Math.floor(Math.random() * 900000) + 100000;
-                                        var requests = await getRequestsByDriver(activeUser.user);
-                                        if (!requests) {
-                                            return random;
-                                        }
-                                        // if random is one of the existing requests numbers generate new one
-                                        while (Object.keys(requests).includes(random)) {
-                                            random = Math.floor(Math.random() * 900000) + 100000;
-                                        }
-                                        return random;
-                                    }
-                                    async function sendRequest() {
-                                        var newRequest = {
-                                            requestNumber: await getRequestNumber(),
-                                            requestTime: new Date().toLocaleTimeString('en-US', {
-                                                hour12: false,
-                                                hour: "numeric",
-                                                minute: "numeric"
-                                            }),
-                                            parkingSlotNumber: 111
-                                        };
-                                        createRequest(activeUser.user, newRequest);
-                                        modal.style.display = "block";
-                                    }
-                                </script>
-                                <!-- The Modal -->
-                                <div id="myModal" class="modal">
-
-                                    <!-- Modal content -->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <span class="close">&times;</span>
-                                            <h2></h2>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>The request has been sent and will be processed by the valet</p>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                            // Get the modal
-                            var modal = document.getElementById('myModal');
-
-
-                            // Get the <span> element that closes the modal
-                            var span = document.getElementsByClassName("close")[0];
-
-
-                            // When the user clicks on <span> (x), close the modal
-                            span.onclick = function () {
-                                modal.style.display = "none";
-                            }
-
-                            // When the user clicks anywhere outside of the modal, close it
-                            window.onclick = function (event) {
-                                if (event.target == modal) {
-                                    modal.style.display = "none";
-                                }
-                            }</script>
-                    </fieldset>
-                </form>
-            </div>
-
-            <!--page update exit time n=7 -->
-            <div class="page" data-ttl="Exit time">
-                <form>
-                    <fieldset>
-                        <div class="container text-center">
-                            <h2><label>Update your exit time:</label></h2>
-                            <div>
-                                <input type="time" id="exitTime">
-                                <button type="button" id="updateBtn" class="btn btn-primary" onclick="getExitTime()">Update</button>
-                                <script type="text/javascript">
-                                    function getExitTime() {
-                                        var newTime = document.getElementById('exitTime').value;
-                                        activeDriver.exitTime = newTime;
-                                        updateDriver(activeUser.user, activeDriver);
-                                    }
-                                </script>
-
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </form>
-            </div>
-
-            <!--page insert exit time n=8 -->
-            <div class="page" data-ttl="Exit time">
-                <form>
-                    <fieldset>
-                        <div class="container text-center">
-                            <h2><label>Insert exit time:</label></h2>
-                            <div>
-                                <input type="time" id="insertExitTime">
-                                <button type="button" id="insertBtn" class="btn btn-primary" onclick="insertTime()">OK</button>
-                                <script type="text/javascript">
-                                    async function insertTime() {
-                                        var newTime = document.getElementById('insertExitTime').value;
-                                        activeDriver.exitTime = newTime;
-                                        updateDriver(activeUser.user, activeDriver);
-                                        var parkingNumber = await getParkingNumber();
-                                        document.getElementById("parking_number").innerHTML = parkingNumber;
-                                        ShowPage(9);
-                                    }
-                                </script>
-
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </form>
-            </div>
-
-
-            <!--page parking number n=9 -->
-            <div class="page" data-ttl="Parking Number">
-                <form>
-                    <fieldset>
-                        <div class="container text-center">
-                            <h2><label>Go to parking number  </label><label id="parking_number"></label></h2>
-                            <div>
-                                <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap()">Done</button>
-                                <script>
-                                    function saveWrap() {
-                                        saveParkingNumber(activeUser.user, document.getElementById("parking_number").textContent);
-                                    }
-                                </script>
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </form>
             </div>
 
             <!--buttons of one page appw'-->
