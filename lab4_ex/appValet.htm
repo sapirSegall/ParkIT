@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <link href="inc/bootstrap.min.css" rel="stylesheet" />
     <script src="inc/jquery-3.2.1.min.js"></script>
+    <script src="inc/jquery-2.1.0.min.js"></script><!--to table test-->
     <link href="inc/bootstrap.css" rel="stylesheet" /><!--alex-->
     <link href="inc/bootstrap.js" rel="stylesheet" />
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> <!--pie graph-->
@@ -30,7 +31,8 @@
         }
     </style>
 
-    <style> /*from bootstap website*/
+    <style>
+        /*from bootstap website*/
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
             margin-bottom: 0;
@@ -66,6 +68,32 @@
             .row.content {
                 height: auto;
             }
+        }
+    </style>
+
+    <!--style of table of requests-->
+    <style>
+        td {
+            border: 1px #DDD solid;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .selected {
+            background-color: none;
+            color: #000000;
+        }
+
+        .button {
+            background-color: #808080;
+            border: none;
+            color: black;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
         }
     </style>
 
@@ -136,7 +164,7 @@
                 $("#aInfo").hide();
                 $("#aEmail").show();
                 $("#aCall").show();
-            } 
+            }
         }
 
         var activeUser;
@@ -205,9 +233,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="ShowPage(5)">Requests</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(6)">Notifications</a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
@@ -350,74 +376,142 @@
                 </button>
             </div>
 
-            <!--page requestList n=5:-->
+            <!--page tasks list n=5:-->
             <div class="col-sm-8 text-left">
-                <div class="page" data-ttl="requestList">
+                <div class="page" data-ttl="tasksList">
                     <form>
                         <fieldset>
                             <div class="container text-center" style="height: 700px; width: 250%;">
 
-                                <table data-toggle="table"
+                                <table id="table"
+                                       data-toggle="table"
                                        data-classes="table table-hover table-condensed"
-                                       data-row-style="rowColors"
-                                       data-striped="true"
-                                       data-sort-name="Quality"
-                                       data-sort-order="desc"
+                                       data-sort-name="Priority"
+                                       data-sort-order="asc"
                                        data-pagination="true"
                                        data-select-item-name="myRadioName">
+
                                     <thead>
                                         <tr>
-                                            <th data-field="state" data-radio="true"></th>
-                                            <th class="col-xs-1" data-field="RequestNo" data-sortable="true">Request No.</th>
-                                            <th class="col-xs-1" data-field="RequestTime" data-sortable="true">Request Time</th>
-                                            <th class="col-xs-1" data-field="BlockedCar" data-sortable="true">Blocked Car No.</th>
-                                            <th class="col-xs-1" data-field="ParkingSlot1" data-sortable="true">Parking Slot No.</th>
-                                            <th class="col-xs-1" data-field="BlockingCar" data-sortable="true">Blocking Car No.</th>
-                                            <th class="col-xs-1" data-field="ParkingSlot2" data-sortable="true">Parking Slot No.</th>
+                                            <!--<th data-field="state" ></th>-->
+                                            <th class="col-xs-1" data-field="RequestNo" data-sortable="false">Request No.</th>
+                                            <th class="col-xs-1" data-field="RequestTime" data-sortable="false">Request Time</th>
+                                            <th class="col-xs-1" data-field="Priority" data-sortable="true">Priority</th>
+                                            <th class="col-xs-1" data-field="ParkingSlot1" data-sortable="false">Parking No. for a blocking car</th>
+                                            <th class="col-xs-1" data-field="BlockingCar" data-sortable="false">Status</th>
                                             <!--<th class="col-xs-6" data-field="Quantity">Parking Slot No.</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="tr-id-2" class="tr-class-2">
-                                            <td></td>
-                                            <td>Wheat</td>
-                                            <td>Good</td>
-                                            <td>200 Bags</td>
-                                            <td>Wheat</td>
-                                            <td>Good</td>
-                                            <td>200 Bags</td>
+                                        <tr id="demo" class="tr-class-2">
+                                            <td>1</td>
+                                            <td>14:00</td>
+                                            <td>1</td>
+                                            <td>33</td>
+                                            <td>Open</td>
+
                                         </tr>
                                         <tr id="tr-id-2" class="tr-class-2">
-                                            <td></td>
-                                            <td>Rice</td>
-                                            <td>Good</td>
-                                            <td>100 Bags</td>
-                                            <td>Rice</td>
-                                            <td>Good</td>
-                                            <td>100 Bags</td>
+                                            <td>5</td>
+                                            <td>16:00</td>
+                                            <td>1</td>
+                                            <td>51</td>
+                                            <td>Open</td>
+
                                         </tr>
                                         <tr id="tr-id-2" class="tr-class-2">
+                                            <td>2</td>
+                                            <td>Good</td>
+                                            <td>3</td>
                                             <td></td>
-                                            <td>Rice</td>
-                                            <td>Good</td>
-                                            <td>100 Bags</td>
-                                            <td>Rice</td>
-                                            <td>Good</td>
-                                            <td>100 Bags</td>
+                                            <td></td>
+
                                         </tr>
                                         <tr id="tr-id-2" class="tr-class-2">
-                                            <td></td>
-                                            <td>Sugar</td>
+                                            <td>4</td>
                                             <td>Prime</td>
-                                            <td>200 Bags</td>
-                                            <td>Sugar</td>
-                                            <td>Prime</td>
-                                            <td>200 Bags</td>
+                                            <td>2</td>
+                                            <td></td>
+                                            <td></td>
+
                                         </tr>
                                     </tbody>
                                 </table>
-                                <input type="submit" name="submit" value=Submit><br> <!--i added-->
+                                <input type="button" class="button" id="tst" value="OK" onclick="fnselect()" />
+
                             </div>
+                            
+
+                            <div id="myModal" class="modal">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <span class="close">&times;</span>
+                                        <h2></h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Please.......</p>
+                                        <p></p>
+                                    </div>
+                                    <!--when valet end the task, he press 'done' button-->
+                                    <button type="button" id="myBtn2" class="btn btn-primary" onclick="endRequest()">Done</button>
+                                </div>
+
+                            </div>
+
+                            
+                            <script>
+                                function endRequest() {
+                                    modal.style.display = "none";
+                                }
+                            </script>
+
+                            <script>
+                                // Get the modal
+                                var modal = document.getElementById('myModal');
+
+
+                                // Get the <span> element that closes the modal
+                                var span = document.getElementsByClassName("close")[0];
+
+
+                                // When the user clicks on <span> (x), close the modal
+                                span.onclick = function () {
+                                    modal.style.display = "none";
+                                }
+
+                                // When the user clicks anywhere outside of the modal, close it
+                                window.onclick = function (event) {
+                                    if (event.target == modal) {
+                                        modal.style.display = "none";
+                                    }
+                                }</script>
+
+                            <script>
+                                function highlight(e) {
+                                    if (selected[0]) selected[0].className = '';
+                                    e.target.parentNode.className = 'selected';
+
+                                }
+
+                                var table = document.getElementById('table'),
+                                    selected = table.getElementsByClassName('selected');
+                                table.onclick = highlight;
+
+                                function fnselect() {
+                                    var $row = $(this).parent().find('td');
+                                    var clickeedID = $row.eq(0).text();
+                                    
+                                }
+
+                                $("#tst").click(function () {
+                                    var value = $(".selected td:first").html();
+                                    value = value || "No row Selected";
+                                    alert(value);
+                                    modal.style.display = "block"; //display modal
+                                });
+                            </script>
+
 
                             <script>
                                 function queryParams() {
@@ -429,7 +523,7 @@
                                         page: 1
                                     };
                                 }
-                                function rowColors(row, index) {
+                                /*function rowColors(row, index) {
                                     var classes = ['active', 'success', 'info', 'warning', 'danger'];
 
                                     if (index % 2 === 0 && index / 2 < classes.length) {
@@ -438,7 +532,7 @@
                                         };
                                     }
                                     return {};
-                                }
+                                }*/
                             </script>
 
                         </fieldset>
@@ -447,6 +541,8 @@
                 </div>
             </div>
             <!--end of page n=5-->
+
+            <!--למחוק ולבדוק שהכל עובד-->
             <!--page notifications list n=6:-->
             <div class="page" data-ttl="notifications list">
                 <form>
@@ -515,6 +611,7 @@
 
             </div>
             <!--end of page n=6-->
+
             <!--page search car n=7:-->
             <div class="page" data-ttl="search car">
                 <form>
