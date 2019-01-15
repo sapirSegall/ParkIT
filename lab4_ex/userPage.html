@@ -2,6 +2,23 @@
 <html>
 <head>
     <title>User Page</title>
+    <style>
+        table, td, th {
+            border: 1.5px solid #343a40;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 40%;
+        }
+
+        th, td, tr {
+            padding: 15px;
+            font: #343a40;
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <script>  
@@ -18,19 +35,24 @@
     <script>
         //will be replaced be calling to the algorithm
         function getParkingNumber() {
-            return 65;
+            return 69;
         }
     </script>
 
-    <div id="user_login">
+    <div id="user_login" >
         <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
          position: absolute; bottom: 0px; right: 30px;">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">ParkIT</a>
-            <div class="collapse navbar-collapse" id="navbarColor01">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor03">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#" onclick="ShowPage(0)">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="#" onclick="ShowPage(0)">Home<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="ShowPage(1)">Scan</a>
@@ -45,20 +67,23 @@
                         <a class="nav-link" href="#">About</a>
                     </li>
                 </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button type="submit" class="btn btn-success">Search</button>
+                </form>
             </div>
         </nav>
-
         <!--page driver info n=0 -->
         <div id="driverMenu" class="page" data-ttl="driverMenu">
             <form>
                 <fieldset>
                     <div class="container text-center">
 
-                        <h2><label>Parking No. 56</label></h2>
+                        <h2>Parking No. 56</h2>
                         <img src="whiteCar.png" width="100" height="40">
-                        <table class="table table-hover">
+                        <table align="center"> 
                             <tbody>
-                                <tr class="table-success">
+                                <tr class="table-dark">
                                     <td>Type</td>
                                     <td id="car_type"></td>
                                 </tr>
@@ -74,7 +99,7 @@
                                     <td>Color</td>
                                     <td id="car_color"></td>
                                 </tr>
-                                <tr class="table-success">
+                                <tr class="table-dark">
                                     <td>Estimate Exit Time</td>
                                     <td id="exit_time"></td>
                                 </tr>
@@ -100,13 +125,13 @@
             <form>
                 <fieldset>
                     <div class="container text-center">
+
                         <h2><label>Scan the Bar-Code</label></h2>
                         <svg id="barcode"></svg>
                         <br />
                         <button type="button" class="btn btn-primary btn-lg" onclick="ShowPage(4)" style="border: none; padding: 12px 16px; cursor: pointer;">
                             Scan
                         </button>
-
                     </div>
                 </fieldset>
             </form>
@@ -142,7 +167,7 @@
                                             hour: "numeric",
                                             minute: "numeric"
                                         }),
-                                        parkingSlotNumber: 111
+                                        parkingSlotNumber: activeDriver.parkingNumber,
                                     };
                                     createRequest(activeUser.user, newRequest);
                                     modal.style.display = "block";
@@ -153,14 +178,13 @@
 
                                 <!-- Modal content -->
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <span class="close">&times;</span>
-                                        <h2></h2>
-                                    </div>
                                     <div class="modal-body">
-                                        <p>The request has been sent and will be processed by the valet</p>
-                                        <p></p>
+                                        <span class="close">&times;</span>
+                                        <h2>The request has been sent and will be processed by the valet</h2>
                                     </div>
+                                    <!--<div class="modal-body" style="font: black">
+                                        <p>The request has been sent and will be processed by the valet</p>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -205,10 +229,8 @@
                                     updateDriver(activeUser.user, activeDriver);
                                 }
                             </script>
-
                         </div>
                     </div>
-
                 </fieldset>
             </form>
         </div>
@@ -227,15 +249,14 @@
                                     var newTime = document.getElementById('insertExitTime').value;
                                     activeDriver.exitTime = newTime;
                                     updateDriver(activeUser.user, activeDriver);
+
                                     var parkingNumber = await getParkingNumber();
                                     document.getElementById("parking_number").innerHTML = parkingNumber;
                                     ShowPage(5);
                                 }
                             </script>
-
                         </div>
                     </div>
-
                 </fieldset>
             </form>
         </div>
@@ -245,9 +266,9 @@
             <form>
                 <fieldset>
                     <div class="container text-center">
-                        <h2><label>Go to parking number  </label><label id="parking_number"></label></h2>
+                        <h2><label>Go to parking number </label><label id="parking_number"></label></h2>
                         <div>
-                            <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap()">Done</button>
+                            <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap(); ShowPage(0);">Done</button>
                             <script>
                                 function saveWrap() {
                                     saveParkingNumber(activeUser.user, document.getElementById("parking_number").textContent);
@@ -255,11 +276,9 @@
                             </script>
                         </div>
                     </div>
-
                 </fieldset>
             </form>
         </div>
-
     </div>
 </body>
 </html>

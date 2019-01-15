@@ -20,8 +20,8 @@ function deleteRow(obj) {
     var index = obj.parentNode.parentNode.rowIndex;
     var table = document.getElementById("myTableData");
     table.deleteRow(index);
-
 }
+
 
 function addTable() {
 
@@ -57,6 +57,7 @@ function addTable() {
         td.appendChild(document.createTextNode(text));
         tr.appendChild(td);
     }
+
     //drivers for
     for (const [employeeNumber, driver] of Object.entries(drivers)) {
         var tr = document.createElement('TR');
