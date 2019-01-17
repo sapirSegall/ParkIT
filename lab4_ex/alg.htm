@@ -1,4 +1,4 @@
-ο»Ώ<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Parking Simulator</title>
@@ -128,14 +128,14 @@
 
         //fill the parking lot:
         var counter = 0;
-        var flagBlocking1 = 0; // flag==1 when the cars start blocking 
+        var flagBlocking1 = 0; // flag==1 when the cars start blocking
         var flagBlocking2; // flag==1 when the cars start blocking in check2 phase
         var flagUserReq = 0; //flag==1 if there is user request
         var i = 0;
         var exitTime;
         function Fill() {
             var flagEndParking = 0; //flag==1 when the algoritem find parking slot
-            
+
             while (1) {
                 if (counter==130) window.alert(counter);
                 if (arrCars[i] > 0 || flagUserReq ==1) { //if there is more car in this hour
@@ -151,7 +151,7 @@
                         case 1:
                             flagEndParking = 0;
                             var res = isParkingSlotsFull();
-                            function isParkingSlotsFull() //check if isParking slots now full 
+                            function isParkingSlotsFull() //check if isParking slots now full
                             {
                                 for (k = 0; k < Config.x; k++) {
                                     for (p = 0; p < Config.y; p++) {
@@ -179,20 +179,20 @@
                                                     mainarr[k * 10 + p].exitT = exitTime;
                                                     $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isParking");
                                                     counter++;
-                                                    mainarr[k * 10 + p].userID = 40; //ΧΧ”Χ΅Χ¨Χ‘Χ¨
+                                                    mainarr[k * 10 + p].userID = 40; //ξδρψαψ
                                                     if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                     flagEndParking = 1;
-                                                    if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//ΧΧ•ΧΧ™ ΧΧ Χ¦Χ¨Χ™Χ
+                                                    if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//ΰεμι μΰ φψικ
                                                         flagBlocking1 = 1;
                                                     }
                                                     var res= isParkingSlotsFull();
-                                                    function isParkingSlotsFull() //check if isParking slots now full 
+                                                    function isParkingSlotsFull() //check if isParking slots now full
                                                     {
                                                         for (k = 0; k < Config.x; k++) {
                                                             for (p = 0; p < Config.y; p++) {
                                                                 if (k == 0 || k == 4 || k == 5 || k == 9) {
                                                                     if (mainarr[k * 10 + p].userID == null) return false;
-                                                                    
+
                                                                 }
                                                             }
                                                         }
@@ -267,7 +267,7 @@
                                         }
                                         if (flagEndParking == 1) break;
                                     }
-                                    
+
                                 }//end of check2
 
                                 //userRequest(40); //just for check the func
@@ -288,18 +288,18 @@
 
 
         //func_scheduleUserRequest(14, 23);//check
-        //ΧΧ’Χ™ΧΆ ΧΧ”Χ΅Χ¨Χ‘Χ¨ Χ›Χ©Χ Χ”Χ’ ΧΧ©Χ Χ” Χ©ΧΆΧª Χ™Χ¦Χ™ΧΧ” //ΧΧ”ΧΧ©Χ™Χ ΧΧª Χ”Χ¤Χ•Χ Χ§Χ¦Χ™Χ” ΧΆΧ Χ¤Χ•Χ Χ§Χ¦Χ™Χ•Χª ΧΧ”Χ΅Χ¨Χ‘Χ¨
-        //ΧΧ Χ™Χ™Χ©ΧΧ— ΧΧ΅Χ¤Χ¨ ΧΧ©ΧªΧΧ© Χ‘ΧΧ§Χ•Χ ΧΧ΅Χ¤Χ¨ Χ—Χ Χ™Χ” Χ©ΧΧ•- ΧΧ– ΧΧ©Χ Χ•Χª ΧΧª Χ”Χ¤Χ•Χ Χ§Χ¦Χ™Χ”
+        //ξβις ξδρψαψ λωπδβ ξωπδ ωςϊ ιφιΰδ //μδξωικ ΰϊ δτεπχφιδ ςν τεπχφιεϊ ξδρψαψ
+        //ΰν ιιωμη ξρτψ ξωϊξω αξχεν ξρτψ ηπιδ ωμε- ΰζ μωπεϊ ΰϊ δτεπχφιδ
         function func_scheduleUserRequest(parkingSlotNum, newExitTime) {//implementation of schedule user request.
             var tempParkingSNum = parkingSlotNum;
             if (tempParkingSNum > (Config.x * Config.y)) return false; //if tempParkingSNum is not exist?
             var tempRowNum = Math.floor(tempParkingSNum / 10);
             var tempColNum = tempParkingSNum % 10;
-            if ((mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT) < i) return false; //if the user send exit time that earlier then this hour// ΧΧ‘Χ“Χ•Χ§ ΧΧ ΧΧ©Χ Χ•Χª ΧΧ¤Χ•Χ Χ§Χ¦Χ™Χ™Χª Χ©ΧΆΧ”
+            if ((mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT) < i) return false; //if the user send exit time that earlier then this hour// μαγεχ ΰν μωπεϊ μτεπχφιιϊ ωςδ
             mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT = newExitTime;
         }
 
-        
+
         //check if need to alert the driver to send a request to move the blocking car(user request)
         function funcIsCarBlocked(i) {
             var blockingRow;
@@ -320,11 +320,11 @@
                             {
                                 if (mainarr[k * 10 + p].exitT < mainarr[blockingRow * 10 + p].exitT)//check if exit time of this car< exit time of the blocked car
                                 {
-                                    //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //ΧΧΧΧ© Χ¤Χ•Χ Χ§Χ¦Χ™Χ”
+                                    //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //μξξω τεπχφιδ
                                     window.alert(k,p); //just for debugging
                                 }
-                            }   
-                        }               
+                            }
+                        }
                     }
                 }
             }
@@ -343,7 +343,7 @@
                         else if (k == 4) blockingRow = 3;
                         else if (k == 5) blockingRow = 6;
                         else if (k == 9) blockingRow = 8;
-                        //when the row is not 'isParking' row: ΧΧ ΧΧΧ•Χ¨ ΧΧ”Χ’Χ™ΧΆ ΧΧ¤Χ”
+                        //when the row is not 'isParking' row: μΰ ΰξεψ μδβις μτδ
                         else blockingRow = null;
 
                         //change parking slot of the blocking car
@@ -357,7 +357,7 @@
                     }
                 }
             }
-        }        
+        }
 
 
 
@@ -405,7 +405,7 @@
                                 $("#parking").find("tr").eq(k2).find("td").eq(p2).removeClass("isParking");
                                 flagBlocking1 = 0; flagBlocking2 = 0;
                                 checkSystemRequest(null, k2, p2);// check if to add a system request to DB
-                            } 
+                            }
                         }
                         else {//when the row is 'isBlockingParking' row
                             mainarr[k2 * 10 + p2].exitT = null;
@@ -414,9 +414,9 @@
                             flagBlocking1 = 0; flagBlocking2 = 0;
                             var tempExitT2 = mainarr[blockedRow * 10 + p2].exitT;
                             checkSystemRequest(tempExitT2, k2, p2);// check if to add a system request to DB
-                        } 
+                        }
                     }
-                    
+
                 }
             }
         } //end of exitCars function
@@ -436,7 +436,7 @@
                             if ((exitTCompare != null && mainarr[k * 10 + p].exitT <= exitTCompare) || exitTCompare == null) { //if blockingcar's exitTime<=exitTCompare
                                 flagSystemReq = 1;
                                 //systemRequest(k,p, kEmpty, pEmpty)// for debugging
-                                //sendSystemReqToDB(mainarr[k * 10 + p].userID, kEmpty,pEmpty ); //ΧΧΧΧ©
+                                //sendSystemReqToDB(mainarr[k * 10 + p].userID, kEmpty,pEmpty ); //μξξω
                             }
                     }
                     if (flagSystemReq == 1) break;
@@ -444,7 +444,7 @@
                 if (flagSystemReq == 1) break;
             }
         }
-             
+
         function systemRequest(kFrom, pFrom, kEmpty, pEmpty) //called when valet select this task
         {
             //save details of the user we move from
@@ -458,11 +458,11 @@
             mainarr[kEmpty * 10 + pEmpty].exitT = tempExitT;
             mainarr[kEmpty * 10 + pEmpty].userID = tempUserID;
             if (kEmpty == 0 || kEmpty == 4 || kEmpty == 5 || kEmpty == 9) $("#parking").find("tr").eq(kEmpty).find("td").eq(pEmpty).addClass("isParking");
-            else $("#parking").find("tr").eq(kEmpty).find("td").eq(pEmpty).addClass("isBlockingParking");  
+            else $("#parking").find("tr").eq(kEmpty).find("td").eq(pEmpty).addClass("isBlockingParking");
         }
-                    
-                   
-                
+
+
+
 
         function Clear() {
             $.each($(".isParking"),
@@ -473,7 +473,8 @@
     </script>
 
 
-    <script>//clock//ΧΧ©Χ Χ•Χª Χ©Χ”Χ©ΧΆΧ” ΧªΧ©ΧªΧ Χ” Χ‘Χ›Χ ΧªΧ—Χ™ΧΧª Χ©ΧΆΧ” Χ‘ΧΧΆΧ¨Χ
+    <script>
+//clock//μωπεϊ ωδωςδ ϊωϊπδ αλμ ϊηιμϊ ωςδ αξςψκ
         function startTime() {
             var today = new Date();
             var h = today.getHours();
