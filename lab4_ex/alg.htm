@@ -88,6 +88,7 @@
 
         var maxCars = 100;
 
+        
 
         $(function () {
             // create table
@@ -114,6 +115,8 @@
                             $("#parking").find("tr").eq(i).find("td").eq(j).addClass("isNotParking");
                     }*/
         });
+
+        
 
 
         //returm number between min to max
@@ -151,7 +154,7 @@
                         if (i < 18) { exitTime = getRandom(i + 5, 23); } //enforce exitTime>= entranceTime
                     }
                     //document.write(Config.IsParking.length);
-                    switch (3) {//the value in switch is the choosen alg'
+                    switch (1) {//the value in switch is the choosen alg'
                         case 1:
                             flagEndParking = 0;
                             var res = isParkingSlotsFull();
@@ -657,11 +660,13 @@
 
 
     <script>
-    //clock//לשנות שהשעה תשתנה בכל תחילת שעה במערך
+    //clock
         function startTime() {
             var today = new Date();
-            var h = today.getHours();
-            var m = today.getMinutes();
+            //var h = today.getHours();
+            var h = i;
+            //var m = today.getMinutes();
+            var m = 00;
             var s = today.getSeconds();
             m = checkTime(m);
             s = checkTime(s);
