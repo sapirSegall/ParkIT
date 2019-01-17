@@ -151,7 +151,7 @@
                         if (i < 18) { exitTime = getRandom(i + 5, 23); } //enforce exitTime>= entranceTime
                     }
                     //document.write(Config.IsParking.length);
-                    switch (3) {
+                    switch (3) {//the value in switch is the choosen alg'
                         case 1:
                             flagEndParking = 0;
                             var res = isParkingSlotsFull();
@@ -271,14 +271,14 @@
                                         }
                                         if (flagEndParking == 1) break;
                                     }
-                                    
+
 
                                 }//end of check2
 
                                 //userRequest(40); //just for check the func
                             }// end blockingFunc function
 
-
+                            break;
 
                         case 2://alg' 2:
                             flagEndParking = 0;
@@ -310,8 +310,7 @@
                                         }
                                     }
                                     if (flagEndParking == 1) break; //break for of p
-                                    if (p == 9)
-                                       { flagBlocking1 = 1; if (flagBlocking1 == 1) blockingFunc(); } //break for of p, if end of this row
+                                    if (p == 9) { flagBlocking1 = 1; if (flagBlocking1 == 1) blockingFunc(); } //break for of p, if end of this row
                                 }
 
 
@@ -325,7 +324,7 @@
 
                                     for (var p2 = 0; p2 < Config.y; p2++) {
                                         if (mainarr[blockingRow * 10 + p2].userID == null) {//check if parking slot is empty:
-                                           
+
                                             if (exitTime <= mainarr[k * 10 + p2].exitT) {//check if exit time of this car>= exit time of the blocked car:
                                                 for (var n2 = 0; n2 < Config.isBlockingParking.length; n2++) {
                                                     if ((Config.isBlockingParking[n2][0] == mainarr[blockingRow * 10 + p2].ParkingSlotNum[0])
@@ -372,7 +371,7 @@
                                 }// end blockingFunc function
                                 if (flagEndParking == 1) break;
                             }//end for of k
-
+                            break;
 
                         case 3://alg' 3:
                             flagEndParking = 0;
