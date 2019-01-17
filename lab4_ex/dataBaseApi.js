@@ -22,12 +22,13 @@ function createDriver(employeeNum, newDriver) {
         carSeries: newDriver.carSeries,
         carColor: newDriver.carColor,
         carCode: newDriver.carCode,
-        barcode: newDriver.barcode
+        barcode: newDriver.barcode,
+        parkingNumber: newDriver.parkingNumber,
     }).catch(function (error) {
         console.log('Error writing new message to Realtime Database:', error);
     });
     console.log(`add the new driver to the db ${newDriver}`);
-}
+        }
 async function getDriver(employeeNum) {
     var driver;
     await database.ref('/Drivers/' + employeeNum).once('value').then(function (snapshot) {
@@ -89,7 +90,6 @@ async function getRequestsByDriver(employeeNum) {
 }
 async function saveParkingNumber(employeeNum, parkingNumber) {
     activeDriver.parkingNumber = parkingNumber;
-    debugger;
     updateDriver(activeUser.user, activeDriver);
 }
 async function getDrivers() {
