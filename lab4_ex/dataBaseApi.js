@@ -23,7 +23,7 @@ function createDriver(employeeNum, newDriver) {
         carColor: newDriver.carColor,
         carCode: newDriver.carCode,
         barcode: newDriver.barcode,
-        parkingNumber: newDriver.parkingNumber,
+        parkingNumber: newDriver.parkingNumber
     }).catch(function (error) {
         console.log('Error writing new message to Realtime Database:', error);
     });
@@ -36,9 +36,13 @@ async function getDriver(employeeNum) {
     });
     return driver;
 }
-function deleteDriver(driverEmail) {
-    console.log(`remove the driver from the db ${driverEmail}`);
-}
+function deleteDriver(employeeNum) {
+    database.ref('/Drivers/').child(employeeNum).remove().catch(function (error) {
+        console.log('Error remove driver from DB:', error);
+    });
+    database.ref('/Requests/').child(employeeNum).remove();
+    database.ref('/Users/').child(employeeNum).remove();
+ }
 function updateDriver(employeeNum, newDriver) {
     createDriver(employeeNum, newDriver);
 }
