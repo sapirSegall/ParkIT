@@ -11,24 +11,9 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 function createDriver(employeeNum, newDriver) {
-    database.ref('/Drivers/' + employeeNum).set({
-        firstName: newDriver.firstName,
-        lastName: newDriver.lastName,
-        email: newDriver.email,
-        exitTime: newDriver.exitTime,
-        phoneNumber: newDriver.phoneNumber,
-        carNumber: newDriver.carNumber,
-        carType: newDriver.carType,
-        carSeries: newDriver.carSeries,
-        carColor: newDriver.carColor,
-        carCode: newDriver.carCode,
-        barcode: newDriver.barcode,
-        parkingNumber: newDriver.parkingNumber
-    }).catch(function (error) {
-        console.log('Error writing new message to Realtime Database:', error);
-    });
-    console.log(`add the new driver to the db ${newDriver}`);
-        }
+    console.log(`add the new driver to the db ${employeeNum}: ${JSON.stringify(newDriver)}`);
+    database.ref('/Drivers/' + employeeNum).set(newDriver);
+}
 async function getDriver(employeeNum) {
     var driver;
     await database.ref('/Drivers/' + employeeNum).once('value').then(function (snapshot) {
@@ -44,6 +29,7 @@ function deleteDriver(employeeNum) {
     database.ref('/Users/').child(employeeNum).remove();
  }
 function updateDriver(employeeNum, newDriver) {
+    console.log(`add the new driver to the db ${JSON.stringify(newDriver)}`);
     createDriver(employeeNum, newDriver);
 }
 async function getPassword(employeeNum) {

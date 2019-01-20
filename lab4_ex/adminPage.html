@@ -24,11 +24,14 @@
     </nav>
     <div id="admin">
         <!--myDynamicTable-->
-        <div class="page" id="myDynamicTable" style="overflow: auto; height: 150px">
-            <table id="driversTable"></table>
+        <div class="page" id="myDynamicTable" style="overflow: auto; height: 200px">
+            <table id="driversTable">
+                <tbody id="driversTableBody"></tbody>
+            </table>
             <script> 
                 async function addDriversTable(){
                     drivers = await getDrivers();
+                    console.log("here");
                     addTable();
                 }
                 addDriversTable();
@@ -122,7 +125,7 @@
         
                         <button type="button" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
                         <script type="text/javascript">
-                            function setDriverData() {
+                            async function setDriverData() {
                                 var employeeNumber = document.getElementById('employeeNumber').value;
                                 var firstName = document.getElementById('firstName').value;
                                 var lastName = document.getElementById('lastName').value;
@@ -149,7 +152,8 @@
                                     parkingNumber: ' '
                                 };
                                 createDriver(employeeNumber, driver);
-                                ShowPage(1);
+                                addDriversTable();
+                                ShowPage(0);
                             }
                         </script>
                         <button type="button" id="cancelCreateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>
@@ -158,54 +162,48 @@
                                 ShowPage(0);
                             }
                         </script>
-                    </form>
+                </form>
         </div>
     
         <!--Update driver-->
         <div class="page" id="Update Driver">
             <form>
                 <p>
-                    <label for="employeeNumber">Employee Number:</label>
-                    <input name="employeeNumber" id="employeeNumber" type="text">
+                    <label for="firstNameUpdate">First Name:</label>
+                    <input name="firstNameU" id="firstNameUpdate" type="text">
                 </p>
 
                 <p>
-                    <label for="firstName">First Name:</label>
-                    <input name="firstName" id="firstName" type="text">
+                    <label for="lastNameUpdate">Last Name:</label>
+                    <input name="lastNameU" id="lastNameUpdate" type="text">
                 </p>
 
                 <p>
-                    <label for="lastName">Last Name:</label>
-                    <input name="lastName" id="lastName" type="text">
+                    <label for="emailUpdate">Email:</label>
+                    <input name="emailU" id="emailUpdate" type="email">
                 </p>
 
                 <p>
-                    <label for="email">Email:</label>
-                    <input name="email" id="email" type="email">
+                    <label for="phoneNumberUpdate">Phone Number:</label>
+                    <input name="phone" id="phoneNumberUpdate" type="tel">
                 </p>
 
                 <p>
-                    <label for="phoneNumber">Phone Number:</label>
-                    <input name="phone" id="phoneNumber" type="tel">
+                    <label for="carNumberUpdate">Car Number:</label>
+                    <input name="carNumberU" id="carNumberUpdate" type="number">
                 </p>
 
                 <p>
-                    <label for="carNumber">Car Number:</label>
-                    <input name="carNumber" id="carNumber" type="number">
-                </p>
-
-                <p>
-                    <label for="carType">Car type:</label>
-                    <select name="carType" id="carType">
+                    <label for="carTypeUpdate">Car type:</label>
+                    <select name="carTypeU" id="carTypeUpdate">
                         <option>Company Car</option>
                         <option>Private Car</option>
                     </select>
                 </p>
 
-
                 <p>
-                    <label for="carSeries">Car Series:</label>
-                    <select name="carSeries" id="carSeries">
+                    <label for="carSeriesUpdate">Car Series:</label>
+                    <select name="carSeriesU" id="carSeriesUpdate">
                         <option>Honda</option>
                         <option>Hundai</option>
                         <option>Mazda</option>
@@ -213,8 +211,8 @@
                 </p>
 
                 <p>
-                    <label for="carColor">Car Color:</label>
-                    <select name="carColor" id="carColor">
+                    <label for="carColorUpdate">Car Color:</label>
+                    <select name="carColorU" id="carColorUpdate">
                         <option>Grey</option>
                         <option>Blue</option>
                         <option>Red</option>
@@ -222,25 +220,22 @@
                 </p>
 
                 <p>
-                    <label for="carCode">Car Code:</label>
-                    <input name="carCode" id="carCode" type="text">
+                    <label for="carCodeUpdate">Car Code:</label>
+                    <input name="carCodeU" id="carCodeUpdate" type="text">
                 </p>
 
-                <button type="button" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
+                <button type="button" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
                 <script type="text/javascript">
-                    function setDriverData() {
-                        // getDriver(employeeNumber)
-                        var employeeNumber = document.getElementById('employeeNumber').value;
-                        var firstName = document.getElementById('firstName').value;
-                        var lastName = document.getElementById('lastName').value;
-                        var email = document.getElementById('email').value;
-                        var phoneNumber = document.getElementById('phoneNumber').value;
-                        var carNumber = document.getElementById('carNumber').value;
-                        var carType = document.getElementById('carType').value;
+                    async function updateDriverData() {
+                        var firstName = document.getElementById('firstNameUpdate').value;
+                        var lastName = document.getElementById('lastNameUpdate').value;
+                        var email = document.getElementById('emailUpdate').value;
+                        var phoneNumber = document.getElementById('phoneNumberUpdate').value;
+                        var carNumber = document.getElementById('carNumberUpdate').value;
+                        var carType = document.getElementById('carTypeUpdate').value;
                         var carSeries = document.getElementById('carSeries').value;
-                        var carColor = document.getElementById('carColor').value;
-                        var carCode = document.getElementById('carCode').value;
-                        var barcode = Math.floor(Math.random() * 90000000) + 10000000;
+                        var carColor = document.getElementById('carColorUpdate').value;
+                        var carCode = document.getElementById('carCodeUpdate').value;
                         var driver = {
                             firstName: firstName,
                             lastName: lastName,
@@ -251,11 +246,12 @@
                             carSeries: carSeries,
                             carColor: carColor,
                             carCode: carCode,
-                            barcode: barcode,
-                            exitTime: ''
+                            barcode: driverFromDB.barcode,
+                            exitTime: driverFromDB.exitTime
                         };
-                        updateDriver(employeeNumber, driver);
-                        ShowPage(1);
+                        updateDriver(driverFromDB.employeeNumber, driver);
+                        addDriversTable();
+                        ShowPage(0);
                     }
                 </script>
                  <button type="button" id="cancelUpdateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>

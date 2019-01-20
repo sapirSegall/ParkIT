@@ -1,4 +1,5 @@
 var drivers = {};
+var driverFromDB = {};
 function deleteDriverRow(obj){
     var row = obj.parentNode.parentNode;
     var employeeNumber = row.getElementsByTagName("td")[2].innerText;
@@ -12,19 +13,43 @@ function deleteRow(obj) {
 }
 
 function addNewDriver(){
+    document.getElementById('employeeNumber').value = '';
+    document.getElementById('firstName').value = '';
+    document.getElementById('lastName').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('carNumber').value = '';
+    document.getElementById('carType').value = '';
+    document.getElementById('carSeries').value = '';
+    document.getElementById('carColor').value = '';
+    document.getElementById('carCode').value = '';
     ShowPage(1);
 }
 
-function editDriverDetails(){
+async function editDriverDetails(obj){
+    var row = obj.parentNode.parentNode;
+    var employeeNumber = row.getElementsByTagName("td")[2].innerText;
+    driverFromDB = await getDriver(employeeNumber);
+    driverFromDB.employeeNumber = employeeNumber;
+    document.getElementById('firstNameUpdate').value = driverFromDB.firstName;
+    document.getElementById('lastNameUpdate').value = driverFromDB.lastName;
+    document.getElementById('emailUpdate').value = driverFromDB.email;
+    document.getElementById('phoneNumberUpdate').value = driverFromDB.phoneNumber;
+    document.getElementById('carNumberUpdate').value = driverFromDB.carNumber;
+    document.getElementById('carTypeUpdate').value = driverFromDB.carType;
+    document.getElementById('carSeriesUpdate').value = driverFromDB.carSeries;
+    document.getElementById('carColorUpdate').value = driverFromDB.carColor;
+    document.getElementById('carCodeUpdate').value = driverFromDB.carCode;
     ShowPage(2);
 }
 
 function addTable() {
     var table = document.getElementById("driversTable");
     table.border = '1';
-
-    var tableBody = document.createElement('TBODY');
-    table.appendChild(tableBody);
+    var tableBody = document.getElementById("driversTableBody");
+    if (document.contains(tableBody)) {
+        tableBody.innerHTML = "";
+    }
 
     // print headers line
     var tr = document.createElement('TR');
