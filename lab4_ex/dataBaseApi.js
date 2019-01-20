@@ -11,24 +11,9 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 function createDriver(employeeNum, newDriver) {
-    database.ref('/Drivers/' + employeeNum).set({
-        firstName: newDriver.firstName,
-        lastName: newDriver.lastName,
-        email: newDriver.email,
-        exitTime: newDriver.exitTime,
-        phoneNumber: newDriver.phoneNumber,
-        carNumber: newDriver.carNumber,
-        carType: newDriver.carType,
-        carSeries: newDriver.carSeries,
-        carColor: newDriver.carColor,
-        carCode: newDriver.carCode,
-        barcode: newDriver.barcode,
-        parkingNumber: newDriver.parkingNumber,
-    }).catch(function (error) {
-        console.log('Error writing new message to Realtime Database:', error);
-    });
+    database.ref('/Drivers/' + employeeNum).set(newDriver);
     console.log(`add the new driver to the db ${newDriver}`);
-        }
+}
 async function getDriver(employeeNum) {
     var driver;
     await database.ref('/Drivers/' + employeeNum).once('value').then(function (snapshot) {
@@ -36,8 +21,12 @@ async function getDriver(employeeNum) {
     });
     return driver;
 }
-function deleteDriver(driverEmail) {
-    console.log(`remove the driver from the db ${driverEmail}`);
+function deleteDriver(employeeNum) {
+    database.ref('/Drivers/').child(employeeNum).remove().catch(function (error) {
+        console.log('Error remove driver from DB:', error);
+    });
+    database.ref('/Requests/').child(employeeNum).remove();
+    database.ref('/Users/').child(employeeNum).remove();
 }
 function updateDriver(employeeNum, newDriver) {
     createDriver(employeeNum, newDriver);
@@ -88,8 +77,7 @@ async function getRequestsByDriver(employeeNum) {
     });
     return requests;
 }
-async function saveParkingNumber(employeeNum, parkingNumber) {
-    activeDriver.parkingNumber = parkingNumber;
+function saveParkingNumber(EmployeeNum, ParkingNumber) {
     updateDriver(activeUser.user, activeDriver);
 }
 async function getDrivers() {

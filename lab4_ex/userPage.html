@@ -34,12 +34,12 @@
     </script>
     <script>
         //will be replaced be calling to the algorithm
-        function getParkingNumber() {
+        async function getParkingNumber() {
             return 69;
         }
     </script>
 
-    <div id="user_login" >
+    <div id="user" >
         <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
          position: absolute; bottom: 0px; right: 30px;">
 
@@ -67,10 +67,6 @@
                         <a class="nav-link" href="#">About</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                    <button type="submit" class="btn btn-success">Search</button>
-                </form>
             </div>
         </nav>
         <!--page driver info n=0 -->
@@ -84,19 +80,19 @@
                         <table align="center"> 
                             <tbody>
                                 <tr class="table-dark">
-                                    <td>Type</td>
+                                    <td>Car Type</td>
                                     <td id="car_type"></td>
                                 </tr>
                                 <tr class="table-light">
-                                    <td>Number</td>
+                                    <td>Car Number</td>
                                     <td id="car_number"></td>
                                 </tr>
                                 <tr class="table-dark">
-                                    <td>Series</td>
+                                    <td>Car Series</td>
                                     <td id="car_series"></td>
                                 </tr>
                                 <tr class="table-light">
-                                    <td>Color</td>
+                                    <td>Car Color</td>
                                     <td id="car_color"></td>
                                 </tr>
                                 <tr class="table-dark">
@@ -180,11 +176,8 @@
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <span class="close">&times;</span>
-                                        <h2>The request has been sent and will be processed by the valet</h2>
+                                        <h2 style="color:#000000">The request has been sent and will be processed by the valet</h2>
                                     </div>
-                                    <!--<div class="modal-body" style="font: black">
-                                        <p>The request has been sent and will be processed by the valet</p>
-                                    </div>-->
                                 </div>
                             </div>
                         </div>
@@ -252,6 +245,7 @@
 
                                     var parkingNumber = await getParkingNumber();
                                     document.getElementById("parking_number").innerHTML = parkingNumber;
+                                    activeDriver.parkingNumber = parkingNumber;
                                     ShowPage(5);
                                 }
                             </script>
@@ -266,12 +260,16 @@
             <form>
                 <fieldset>
                     <div class="container text-center">
-                        <h2><label>Go to parking number </label><label id="parking_number"></label></h2>
+                        <h2><label>Go to parking number  </label><label id="parking_number"></label></h2>
                         <div>
-                            <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap(); ShowPage(0);">Done</button>
-                            <script>
+                            <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap()">Done</button>
+                            <script type="text/javascript">
                                 function saveWrap() {
-                                    saveParkingNumber(activeUser.user, document.getElementById("parking_number").textContent);
+                                    console.log("bla");
+                                    //console.log(`here : ${document.getElementById("parking_number").innerText}`);
+                                    //console.log(`here2 : ${activeDriver.parkingNumber}`);
+                                    //saveParkingNumber(activeUser.user, activeDriver.parkingNumber);
+                                    //ShowPage(0);
                                 }
                             </script>
                         </div>
