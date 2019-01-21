@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>           
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="dynamicTable.js"></script>
+    <script type="text/javascript" src="globals.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+    <script type="text/javascript" src="dataBaseApi.js"></script>
+    <script src="inc/jquery-3.2.1.min.js"></script>
+    <script src="inc/jquery-1.10.2.js"></script>
+    <script src="inc/jquery-2.1.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> <!--pie graph-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.8.0/dist/JsBarcode.all.min.js"></script>
+    <script src="JsBarcode.all.min.js"></script>
+    <link href="inc/bootstrap.min.css" rel="stylesheet" />
+    <link href="inc/app.css" rel="stylesheet" />
+    <!--<link href="inc/bootstrapAlex.css" rel="stylesheet" />-->
+    <!--<link href="inc/bootstrap.css" rel="stylesheet" />-->
+    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">-->
+    <style>
+        body {
+            background-image: url("img/background.jpg");
+        }
+    </style>
+    <script>
+        $(function () {
+            // on document ready
+            ResetUser();
+            ShowPage(0);
+        });
+
+        function ResetUser() {
+            activeUser = {
+                mail: "",
+                user: "",
+                pass: ""
+            };
+            $("input").val("");
+        }
+
+        function Register() {
+            activeUser = {
+                type: "driver",
+                pass: $("#inpPassword").val()
+            }
+            createUser($("#inpEmployeeNum").val(), activeUser);
+            ShowPage(2);
+        }
+
+        async function Login() {
+            var u = {
+                user: $("#inpUser1").val(),
+                pass: $("#inpPassword1").val()
+            }
+            var passwordFromDB = await getPassword(u.user);
+            if (passwordFromDB == undefined) {
+                ShowPage(3);
+            } else {
+                if (passwordFromDB == u.pass) {
+                    u.type = await getUserType(u.user);
+                    u.mail = await getEmail(u.user);
+                    activeUser = u;
+
+                    if (u.type == "driver") {
+                        activeDriver = await getDriver(activeUser.user);
+                        $("#container").load("driverPage.html");
+
+                    } else if (u.type == "admin") {
+                        $("#container").load("adminPage.html");
+                    } else if (u.type == "valet") {
+                        $("#container").load("valetPage.html");
+
+                    } else {
+                        ShowPage(1);
+                        window.alert("wrong password!");
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id ="container" class="container">
+        <!--logo:-->
+        <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
+         position: absolute; bottom: 0px; right: 30px;">
+        <div style="width: 500px; margin: 30px auto">
+
+            <!--page  registration n=0-->
+            <div class="page" data-ttl="Registration Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpEmployeeNum">Employee Number</label>
+                            <input type="password" class="form-control" id="inpEmployeeNum" placeholder="Enter employee number">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword">Password</label>
+                            <input type="password" class="form-control" id="inpPassword" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Register()">Register</button>
+                            <button type="button" class="btn btn-primary" onclick="ShowPage(1)">Sign In</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+
+            <!--page login n=1 -->
+            <div class="page" data-ttl="Login Form">
+                <form>
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inpUser1"><font color="white">Employee Number:</font></label>
+                            <input type="text" class="form-control" id="inpUser1" placeholder="Enter employee number">
+                        </div>
+                        <div class="form-group">
+                            <label for="inpPassword1"><font color="white">Password:</font></label>
+                            <input type="password" class="form-control" id="inpPassword1" placeholder="Enter password">
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="Login()">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <!--page welcome page n=2 -->
+            <div class="alert alert-info page" data-ttl="Welcome Page">
+                <p>Welcome <strong id="userName"></strong> !</p>
+            </div>
+
+            <!--page error login n=3 -->
+            <div class="alert alert-warning page" data-ttl="Error Login">
+                <strong>Error login!</strong>
+            </div>
+
+            <!--buttons of one page appw'-->
+            <div>
+               <!-- <a id="aReg" href="#" onclick="ShowPage(0)">Registration form</a><br />-->
+                <!--<a id="aLogin" href="#" onclick="ShowPage(1)">Sign in</a><br />-->
+                <a id="aLogout" href="#" onclick="ShowPage(1); ResetUser();">Logout</a><br />
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
