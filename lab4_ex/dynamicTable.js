@@ -13,7 +13,19 @@ function deleteRow(obj) {
 }
 
 function addNewDriver() {
-    ShowPage(1);
+    function addNewDriver() {
+        document.getElementById('employeeNumber').value = '';
+        document.getElementById('firstName').value = '';
+        document.getElementById('lastName').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('phoneNumber').value = '';
+        document.getElementById('carNumber').value = '';
+        document.getElementById('carType').value = '';
+        document.getElementById('carSeries').value = '';
+        document.getElementById('carColor').value = '';
+        document.getElementById('carCode').value = '';
+        ShowPage(1);
+    }
 }
 
 async function editDriverDetails(obj) {
