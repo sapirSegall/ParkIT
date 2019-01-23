@@ -87,3 +87,14 @@ async function getDrivers() {
     });
     return drivers;
 }
+
+
+function createRequest(employeeNum, newRequest) {
+    database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
+        requestTime: newRequest.requestTime,
+        parkingSlotNumber: newRequest.parkingSlotNumber,
+    }).catch(function (error) {
+        console.log('Error writing new message to Realtime Database:', error);
+    });
+    console.log(`add the new request to the db ${newRequest}`);
+}
