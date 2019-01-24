@@ -164,6 +164,7 @@
                                             minute: "numeric"
                                         }),
                                         parkingSlotNumber: activeDriver.parkingNumber,
+                                        priority: '1'
                                     };
                                     createRequest(activeUser.user, newRequest);
                                     modal.style.display = "block";
@@ -264,7 +265,7 @@
                             <button type="button" id="doneBtn" class="btn btn-primary" onclick="saveWrap()">Done</button>
                             <script type="text/javascript">
                                 function saveWrap() {
-                                    saveParkingNumber(activeUser.user, activeDriver.parkingNumber);
+                                    updateDriver(activeUser.user, activeDriver);
                                     ShowPage(0);
                                 }
                             </script>
