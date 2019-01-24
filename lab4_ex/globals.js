@@ -15,6 +15,7 @@ var request = {
     requestNumber: '',
     requestTime: '',
     parkingSlotNumber: '',
+    priority:''
 }
 function ShowPage(n) {
     $(".page").hide();
