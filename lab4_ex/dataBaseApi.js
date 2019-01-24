@@ -10,6 +10,7 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
+
 function createDriver(employeeNum, newDriver) {
     database.ref('/Drivers/' + employeeNum).set(newDriver);
     console.log(`add the new driver to the db ${newDriver}`);
@@ -31,6 +32,8 @@ function deleteDriver(employeeNum) {
 function updateDriver(employeeNum, newDriver) {
     createDriver(employeeNum, newDriver);
 }
+
+
 async function getPassword(employeeNum) {
     var password;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
@@ -88,13 +91,11 @@ async function getDrivers() {
     return drivers;
 }
 
-
-function createRequest(employeeNum, newRequest) {
-    database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
-        requestTime: newRequest.requestTime,
-        parkingSlotNumber: newRequest.parkingSlotNumber,
-    }).catch(function (error) {
-        console.log('Error writing new message to Realtime Database:', error);
+async function search(){
+    database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function (data) {
+            console.log(data.key);
+        });
     });
-    console.log(`add the new request to the db ${newRequest}`);
 }
