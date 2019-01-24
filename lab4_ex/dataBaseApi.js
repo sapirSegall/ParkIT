@@ -55,7 +55,7 @@ async function getEmail(employeeNum) {
 function createUser(employeeNum, newUser) {
     firebase.database().ref('/Users/' + employeeNum).set({
         employeeNum: newUser.employeeNum,
-        password: newUser.password,
+        password: newUser.password
     }).catch(function (error) {
         console.log('Error writing new message to Realtime Database:', error);
     });
@@ -65,10 +65,11 @@ function createRequest(employeeNum, newRequest) {
     database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
         requestTime: newRequest.requestTime,
         parkingSlotNumber: newRequest.parkingSlotNumber,
+        priority: newRequest.priority
     }).catch(function (error) {
         console.log('Error writing new message to Realtime Database:', error);
     });
-    console.log(`add the new request to the db ${newRequest}`);
+    console.log(`add the new request to the db ${JSON.stringify(newRequest)}`);
 }
 async function getRequestsByDriver(employeeNum) {
     var requests = [];
@@ -77,24 +78,11 @@ async function getRequestsByDriver(employeeNum) {
     });
     return requests;
 }
-function saveParkingNumber(EmployeeNum, ParkingNumber) {
-    updateDriver(activeUser.user, activeDriver);
-}
+
 async function getDrivers() {
     var drivers;
     await database.ref('/Drivers/').once('value').then(function (snapshot) {
         drivers = snapshot.val();
     });
     return drivers;
-}
-
-
-function createRequest(employeeNum, newRequest) {
-    database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
-        requestTime: newRequest.requestTime,
-        parkingSlotNumber: newRequest.parkingSlotNumber,
-    }).catch(function (error) {
-        console.log('Error writing new message to Realtime Database:', error);
-    });
-    console.log(`add the new request to the db ${newRequest}`);
 }
