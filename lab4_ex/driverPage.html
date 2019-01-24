@@ -32,12 +32,6 @@
         JsBarcode("#barcode", barcode_);
         ShowPage(0);
     </script>
-    <script>
-        //will be replaced be calling to the algorithm
-        //async function getParkingNumber() {
-         //   return 69;
-        //}
-    </script>
 
     <div id="user" >
         <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
@@ -125,9 +119,22 @@
                         <h2><label>Scan the Bar-Code</label></h2>
                         <svg id="barcode"></svg>
                         <br />
-                        <button type="button" class="btn btn-primary btn-lg" onclick="ShowPage(4)" style="border: none; padding: 12px 16px; cursor: pointer;">
+                        <button type="button" class="btn btn-primary btn-lg" onclick="isInParking()" style="border: none; padding: 12px 16px; cursor: pointer;">
                             Scan
                         </button>
+                        <script>
+                            async function isInParking(){
+                                var parkingNumber = await getParkingNumber(activeUser.user);
+                                if (!parkingNumber){
+                                    ShowPage(4);
+                                } else {
+                                    // pop up goodbye
+                                    // create request with priority 3
+                                    // inset null to driver parking number
+                                    ShowPage(6);
+                                }
+                            }
+                        </script>
                     </div>
                 </fieldset>
             </form>
@@ -273,6 +280,16 @@
                     </div>
                 </fieldset>
             </form>
+        </div>
+        
+        <!--page Goodbye n=6 -->
+        <div class="page" data-ttl="GoodBye">
+            <p style="font-size:100px">
+                <br>
+            </p>
+            <p style="color:#56CC9D; font-size:180px; text-align: center" class="oblique">
+                GoodBye
+            </p>
         </div>
     </div>
 </body>

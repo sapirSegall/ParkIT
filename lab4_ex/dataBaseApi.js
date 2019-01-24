@@ -79,6 +79,17 @@ async function getRequestsByDriver(employeeNum) {
     });
     return requests;
 }
+function saveParkingNumber(EmployeeNum, ParkingNumber) {
+    updateDriver(activeUser.user, activeDriver);
+}
+
+async function getParkingNumber(employeeNum){
+    var parkingNumber;
+    await database.ref(`/Drivers/${employeeNum}`).once('value').then(function (snapshot) {
+        parkingNumber = snapshot.val().parkingNumber;
+    });
+    return parkingNumber;
+}
 
 async function getDrivers() {
     var drivers;
