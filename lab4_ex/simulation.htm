@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html>
 <head>
     <title>Parking Simulator</title>
@@ -63,7 +63,7 @@
                 mainarr.push(obj);
             }
         }
-        var b = 3; //just for debugg
+        
 
 
         //structure of the parking lot
@@ -137,6 +137,7 @@
         var flagUserReq = 0; //flag==1 if there is user request
         var i = 0;
         var exitTime;
+        var outputExitT=[];
         function Fill() {
             var flagEndParking = 0; //flag==1 when the algoritem find parking slot
 
@@ -185,11 +186,13 @@
                                                     && (Config.IsParking[n][1] == mainarr[k * 10 + p].ParkingSlotNum[1])) {
                                                     mainarr[k * 10 + p].exitT = exitTime;
                                                     $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isParking");
+                                                    outputExitT.push(k);
+                                                    outputExitT.push(p);
                                                     counter++;
-                                                    mainarr[k * 10 + p].userID = 40; //îäñøáø
+                                                    mainarr[k * 10 + p].userID = 40; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                                                     if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                     flagEndParking = 1;
-                                                    if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//àåìé ìà öøéê
+                                                    if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                                                         flagBlocking1 = 1;
                                                     }
                                                     var res = isParkingSlotsFull();
@@ -305,7 +308,7 @@
                                                 mainarr[k * 10 + p].exitT = exitTime;
                                                 $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isParking");
                                                 counter++;
-                                                mainarr[k * 10 + p].userID = 40; //îäñøáø
+                                                mainarr[k * 10 + p].userID = 40; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                                                 if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                 flagEndParking = 1;
                                                 break; //break for of n
@@ -389,7 +392,7 @@
                                                 mainarr[k * 10 + p].exitT = exitTime;
                                                 $("#parking").find("tr").eq(k).find("td").eq(p).addClass("isParking");
                                                 counter++;
-                                                mainarr[k * 10 + p].userID = 40; //îäñøáø
+                                                mainarr[k * 10 + p].userID = 40; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                                                 if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                 flagEndParking = 1;
                                                 break;
@@ -472,14 +475,14 @@
 
 
         //func_scheduleUserRequest(14, 23);//check
-        //îâéò îäñøáø ëùðäâ îùðä ùòú éöéàä //ìäîùéê àú äôåð÷öéä òí ôåð÷öéåú îäñøáø
-        //àí ééùìç îñôø îùúîù áî÷åí îñôø çðéä ùìå- àæ ìùðåú àú äôåð÷öéä
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½- ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         function func_scheduleUserRequest(parkingSlotNum, newExitTime) {//implementation of schedule user request.
             var tempParkingSNum = parkingSlotNum;
             if (tempParkingSNum > (Config.x * Config.y)) return false; //if tempParkingSNum is not exist?
             var tempRowNum = Math.floor(tempParkingSNum / 10);
             var tempColNum = tempParkingSNum % 10;
-            if ((mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT) < i) return false; //if the user send exit time that earlier then this hour// ìáãå÷ àí ìùðåú ìôåð÷öééú ùòä
+            if ((mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT) < i) return false; //if the user send exit time that earlier then this hour// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT = newExitTime;
         }
 
@@ -504,7 +507,7 @@
                             {
                                 if (mainarr[k * 10 + p].exitT < mainarr[blockingRow * 10 + p].exitT)//check if exit time of this car< exit time of the blocked car
                                 {
-                                    //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //ìîîù ôåð÷öéä
+                                    //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                                     countMoves++;
                                     //window.alert(k, p); //just for debugging
                                 }
@@ -528,7 +531,7 @@
                         else if (k == 4) blockingRow = 3;
                         else if (k == 5) blockingRow = 6;
                         else if (k == 9) blockingRow = 8;
-                        //when the row is not 'isParking' row: ìà àîåø ìäâéò ìôä
+                        //when the row is not 'isParking' row: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                         else blockingRow = null;
 
                         //change parking slot of the blocking car
@@ -622,7 +625,7 @@
                                 flagSystemReq = 1;
                                 countMoves++;
                                 //systemRequest(k,p, kEmpty, pEmpty)// for debugging
-                                //sendSystemReqToDB(mainarr[k * 10 + p].userID, kEmpty,pEmpty ); //ìîîù
+                                //sendSystemReqToDB(mainarr[k * 10 + p].userID, kEmpty,pEmpty ); //ï¿½ï¿½ï¿½ï¿½
                             }
                     }
                     if (flagSystemReq == 1) break;
