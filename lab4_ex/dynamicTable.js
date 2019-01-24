@@ -1,5 +1,6 @@
 var drivers = {};
 var driverFromDB = {};
+
 function deleteDriverRow(obj) {
     var row = obj.parentNode.parentNode;
     var employeeNumber = row.getElementsByTagName("td")[2].innerText;
@@ -13,7 +14,7 @@ function deleteRow(obj) {
 }
 
 function addNewDriver() {
-    function addNewDriver() {
+        debugger;
         document.getElementById('employeeNumber').value = '';
         document.getElementById('firstName').value = '';
         document.getElementById('lastName').value = '';
@@ -25,7 +26,7 @@ function addNewDriver() {
         document.getElementById('carColor').value = '';
         document.getElementById('carCode').value = '';
         ShowPage(1);
-    }
+    
 }
 
 async function editDriverDetails(obj) {
