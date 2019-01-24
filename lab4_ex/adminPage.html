@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Admin</title>
-    <script> ShowPage(0); </script>
+    <script>ShowPage(0);</script>
 </head>
 <body>
     <!--logo-->
@@ -28,8 +28,8 @@
             <table id="driversTable">
                 <tbody id="driversTableBody"></tbody>
             </table>
-            <script> 
-                async function addDriversTable(){
+            <script>
+                async function addDriversTable() {
                     drivers = await getDrivers();
                     console.log("here");
                     addTable();
@@ -58,113 +58,106 @@
             </script>
         </div>
 
-         <!--add new driver-->
-         <div class="page" id="Create New Driver">
-                <form>
-                        <p>
-                            <label for="employeeNumber">Employee Number:</label>
-                            <input name="employeeNumber" id="employeeNumber" type="text">
-                        </p>
-        
-                        <p>
-                            <label for="firstName">First Name:</label>
-                            <input name="firstName" id="firstName" type="text">
-                        </p>
-        
-                        <p>
-                            <label for="lastName">Last Name:</label>
-                            <input name="lastName" id="lastName" type="text">
-                        </p>
-        
-                        <p>
-                            <label for="email">Email:</label>
-                            <input name="email" id="email" type="email">
-                        </p>
-        
-                        <p>
-                            <label for="phoneNumber">Phone Number:</label>
-                            <input name="phone" id="phoneNumber" type="tel">
-                        </p>
-        
-                        <p>
-                            <label for="carNumber">Car Number:</label>
-                            <input name="carNumber" id="carNumber" type="number">
-                        </p>
-        
-                        <p>
-                            <label for="carType">Car type:</label>
-                            <select name="carType" id="carType">
-                                <option>Company Car</option>
-                                <option>Private Car</option>
-                            </select>
-                        </p>
-        
-        
-                        <p>
-                            <label for="carSeries">Car Series:</label>
-                            <select name="carSeries" id="carSeries">
-                                <option>Honda</option>
-                                <option>Hundai</option>
-                                <option>Mazda</option>
-                            </select>
-                        </p>
-        
-                        <p>
-                            <label for="carColor">Car Color:</label>
-                            <select name="carColor" id="carColor">
-                                <option>Grey</option>
-                                <option>Blue</option>
-                                <option>Red</option>
-                            </select>
-                        </p>
-        
-                        <p>
-                            <label for="carCode">Car Code:</label>
-                            <input name="carCode" id="carCode" type="text">
-                        </p>
-        
-                        <button type="button" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
-                        <script type="text/javascript">
-                            async function setDriverData() {
-                                var employeeNumber = document.getElementById('employeeNumber').value;
-                                var firstName = document.getElementById('firstName').value;
-                                var lastName = document.getElementById('lastName').value;
-                                var email = document.getElementById('email').value;
-                                var phoneNumber = document.getElementById('phoneNumber').value;
-                                var carNumber = document.getElementById('carNumber').value;
-                                var carType = document.getElementById('carType').value;
-                                var carSeries = document.getElementById('carSeries').value;
-                                var carColor = document.getElementById('carColor').value;
-                                var carCode = document.getElementById('carCode').value;
-                                var barcode = Math.floor(Math.random() * 90000000) + 10000000;
-                                var driver = {
-                                    firstName: firstName,
-                                    lastName: lastName,
-                                    email: email,
-                                    exitTime: '',
-                                    phoneNumber: phoneNumber,
-                                    carNumber: carNumber,
-                                    carType: carType,
-                                    carSeries: carSeries,
-                                    carColor: carColor,
-                                    carCode: carCode,
-                                    barcode: barcode,
-                                    parkingNumber: ' '
-                                };
-                                createDriver(employeeNumber, driver);
-                                addDriversTable();
-                                ShowPage(0);
-                            }
-                        </script>
-                        <button type="button" id="cancelCreateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>
-                        <script>
-                            function cancel(){
-                                ShowPage(0);
-                            }
-                        </script>
-                </form>
+        <!--add new driver-->
+        <div class="page" id="Create New Driver">
+            <form>
+                <p>
+                    <label for="firstNameUpdate">First Name:</label>
+                    <input name="firstNameU" id="firstNameUpdate" type="text">
+                </p>
+
+                <p>
+                    <label for="lastNameUpdate">Last Name:</label>
+                    <input name="lastNameU" id="lastNameUpdate" type="text">
+                </p>
+
+                <p>
+                    <label for="emailUpdate">Email:</label>
+                    <input name="emailU" id="emailUpdate" type="email">
+                </p>
+
+                <p>
+                    <label for="phoneNumberUpdate">Phone Number:</label>
+                    <input name="phone" id="phoneNumberUpdate" type="tel">
+                </p>
+
+                <p>
+                    <label for="carNumberUpdate">Car Number:</label>
+                    <input name="carNumberU" id="carNumberUpdate" type="number">
+                </p>
+
+                <p>
+                    <label for="carTypeUpdate">Car type:</label>
+                    <select name="carTypeU" id="carTypeUpdate">
+                        <option>Company Car</option>
+                        <option>Private Car</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="carSeriesUpdate">Car Series:</label>
+                    <select name="carSeriesU" id="carSeriesUpdate">
+                        <option>Honda</option>
+                        <option>Hundai</option>
+                        <option>Mazda</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="carColorUpdate">Car Color:</label>
+                    <select name="carColorU" id="carColorUpdate">
+                        <option>Grey</option>
+                        <option>Blue</option>
+                        <option>Red</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="carCodeUpdate">Car Code:</label>
+                    <input name="carCodeU" id="carCodeUpdate" type="text">
+                </p>
+
+                <button type="button" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
+                <script type="text/javascript">
+                    async function setDriverData() {
+                        var employeeNumber = document.getElementById('employeeNumber').value;
+                        var firstName = document.getElementById('firstName').value;
+                        var lastName = document.getElementById('lastName').value;
+                        var email = document.getElementById('email').value;
+                        var phoneNumber = document.getElementById('phoneNumber').value;
+                        var carNumber = document.getElementById('carNumber').value;
+                        var carType = document.getElementById('carType').value;
+                        var carSeries = document.getElementById('carSeries').value;
+                        var carColor = document.getElementById('carColorUpdate').value;
+                        var carCode = document.getElementById('carCodeUpdate').value;
+                        var driver = {
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            exitTime: '',
+                            phoneNumber: phoneNumber,
+                            carNumber: carNumber,
+                            carType: carType,
+                            carSeries: carSeries,
+                            carColor: carColor,
+                            carCode: carCode,
+                            barcode: barcode,
+                            parkingNumber: ' '
+                        };
+                        createDriver(employeeNumber, driver);
+                        addDriversTable();
+                        ShowPage(0);
+                    }
+                </script>
+                <button type="button" id="cancelCreateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>
+                <script>
+                    function cancel() {
+                        ShowPage(0);
+                    }
+                </script>
+            </form>
         </div>
-    
+
         <!--Update driver-->
         <div class="page" id="Update Driver">
             <form>
@@ -254,12 +247,12 @@
                         ShowPage(0);
                     }
                 </script>
-                 <button type="button" id="cancelUpdateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>
-                 <script>
-                     function cancel(){
-                         ShowPage(0);
-                     }
-                 </script>
+                <button type="button" id="cancelUpdateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>
+                <script>
+                    function cancel() {
+                        ShowPage(0);
+                    }
+                </script>
             </form>
         </div>
     </div>

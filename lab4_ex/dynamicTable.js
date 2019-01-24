@@ -1,6 +1,6 @@
 var drivers = {};
 var driverFromDB = {};
-function deleteDriverRow(obj){
+function deleteDriverRow(obj) {
     var row = obj.parentNode.parentNode;
     var employeeNumber = row.getElementsByTagName("td")[2].innerText;
     deleteRow(obj);
@@ -12,21 +12,11 @@ function deleteRow(obj) {
     table.deleteRow(index);
 }
 
-function addNewDriver(){
-    document.getElementById('employeeNumber').value = '';
-    document.getElementById('firstName').value = '';
-    document.getElementById('lastName').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('phoneNumber').value = '';
-    document.getElementById('carNumber').value = '';
-    document.getElementById('carType').value = '';
-    document.getElementById('carSeries').value = '';
-    document.getElementById('carColor').value = '';
-    document.getElementById('carCode').value = '';
+function addNewDriver() {
     ShowPage(1);
 }
 
-async function editDriverDetails(obj){
+async function editDriverDetails(obj) {
     var row = obj.parentNode.parentNode;
     var employeeNumber = row.getElementsByTagName("td")[2].innerText;
     driverFromDB = await getDriver(employeeNumber);
@@ -80,7 +70,6 @@ function addTable() {
                 break;
             default:
         }
-        
         tr.appendChild(td);
     }
 
@@ -111,7 +100,6 @@ function addTable() {
             } else if (j == 1) {
                 td.width = '20';
                 td.innerHTML = '<input type="image" onClick="Javacsript:editDriverDetails(this)" src="edit.png">';
-    
             } else {
                 td.width = '200';
                 td.appendChild(document.createTextNode(text));

@@ -11,8 +11,8 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 function createDriver(employeeNum, newDriver) {
-    console.log(`add the new driver to the db ${employeeNum}: ${JSON.stringify(newDriver)}`);
     database.ref('/Drivers/' + employeeNum).set(newDriver);
+    console.log(`add the new driver to the db ${newDriver}`);
 }
 async function getDriver(employeeNum) {
     var driver;
@@ -27,7 +27,7 @@ function deleteDriver(employeeNum) {
     });
     database.ref('/Requests/').child(employeeNum).remove();
     database.ref('/Users/').child(employeeNum).remove();
- }
+}
 function updateDriver(employeeNum, newDriver) {
     console.log(`add the new driver to the db ${JSON.stringify(newDriver)}`);
     createDriver(employeeNum, newDriver);
@@ -78,8 +78,7 @@ async function getRequestsByDriver(employeeNum) {
     });
     return requests;
 }
-async function saveParkingNumber(employeeNum, parkingNumber) {
-    activeDriver.parkingNumber = parkingNumber;
+function saveParkingNumber(EmployeeNum, ParkingNumber) {
     updateDriver(activeUser.user, activeDriver);
 }
 async function getDrivers() {
