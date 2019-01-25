@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>           
 <html>
 <head>
     <title></title>
@@ -22,6 +22,7 @@
     <script src="JsBarcode.all.min.js"></script>
     <link href="inc/bootstrap.min.css" rel="stylesheet" />
     <link href="inc/app.css" rel="stylesheet" />
+<<<<<<< HEAD
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>	
@@ -49,6 +50,10 @@
         }
     </style>
      <script src="algo.js"></script>
+=======
+
+     <script src="algoDB.js"></script>
+>>>>>>> 1bb2c0f997f6665cf956c1d988bdfb7452f236ea
     <!--<link href="inc/bootstrapAlex.css" rel="stylesheet" />-->
     <!--<link href="inc/bootstrap.css" rel="stylesheet" />-->
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
@@ -57,6 +62,7 @@
         body {
             background-image: url("img/background.jpg");
         }
+<<<<<<< HEAD
 
         table#driversTable tr:first-child {
             background: #56CC9D;
@@ -75,6 +81,8 @@
         th,td{
             text-align:center;
         }
+=======
+>>>>>>> 1bb2c0f997f6665cf956c1d988bdfb7452f236ea
     </style>
     <script>
         $(function () {
@@ -82,6 +90,7 @@
             ResetUser();
             ShowPage(0);
         });
+
         function ResetUser() {
             activeUser = {
                 mail: "",
@@ -90,6 +99,7 @@
             };
             $("input").val("");
         }
+
         function Register() {
             activeUser = {
                 type: "driver",
@@ -98,6 +108,7 @@
             createUser($("#inpEmployeeNum").val(), activeUser);
             ShowPage(2);
         }
+
         async function Login() {
             var u = {
                 user: $("#inpUser1").val(),
@@ -111,13 +122,16 @@
                     u.type = await getUserType(u.user);
                     u.mail = await getEmail(u.user);
                     activeUser = u;
+
                     if (u.type == "driver") {
                         activeDriver = await getDriver(activeUser.user);
                         $("#container").load("driverPage.html");
+
                     } else if (u.type == "admin") {
                         $("#container").load("adminPage.html");
                     } else if (u.type == "valet") {
                         $("#container").load("valetPage.html");
+
                     } else {
                         ShowPage(1);
                         window.alert("wrong password!");
@@ -129,7 +143,7 @@
 </head>
 
 <body>
-    <div id="container" class="container">
+    <div id ="container" class="container">
         <!--logo:-->
         <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
          position: absolute; bottom: 0px; right: 30px;">
@@ -187,7 +201,7 @@
 
             <!--buttons of one page appw'-->
             <div>
-                <!-- <a id="aReg" href="#" onclick="ShowPage(0)">Registration form</a><br />-->
+               <!-- <a id="aReg" href="#" onclick="ShowPage(0)">Registration form</a><br />-->
                 <!--<a id="aLogin" href="#" onclick="ShowPage(1)">Sign in</a><br />-->
                 <a id="aLogout" href="#" onclick="ShowPage(1); ResetUser();">Logout</a><br />
 

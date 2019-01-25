@@ -10,6 +10,7 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
+
 function createDriver(employeeNum, newDriver) {
     database.ref('/Drivers/' + employeeNum).set(newDriver);
     console.log(`add the new driver to the db ${JSON.stringify(newDriver)}`);
@@ -35,6 +36,8 @@ function updateDriver(employeeNum, newDriver) {
     console.log(`add the new driver to the db ${JSON.stringify(newDriver)}`);
     createDriver(employeeNum, newDriver);
 }
+
+
 async function getPassword(employeeNum) {
     var password;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
@@ -100,6 +103,7 @@ async function getDrivers() {
     return drivers;
 }
 
+<<<<<<< HEAD
 async function getRequests() {
     var requests;
     await database.ref('/Requests/').once('value').then(function (snapshot) {
@@ -113,3 +117,22 @@ function deleteRequest(employeeNum, requestNumber) {
         console.log('Error remove request from DB:', error);
     });
 }
+=======
+async function search(){
+    database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function (data) {
+            console.log(data.key);
+        });
+    });
+}
+
+async function getParkingSlot(employeeNum) {
+    var password;
+    await database.ref('/Lot/' + employeeNum).once('value').then(function (snapshot) {
+        password = snapshot.val().userID;
+    });
+    return password;
+}
+
+>>>>>>> 1bb2c0f997f6665cf956c1d988bdfb7452f236ea

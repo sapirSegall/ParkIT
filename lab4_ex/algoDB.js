@@ -1,5 +1,5 @@
 ﻿
-   
+
 //create the array of objects:
 var mainarr = [];
 for (var i = 0; i < 10; i++) {
@@ -87,7 +87,7 @@ var flagBlocking2; // flag==1 when the cars start blocking in check2 phase
 var flagUserReq = 0; //flag==1 if there is user request
 var i = 0;
 var exitTime;
-var outputExitT=[];
+var outputExitT = [];
 
 
 function Fill() {
@@ -130,6 +130,12 @@ function Fill() {
                     else {
                         for (k = 0; k < Config.x; k++) {
                             for (p = 0; p < Config.y; p++) {
+                                var u = {
+                                    user: '',
+                                    pass: ''
+                                }
+                                u.user = getParkingSlot(k * Config.x + p);
+                                //if (dbParkingSlot.userID == -1) { var z; z++;}
                                 if (mainarr[k * 10 + p].userID == null) {
 
                                     for (var n = 0; n < Config.IsParking.length; n++) {
@@ -614,26 +620,25 @@ function Clear() {
             $(o).removeClass("isParking");
         });
 }
-    
 
 
-    
-        //clock
-        function startTime() {
-            var today = new Date();
-        //var h = today.getHours();
-        var h = i;
-        //var m = today.getMinutes();
-        var m = 00;
-        var s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        document.getElementById('txt').innerHTML =
-            h + ":" + m + ":" + s;
-        var t = setTimeout(startTime, 500);
-    }
-        function checkTime(i) {
-            if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-        return i;
-    }
-    
+
+
+//clock
+function startTime() {
+    var today = new Date();
+    //var h = today.getHours();
+    var h = i;
+    //var m = today.getMinutes();
+    var m = 00;
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('txt').innerHTML =
+        h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+    return i;
+}
