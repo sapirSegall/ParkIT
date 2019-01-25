@@ -63,7 +63,7 @@ async function getRequestNumber_() {
 
 async function getRequestNumber() {
     var random = Math.floor(Math.random() * 900000) + 100000;
-    var requests = await getReques();
+    var requests = await getRequests();
     if (!requests) {
         return random;
     }
