@@ -103,7 +103,6 @@ async function getDrivers() {
     return drivers;
 }
 
-<<<<<<< HEAD
 async function getRequests() {
     var requests;
     await database.ref('/Requests/').once('value').then(function (snapshot) {
@@ -117,7 +116,6 @@ function deleteRequest(employeeNum, requestNumber) {
         console.log('Error remove request from DB:', error);
     });
 }
-=======
 async function search(){
     database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
         console.log(snapshot.val());
@@ -135,4 +133,3 @@ async function getParkingSlot(employeeNum) {
     return password;
 }
 
->>>>>>> 1bb2c0f997f6665cf956c1d988bdfb7452f236ea
