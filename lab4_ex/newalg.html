@@ -3,7 +3,12 @@
 <head>
     
     <script type="text/javascript" src="dataBaseApi.js"></script>
-    
+    <script>
+        function func()
+        {
+            var res = await getParkingSlot(0);
+        }
+    </script>
 
 
 </head>
@@ -13,7 +18,7 @@
     <div style="width: 500px; margin: 20px auto">
         <table class="table table-condensed table-bordered" id="parking"></table>
         <div style="text-align: center">
-            <button type="button" class="btn btn-primary" onclick="search()">Fill</button>
+            <button type="button" class="btn btn-primary" onclick="func()">Fill</button>
             <button type="button" class="btn btn-warning" onclick="Clear()">Clear</button>
         </div>
     </div>
