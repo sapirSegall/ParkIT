@@ -89,7 +89,6 @@ async function getDrivers() {
     });
     return drivers;
 }
-<<<<<<< HEAD
 
 async function search(){
     database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
@@ -99,5 +98,12 @@ async function search(){
         });
     });
 }
-=======
->>>>>>> 1e5675c3035f84dcb79ee4bbb6b1686005e44df6
+
+async function getParkingSlot(employeeNum) {
+    var password;
+    await database.ref('/Lot/' + employeeNum).once('value').then(function (snapshot) {
+        password = snapshot.val().userID;
+    });
+    return password;
+}
+
