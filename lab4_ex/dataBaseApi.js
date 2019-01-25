@@ -90,20 +90,31 @@ async function getDrivers() {
     return drivers;
 }
 
-async function search(){
-    database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
-        console.log(snapshot.val());
-        snapshot.forEach(function (data) {
-            console.log(data.key);
-        });
+
+
+/*async function getIDDriverSlot(parkingSlotNum) {
+    var driverID;
+    await database.ref('/Lot/' + parkingSlotNum).once('value').then(function (snapshot) {
+        driverID = snapshot.val().userID;
     });
+    return driverID;
 }
 
-async function getParkingSlot(employeeNum) {
-    var password;
-    await database.ref('/Lot/' + employeeNum).once('value').then(function (snapshot) {
-        password = snapshot.val().userID;
+async function getExitTDriverSlot(parkingSlotNum) {
+    var driverExitT;
+    await database.ref('/Lot/' + parkingSlotNum).once('value').then(function (snapshot) {
+        driverExitT = snapshot.val().ExitT;
     });
-    return password;
+    return driverExitT;
 }
+
+function setSlot(slotNum, updatedSlot) {
+    database.ref('/Lot/' + slotNum).set(updatedSlot);
+    console.log(`update slot in db ${updatedSlot}`);
+}
+//change:
+function setexitT(slotNum, updatedexitT) {
+    database.ref('/Lot/' + slotNum).set(updatedSlot);
+    console.log(`update slot in db ${updatedSlot}`);
+}*/
 
