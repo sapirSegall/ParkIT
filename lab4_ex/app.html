@@ -3,7 +3,11 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
-    <script src="dynamicTable.js"></script>
+    <script src="driversDynamicTable.js"></script>
+    <script src="valetDriversDynamicTable.js"></script>
+    <script src="requestsDynamicTable.js"></script>
+    <script src="valetFunctions.js"></script>
+    <script src="algorithmAPI.js"></script>
     <script type="text/javascript" src="globals.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
     <script type="text/javascript" src="dataBaseApi.js"></script>
@@ -18,7 +22,32 @@
     <script src="JsBarcode.all.min.js"></script>
     <link href="inc/bootstrap.min.css" rel="stylesheet" />
     <link href="inc/app.css" rel="stylesheet" />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>	
+	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<style>
+        table#requestsTable {
+            border-collapse: collapse;   
+        }
+        #requestsTable tr {
+            background-color: #eee;
+            border-top: 1px solid #fff;
+            color: black;
+        }
+        #requestsTable tr:hover {
+            background-color: #ccc;
+        }
+        #requestsTable th {
+            background-color: #fff;
+        }
+        #requestsTable th, #requestsTable td {
+            padding: 3px 5px;
+        }
+        #requestsTable td:hover {
+            cursor: pointer;
+        }
+    </style>
      <script src="algo.js"></script>
     <!--<link href="inc/bootstrapAlex.css" rel="stylesheet" />-->
     <!--<link href="inc/bootstrap.css" rel="stylesheet" />-->
@@ -30,6 +59,12 @@
         }
 
         table#driversTable tr:first-child {
+            background: #56CC9D;
+        }
+        table#requestsTable tr:first-child {
+            background: #56CC9D;
+        }
+        table#valetDriversTable tr:first-child {
             background: #56CC9D;
         }
 

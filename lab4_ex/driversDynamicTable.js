@@ -7,6 +7,7 @@ function deleteDriverRow(obj) {
     deleteRow(obj);
     deleteDriver(employeeNumber);
 }
+
 function deleteRow(obj) {
     var index = obj.parentNode.parentNode.rowIndex;
     var table = document.getElementById("driversTable");
@@ -14,8 +15,6 @@ function deleteRow(obj) {
 }
 
 function addNewDriver() {
-        debugger;
-        document.getElementById('employeeNumber').value = '';
         document.getElementById('firstName').value = '';
         document.getElementById('lastName').value = '';
         document.getElementById('email').value = '';
@@ -34,6 +33,7 @@ async function editDriverDetails(obj) {
     var employeeNumber = row.getElementsByTagName("td")[2].innerText;
     driverFromDB = await getDriver(employeeNumber);
     driverFromDB.employeeNumber = employeeNumber;
+    console.log(`driverfromDB: ${JSON.stringify(driverFromDB)}`);
     document.getElementById('firstNameUpdate').value = driverFromDB.firstName;
     document.getElementById('lastNameUpdate').value = driverFromDB.lastName;
     document.getElementById('emailUpdate').value = driverFromDB.email;
@@ -46,7 +46,7 @@ async function editDriverDetails(obj) {
     ShowPage(2);
 }
 
-function addTable() {
+function addDriversTable() {
     var table = document.getElementById("driversTable");
     table.border = '1';
     var tableBody = document.getElementById("driversTableBody");

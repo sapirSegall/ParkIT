@@ -25,22 +25,22 @@
     </nav>
     <div id="admin">
         <!--myDynamicTable-->
-        <div class="page" id="myDynamicTable" style="overflow: auto; height: 200px">
+        <div class="page" id="myDynamicTable" style="overflow: auto; height: 300px">
             <div>
-                <p>
-                    <br />
+                <p style="font-size:10px">
+                        <br>
                 </p>
             </div>
             <table id="driversTable">
                 <tbody id="driversTableBody"></tbody>
             </table>
             <script>
-                async function addDriversTable() {
+                async function addDriversTableWrap() {
                     drivers = await getDrivers();
                     console.log("here");
-                    addTable();
+                    addDriversTable();
                 }
-                addDriversTable();
+                addDriversTableWrap();
             </script>
             <script>
                 function myFunction() {
@@ -68,41 +68,47 @@
         <div class="page" id="Create New Driver">
             <form>
                 <p>
-                    <label for="firstNameUpdate">First Name:</label>
-                    <input name="firstNameU" id="firstNameUpdate" type="text">
+                    <label for="employeeNumber">Employee Number:</label>
+                    <input name="employeeNumber" id="employeeNumber" type="text">
                 </p>
 
                 <p>
-                    <label for="lastNameUpdate">Last Name:</label>
-                    <input name="lastNameU" id="lastNameUpdate" type="text">
+                    <label for="firstName">First Name:</label>
+                    <input name="firstName" id="firstName" type="text">
                 </p>
 
                 <p>
-                    <label for="emailUpdate">Email:</label>
-                    <input name="emailU" id="emailUpdate" type="email">
+                    <label for="lastName">Last Name:</label>
+                    <input name="lastName" id="lastName" type="text">
                 </p>
 
                 <p>
-                    <label for="phoneNumberUpdate">Phone Number:</label>
-                    <input name="phone" id="phoneNumberUpdate" type="tel">
+                    <label for="email">Email:</label>
+                    <input name="email" id="email" type="email">
                 </p>
 
                 <p>
-                    <label for="carNumberUpdate">Car Number:</label>
-                    <input name="carNumberU" id="carNumberUpdate" type="number">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input name="phone" id="phoneNumber" type="tel">
                 </p>
 
                 <p>
-                    <label for="carTypeUpdate">Car type:</label>
-                    <select name="carTypeU" id="carTypeUpdate">
+                    <label for="carNumber">Car Number:</label>
+                    <input name="carNumber" id="carNumber" type="number">
+                </p>
+
+                <p>
+                    <label for="carType">Car type:</label>
+                    <select name="carType" id="carType">
                         <option>Company Car</option>
                         <option>Private Car</option>
                     </select>
                 </p>
 
+
                 <p>
-                    <label for="carSeriesUpdate">Car Series:</label>
-                    <select name="carSeriesU" id="carSeriesUpdate">
+                    <label for="carSeries">Car Series:</label>
+                    <select name="carSeries" id="carSeries">
                         <option>Honda</option>
                         <option>Hundai</option>
                         <option>Mazda</option>
@@ -110,8 +116,8 @@
                 </p>
 
                 <p>
-                    <label for="carColorUpdate">Car Color:</label>
-                    <select name="carColorU" id="carColorUpdate">
+                    <label for="carColor">Car Color:</label>
+                    <select name="carColor" id="carColor">
                         <option>Grey</option>
                         <option>Blue</option>
                         <option>Red</option>
@@ -119,11 +125,11 @@
                 </p>
 
                 <p>
-                    <label for="carCodeUpdate">Car Code:</label>
-                    <input name="carCodeU" id="carCodeUpdate" type="text">
+                    <label for="carCode">Car Code:</label>
+                    <input name="carCode" id="carCode" type="text">
                 </p>
 
-                <button type="button" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
+                <button type="button" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
                 <script type="text/javascript">
                     async function setDriverData() {
                         var employeeNumber = document.getElementById('employeeNumber').value;
@@ -134,8 +140,9 @@
                         var carNumber = document.getElementById('carNumber').value;
                         var carType = document.getElementById('carType').value;
                         var carSeries = document.getElementById('carSeries').value;
-                        var carColor = document.getElementById('carColorUpdate').value;
-                        var carCode = document.getElementById('carCodeUpdate').value;
+                        var carColor = document.getElementById('carColor').value;
+                        var carCode = document.getElementById('carCode').value;
+                        var barcode = Math.floor(Math.random() * 90000000) + 10000000;
                         var driver = {
                             firstName: firstName,
                             lastName: lastName,
@@ -151,7 +158,7 @@
                             parkingNumber: ' '
                         };
                         createDriver(employeeNumber, driver);
-                        addDriversTable();
+                        addDriversTableWrap();
                         ShowPage(0);
                     }
                 </script>
@@ -249,7 +256,7 @@
                             exitTime: driverFromDB.exitTime
                         };
                         updateDriver(driverFromDB.employeeNumber, driver);
-                        addDriversTable();
+                        addDriversTableWrap();
                         ShowPage(0);
                     }
                 </script>
