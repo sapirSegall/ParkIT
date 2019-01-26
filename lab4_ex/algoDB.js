@@ -125,7 +125,7 @@ function Fill() {
                     }//end isParkingSlotsFull function
                     if (res) flagBlocking1 = 1;
 
-                    if (flagBlocking1 == 1) blockingFunc();
+                    if (flagBlocking1 == 1) blockingFunc1();
 
                     else {
                         for (k = 0; k < Config.x; k++) {
@@ -179,7 +179,7 @@ function Fill() {
                         }
                     }
 
-                    function blockingFunc() {
+                    function blockingFunc1() {
                         flagEndParking = 0;
                         //if (flagBlocking2 != 1) {
                         for (var k2 = 0; k2 < Config.x; k2++) {

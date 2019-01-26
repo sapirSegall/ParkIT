@@ -13,8 +13,9 @@ var database = firebase.database();
 
 function createDriver(employeeNum, newDriver) {
     database.ref('/Drivers/' + employeeNum).set(newDriver);
-    console.log(`add the new driver to the db ${newDriver}`);
+    console.log(`add the new driver to the db ${JSON.stringify(newDriver)}`);
 }
+
 async function getDriver(employeeNum) {
     var driver;
     await database.ref('/Drivers/' + employeeNum).once('value').then(function (snapshot) {
@@ -22,6 +23,7 @@ async function getDriver(employeeNum) {
     });
     return driver;
 }
+
 function deleteDriver(employeeNum) {
     database.ref('/Drivers/').child(employeeNum).remove().catch(function (error) {
         console.log('Error remove driver from DB:', error);
@@ -29,7 +31,9 @@ function deleteDriver(employeeNum) {
     database.ref('/Requests/').child(employeeNum).remove();
     database.ref('/Users/').child(employeeNum).remove();
 }
+
 function updateDriver(employeeNum, newDriver) {
+    console.log(`add the new driver to the db ${JSON.stringify(newDriver)}`);
     createDriver(employeeNum, newDriver);
 }
 
@@ -82,6 +86,15 @@ async function getRequestsByDriver(employeeNum) {
     return requests;
 }
 
+async function getParkingNumber(employeeNum){
+    var parkingNumber;
+    await database.ref(`/Drivers/${employeeNum}`).once('value').then(function (snapshot) {
+        parkingNumber = snapshot.val().parkingNumber;
+    });
+    console.log(`parking number from DB: ${parkingNumber}`);
+    return parkingNumber;
+}
+
 async function getDrivers() {
     var drivers;
     await database.ref('/Drivers/').once('value').then(function (snapshot) {
@@ -92,10 +105,32 @@ async function getDrivers() {
 
 
 
+
 /*async function getIDDriverSlot(parkingSlotNum) {
     var driverID;
     await database.ref('/Lot/' + parkingSlotNum).once('value').then(function (snapshot) {
         driverID = snapshot.val().userID;
+
+async function getRequests() {
+    var requests;
+    await database.ref('/Requests/').once('value').then(function (snapshot) {
+        requests = snapshot.val();
+    });
+    return requests;
+}
+
+function deleteRequest(employeeNum, requestNumber) {
+    database.ref(`/Requests/${employeeNum}`).child(requestNumber).remove().catch(function (error) {
+        console.log('Error remove request from DB:', error);
+    });
+}
+async function search(){
+    database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function (data) {
+            console.log(data.key);
+        });
+
     });
     return driverID;
 }

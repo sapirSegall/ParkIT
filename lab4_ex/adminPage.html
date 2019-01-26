@@ -25,22 +25,22 @@
     </nav>
     <div id="admin">
         <!--myDynamicTable-->
-        <div class="page" id="myDynamicTable" style="overflow: auto; height: 200px">
+        <div class="page" id="myDynamicTable" style="overflow: auto; height: 300px">
             <div>
-                <p>
-                    <br />
+                <p style="font-size:10px">
+                        <br>
                 </p>
             </div>
             <table id="driversTable">
                 <tbody id="driversTableBody"></tbody>
             </table>
             <script>
-                async function addDriversTable() {
+                async function addDriversTableWrap() {
                     drivers = await getDrivers();
                     console.log("here");
-                    addTable();
+                    addDriversTable();
                 }
-                addDriversTable();
+                addDriversTableWrap();
             </script>
             <script>
                 function myFunction() {
@@ -158,7 +158,7 @@
                             parkingNumber: ' '
                         };
                         createDriver(employeeNumber, driver);
-                        addDriversTable();
+                        addDriversTableWrap();
                         ShowPage(0);
                     }
                 </script>
@@ -256,7 +256,7 @@
                             exitTime: driverFromDB.exitTime
                         };
                         updateDriver(driverFromDB.employeeNumber, driver);
-                        addDriversTable();
+                        addDriversTableWrap();
                         ShowPage(0);
                     }
                 </script>
