@@ -130,8 +130,6 @@ function Fill() {
                     else {
                         for (k = 0; k < Config.x; k++) {
                             for (p = 0; p < Config.y; p++) {
-                                
-                                var y= getParkingSlot(k*Config.x+p);
                                 if (mainarr[k * 10 + p].userID == null) {
 
                                     for (var n = 0; n < Config.IsParking.length; n++) {

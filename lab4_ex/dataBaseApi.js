@@ -45,6 +45,7 @@ async function getPassword(employeeNum) {
     });
     return password;
 }
+
 async function getUserType(employeeNum) {
     var type;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
@@ -52,6 +53,7 @@ async function getUserType(employeeNum) {
     });
     return type;
 }
+
 async function getEmail(employeeNum) {
     var email;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
@@ -59,6 +61,7 @@ async function getEmail(employeeNum) {
     });
     return email;
 }
+
 function createUser(employeeNum, newUser) {
     firebase.database().ref('/Users/' + employeeNum).set({
         employeeNum: newUser.employeeNum,
@@ -103,13 +106,13 @@ async function getDrivers() {
     return drivers;
 }
 
-
-
-
-/*async function getIDDriverSlot(parkingSlotNum) {
+async function getIDDriverSlot(parkingSlotNum) {
     var driverID;
     await database.ref('/Lot/' + parkingSlotNum).once('value').then(function (snapshot) {
         driverID = snapshot.val().userID;
+    });
+    return driverID;
+}
 
 async function getRequests() {
     var requests;
@@ -124,16 +127,7 @@ function deleteRequest(employeeNum, requestNumber) {
         console.log('Error remove request from DB:', error);
     });
 }
-async function search(){
-    database.ref.child('Users').orderByChild('type').equalTo('admin').on("value", function (snapshot) {
-        console.log(snapshot.val());
-        snapshot.forEach(function (data) {
-            console.log(data.key);
-        });
 
-    });
-    return driverID;
-}
 
 async function getExitTDriverSlot(parkingSlotNum) {
     var driverExitT;
@@ -151,5 +145,5 @@ function setSlot(slotNum, updatedSlot) {
 function setexitT(slotNum, updatedexitT) {
     database.ref('/Lot/' + slotNum).set(updatedSlot);
     console.log(`update slot in db ${updatedSlot}`);
-}*/
+}
 

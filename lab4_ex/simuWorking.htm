@@ -61,7 +61,7 @@
                 mainarr.push(obj);
             }
         }
-        
+
         //structure of the parking lot
         var Config = {
             x: 10, //number of rows
@@ -81,7 +81,7 @@
         //each var in the array present how much cars intrance in each hour during day
         var arrCars = [70, 1, 1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; //24 hours
         var maxCars = 100;
-     
+
         $(function () {
             // create table
             for (var i = 0; i < Config.x; i++) {
@@ -107,7 +107,7 @@
                             $("#parking").find("tr").eq(i).find("td").eq(j).addClass("isNotParking");
                     }*/
         });
-      
+
         //returm number between min to max
         function getRandom(min, max) {
             return Math.floor(Math.random() * (1 + max - min)) + min;
@@ -126,9 +126,9 @@
         var outputExitT=[];
         function Fill() {
             var flagEndParking = 0; //flag==1 when the algoritem find parking slot
-         
+
             while (1) {
-                
+
                 if (i == 23) window.alert("i==23");
                 //window.alert(countMoves);
                 if (arrCars[i] > 0 || flagUserReq == 1) { //if there is more car in this hour
@@ -150,23 +150,18 @@
                                     for (p = 0; p < Config.y; p++) {
                                         if (k == 0 || k == 4 || k == 5 || k == 9) {
                                             if (mainarr[k * 10 + p].userID == null) return false;
-
                                         }
                                     }
                                 }
                                 return true;
                             }//end isParkingSlotsFull function
                             if (res) flagBlocking1 = 1;
-
                             if (flagBlocking1 == 1) blockingFunc1();
-
                             else {
                                 for (k = 0; k < Config.x; k++) {
                                     for (p = 0; p < Config.y; p++) {
                                         if (mainarr[k * 10 + p].userID == null) {
-
                                             for (var n = 0; n < Config.IsParking.length; n++) {
-
                                                 if ((Config.IsParking[n][0] == mainarr[k * 10 + p].ParkingSlotNum[0])
                                                     && (Config.IsParking[n][1] == mainarr[k * 10 + p].ParkingSlotNum[1])) {
                                                     mainarr[k * 10 + p].exitT = exitTime;
@@ -175,7 +170,7 @@
                                                     outputExitT.push(p);
                                                     counter++;
                                                     mainarr[k * 10 + p].userID = 40; //������
-                                                    
+                                                    var z = getTotalBlocking();
                                                     if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                     flagEndParking = 1;
                                                     if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//���� �� ����
@@ -188,15 +183,12 @@
                                                             for (p = 0; p < Config.y; p++) {
                                                                 if (k == 0 || k == 4 || k == 5 || k == 9) {
                                                                     if (mainarr[k * 10 + p].userID == null) return false;
-
                                                                 }
                                                             }
                                                         }
                                                         return true;
                                                     }//end isParkingSlotsFull function
-
                                                     if (res) flagBlocking1 = 1;
-                                                    
                                                     break;
                                                 }
                                             }
@@ -206,7 +198,6 @@
                                     if (flagEndParking == 1) break;
                                 }
                             }
-
                             function blockingFunc1() {
                                 flagEndParking = 0;
                                 //if (flagBlocking2 != 1) {
@@ -226,7 +217,7 @@
                                                         $("#parking").find("tr").eq(k2).find("td").eq(p2).addClass("isBlockingParking");
                                                         counter++;
                                                         mainarr[k2 * 10 + p2].userID = 30;
-                                                        
+                                                        var z = getTotalBlocking();
                                                         if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                         flagEndParking = 1;
                                                         break;
@@ -239,7 +230,6 @@
                                     if (flagEndParking == 1) break;
                                 }
                                 //}
-
                                 //check2: (when car1 blocking car2 that car1's exitT>car2's exitT)
                                 if (k2 == 10) flagBlocking2 = 1;
                                 if (flagBlocking2 == 1) {
@@ -254,7 +244,7 @@
                                                         $("#parking").find("tr").eq(k2).find("td").eq(p2).addClass("isBlockingParking");
                                                         counter++;
                                                         mainarr[k2 * 10 + p2].userID = 30;
-                                                       
+                                                        var z = getTotalBlocking();
                                                         if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                                         flagEndParking = 1;
                                                         break;
@@ -265,15 +255,10 @@
                                         }
                                         if (flagEndParking == 1) break;
                                     }
-
-
                                 }//end of check2
-
                                 //userRequest(40); //just for check the func
                             }// end blockingFunc function
-
                             break;
-
                         case 2://alg' 2:
                             flagEndParking = 0;
                             /*var res = isParkingSlotsFull();
@@ -285,7 +270,6 @@
                             }//end isParkingSlotsFull function
                             if (res) flagBlocking1 = 1;
                             if (flagBlocking1 == 1) blockingFunc(); */
-
                             // else {
                             for (k = 0; k < Config.x; k++) {
                                 for (p = 0; p < Config.y; p++) {
@@ -306,8 +290,6 @@
                                     if (flagEndParking == 1) break; //break for of p
                                     if (p == 9) { flagBlocking1 = 1; if (flagBlocking1 == 1) blockingFunc(); } //break for of p, if end of this row
                                 }
-
-
                                 function blockingFunc() {
                                     flagEndParking = 0;
                                     //find the current row (blocking row)
@@ -315,10 +297,8 @@
                                     else if (k == 4) blockingRow = 3;
                                     else if (k == 5) blockingRow = 6;
                                     else if (k == 9) blockingRow = 8;
-
                                     for (var p2 = 0; p2 < Config.y; p2++) {
                                         if (mainarr[blockingRow * 10 + p2].userID == null) {//check if parking slot is empty:
-
                                             if (exitTime <= mainarr[k * 10 + p2].exitT) {//check if exit time of this car>= exit time of the blocked car:
                                                 for (var n2 = 0; n2 < Config.isBlockingParking.length; n2++) {
                                                     if ((Config.isBlockingParking[n2][0] == mainarr[blockingRow * 10 + p2].ParkingSlotNum[0])
@@ -336,8 +316,6 @@
                                         }
                                         if (flagEndParking == 1) break;
                                     }//end for p
-
-
                                     //check2: (when car1 blocking car2 that car1's exitT>car2's exitT)
                                     if (p2 == 10) flagBlocking2 = 1;
                                     if (flagBlocking2 == 1) {
@@ -360,16 +338,13 @@
                                             if (flagEndParking == 1) break;
                                         }
                                     }//end of if
-
                                     //userRequest(40); //just for check the func
                                 }// end blockingFunc function
                                 if (flagEndParking == 1) break;
                             }//end for of k
                             break;
-
                         case 3://alg' 3:
                             flagEndParking = 0;
-
                             for (k = 0; k < Config.x; k++) {
                                 for (p = 0; p < Config.y; p++) {
                                     //if (mainarr[k * 10 + p].userID == null) {
@@ -392,7 +367,7 @@
                                                 else if (k == 9) blockingRow = 8;
                                                 if (mainarr[blockingRow * 10 + p].userID == null) {//if there is no blocking car- go to blockingFunc(). else- keep on this loop
                                                     flagBlocking1 = 1;
-                                                    if (flagBlocking1 == 1) blockingFunc(); 
+                                                    if (flagBlocking1 == 1) blockingFunc();
                                                 }
                                             }
                                             //}
@@ -404,11 +379,10 @@
                                 }
                                 if (flagEndParking == 1) break;
                             }//end loop of k
-                            
 
                             function blockingFunc() {//all the blockings in alg' 3 is without consider in exit time
                                 flagEndParking = 0;
-                               
+
                                     for (var k2 = 0; k2 < Config.x; k2++) {
                                         for (var p2 = 0; p2 < Config.y; p2++) {
                                             //check if parking slot is empty:
@@ -430,12 +404,9 @@
                                         }
                                         if (flagEndParking == 1) break;
                                     }
-
                                 //userRequest(40); //just for check the func
                             }// end blockingFunc function
-
-
-                     //end of 3 cases       
+                     //end of 3 cases
                     } //end switch
                     var res2 = isLotFull();
                     if (res2) { window.alert("lot is full"); i++; exitCars(i); funcIsCarBlocked(i); };
@@ -444,12 +415,7 @@
                 if (flagEndParking == 1) break; //break fill (end of entrance of specific car)
             }//end of while
         }//end of fill function
-
-
-
-
         //functions of all the 3 algoritems:
-
         function isLotFull() //check if all lot is full
         {
             for (k = 0; k < Config.x; k++) {
@@ -460,59 +426,18 @@
             }
             return true;
         }
-
-
-        //output: parking slot number of the blocking car that need to move or false(if there is need to move)
-        function checkScheduleReq(slotNum, newExitTime) {
-            var tempParkingSNum = slotNum;
+        //func_scheduleUserRequest(14, 23);//check
+        //���� ������ ����� ���� ��� ����� //������ �� �������� �� �������� ������
+        //�� ����� ���� ����� ����� ���� ���� ���- �� ����� �� ��������
+        function func_scheduleUserRequest(parkingSlotNum, newExitTime) {//implementation of schedule user request.
+            var tempParkingSNum = parkingSlotNum;
+            if (tempParkingSNum > (Config.x * Config.y)) return false; //if tempParkingSNum is not exist?
             var tempRowNum = Math.floor(tempParkingSNum / 10);
             var tempColNum = tempParkingSNum % 10;
-            //mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT = newExitTime;
-            mainarr[slotNum].exitT = newExitTime; //update new exit time in db
-            //when the row is 'isParking' row:
-            if (tempRowNum == 0) blockingRow = 1;
-            else if (tempRowNum == 4) blockingRow = 3;
-            else if (tempRowNum == 5) blockingRow = 6;
-            else if (tempRowNum == 9) blockingRow = 8;
-            //when the row is 'isBlockingParking' row:
-            else if (tempRowNum == 1) blockedRow = 0;
-            else if (tempRowNum == 3) blockedRow = 4;
-            else if (tempRowNum == 6) blockedRow = 5;
-            else if (tempRowNum == 8) blockedRow = 9;
-
-            if (tempRowNum == 0 || tempRowNum == 4 || tempRowNum == 5 || tempRowNum == 9) {
-                    if (mainarr[blockingRow * Config.x + tempColNum].userID != null) {
-                    
-                        if (mainarr[blockingRow * Config.x + tempColNum].exitT > newExitTime) return (blockingRow * Config.x + tempColNum);
-                    else return false;
-                }
-                else return false;
-            }
-            else if ((tempRowNum == 1 || tempRowNum == 3 || tempRowNum == 6 || tempRowNum == 8)) {
-                if (mainarr[blockedRow * Config.x + tempColNum].userID != null) {
-
-                    //var exitTBlocked = getExitTDriverSlot(blockedRow * Config.x + tempColNum)
-                    //if (exitTBlocked < newExitTime) return slotNum;
-                    if (mainarr[blockedRow * Config.x + tempColNum].exitT > newExitTime) return slotNum;
-                    else return false;
-                }
-                else return false;
-            }
+            if ((mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT) < i) return false; //if the user send exit time that earlier then this hour// ����� �� ����� ��������� ���
+            mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT = newExitTime;
         }
-
-        //no need to simulation
-        /*function ScheduleReq(slotNum, DriverID, ExitTime) {
-            flagBlocking1 = 0; flagBlocking2 = 0;
-            //Fill(DriverID, ExitTime); //find parking slot for the blocking car
-            Fill();
-            //setSlot(slotNum, slot1)//update empty slot in DB
-            mainarr(slotNum).userID = null;
-            mainarr(slotNum).exitT = null;
-        }*/
-
-
-        //just for simulation
-        //check if need to send a request to move the blocking car(user request)
+        //check if need to alert the driver to send a request to move the blocking car(user request)
         function funcIsCarBlocked(i) {
             var blockingRow;
             for (var k = 0; k < Config.x; k++) {
@@ -525,14 +450,13 @@
                         else if (k == 9) blockingRow = 8;
                         //when the row is not 'isParking' row:
                         else blockingRow == null;
-
                         if (blockingRow != null)//when the row is 'isParking' row
                         {
                             if (mainarr[blockingRow * 10 + p].userID != null)//check if there is a blocking car
                             {
                                 if (mainarr[k * 10 + p].exitT < mainarr[blockingRow * 10 + p].exitT)//check if exit time of this car< exit time of the blocked car
                                 {
-                                    userRequest(mainarr[k * 10 + p].userID); //call userRequest
+                                    //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //���� �������
                                     countMoves++;
                                     //window.alert(k, p); //just for debugging
                                 }
@@ -542,8 +466,6 @@
                 }
             }
         }//end of funcIsCarBlocked
-
-        
         //user request: change parking slot of the blocking car
         function userRequest(blockedID) {
             flagUserReq = 1;
@@ -570,10 +492,6 @@
                 }
             }
         }
-
-
-
-
         function exitCars(i) {
             var blockingRow;
             for (var k2 = 0; k2 < Config.x; k2++) {
@@ -626,16 +544,12 @@
                             checkSystemRequest(tempExitT2, k2, p2);// check if to add a system request to DB
                         }
                     }
-
                 }
             }
         } //end of exitCars function
-
-
         function checkSystemRequest(exitTCompare, kEmpty, pEmpty) {//kEmpty,pEmpty: is the empty parking slot
             var blockedRow;
             var flagSystemReq;
-            var outPutSystemReq = [];
             for (var k = 0; k < Config.x; k++) {
                 for (var p = 0; p < Config.y; p++) {
                     if (k == 1 || k == 3 || k == 6 || k == 8) {//if is a blocking row
@@ -655,15 +569,7 @@
                 }
                 if (flagSystemReq == 1) break;
             }
-            //diffrent from mekori:
-            if (flagSystemReq != 1) return null; //no sysyemRequest
-            else {
-            outPutSystemReq.push[mainarr[k * 10 + p].userID];//the driver we want to moving to the empty slot
-                outPutSystemReq.push[k * 10 + p];//the empty slot
-                return outPutSystemReq;
-            }
         }
-
         function systemRequest(kFrom, pFrom, kEmpty, pEmpty) //called when valet select this task
         {
             //save details of the user we move from
@@ -680,8 +586,8 @@
             else $("#parking").find("tr").eq(kEmpty).find("td").eq(pEmpty).addClass("isBlockingParking");
         }
 
-        function getTotalEmpty(){
-            //var countEmpty = 0;
+        function getTotalEmpty() {
+            var countEmpty = 0;
             for (k = 0; k < Config.x; k++) {
                 for (p = 0; p < Config.y; p++) {
                     if (k != 2 && k != 7)
@@ -690,7 +596,6 @@
             }
             return countEmpty;
         }
-
         function getTotalBlocking() {
             var countBlocking = 0;
             for (k = 0; k < Config.x; k++) {
@@ -701,8 +606,6 @@
             }
             return countBlocking;
         }
-
-
 
         //check if need
         function Clear() {
