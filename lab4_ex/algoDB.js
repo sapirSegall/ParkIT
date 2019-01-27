@@ -32,13 +32,32 @@ var s= {
     timeExit: ''
 };
 
-
+//call to dataBaseApi functions:
 async function getIDDB(slotNumber) {
     var tempid = await getIDDriverSlot(slotNumber);
     return tempid;
 }
-async function getexitTDB(slotNumber, slot1) {
+async function setSlotDB(slotNumber, slot1) {
     await setSlot(slotNumber,slot1);
+}
+async function getexitTDB(slotNumber) {
+    var tempexitT = await getExitTDriverSlot(slotNumber);
+    return tempexitT;
+}
+
+async function isParkingSlotsFull() //check if isParking slots now full(blue)
+{
+    for (k = 0; k < Config.x; k++) {
+        for (p = 0; p < Config.y; p++) {
+            if (k == 0 || k == 4 || k == 5 || k == 9) {
+                var tempid = await getIDDB(k * Config.x + p);
+                if (tempid == -1) return false;
+                //if (mainarr[k * 10 + p].userID == null) return false;
+
+            }
+        }
+    }
+    return true;
 }
 
 async function Fill(inputDriverID, inputExitTime)
@@ -50,24 +69,9 @@ async function Fill(inputDriverID, inputExitTime)
             switch (1) {//the value in switch is the choosen alg'
                 case 1:
                     flagEndParking = 0;
-                   /* var res = isParkingSlotsFull();
-                    async function isParkingSlotsFull() //check if isParking slots now full
-                    {
-                        for (k = 0; k < Config.x; k++) {
-                            for (p = 0; p < Config.y; p++) {
-                                if (k == 0 || k == 4 || k == 5 || k == 9) {
-                                    
-                                    var tempid = await getIDDriverSlot(k * Config.x + p);//not writen
-                                    if (tempid == -1) flagEndParking = 1;;
-                                    //if (mainarr[k * 10 + p].userID == null) return false;
 
-                                }
-                            }
-                        }
-                        //return true;
-                    }//end isParkingSlotsFull function
-                    if (res==true) flagBlocking1 = 1;
-                    */
+                    var resParkingSfull = await isParkingSlotsFull();
+                    if (resParkingSfull==true) flagBlocking1 = 1;
                     if (flagBlocking1 == 1) blockingFunc1();
 
                     else {
@@ -87,7 +91,7 @@ async function Fill(inputDriverID, inputExitTime)
                                                 exitT: inputExitTime
                                             };
                                           
-                                            await getexitTDB(k * Config.x + p, slot1);//update slot in DB
+                                            await setSlotDB(k * Config.x + p, slot1);//update slot in DB
 
                                             flagEndParking = 1;
                                             if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//need?
@@ -104,26 +108,21 @@ async function Fill(inputDriverID, inputExitTime)
                     }
 
                     //if we here- the driver need to block
-                    function blockingFunc1() {
+                    async function blockingFunc1() {
                         flagEndParking = 0;
                         for (var k2 = 0; k2 < Config.x; k2++) {
                             for (var p2 = 0; p2 < Config.y; p2++) {
-                                var res3 = get3();
-                                async function get3() {
-                                    var tempid = await getIDDriverS(k2 * Config.x + p2);
-                                    return tempid;
-                                }
-                                if (res3 == -1) {//check if parking slot is empty
+                                if (p2 == 10) break;
+                                var result = await getIDDB(k2 * Config.x + p2);
+                                    if (result == -1) {//check if parking slot is empty
                                     //check if exit time of this car>= exit time of the blocked car:
                                     if (k2 == 1) blockedRow = 0;
                                     else if (k2 == 3) blockedRow = 4;
                                     else if (k2 == 6) blockedRow = 5;
                                     else if (k2 == 8) blockedRow = 9;
-                                    var exitTBlocked = get4();
-                                    async function get4() {
-                                        var exitTBlocked = await getExitTDriverSlot(blockedRow * 10 + p2);
-                                        return exitTBlocked;
-                                    }
+                                    
+                                    var exitTBlocked = await getexitTDB(blockedRow * 10 + p2);
+                                    
                                         if (inputExitTime <= exitTBlocked) {
                                         for (var n2 = 0; n2 < Config.isBlockingParking.length; n2++) {
                                             if ((Config.isBlockingParking[n2][0] == k2) && (Config.isBlockingParking[n2][1] == p2)) {
@@ -133,10 +132,8 @@ async function Fill(inputDriverID, inputExitTime)
                                                     userID: inputDriverID,
                                                     exitT: inputExitTime
                                                 };
-                                                get5();
-                                                async function get5() {
-                                                    await setSlot(k2 * Config.x + p2, slot1)//update slot in DB
-                                                }
+                                              
+                                                await setSlotDB(k2 * Config.x + p2, slot1);//update slot in DB
                                                 flagEndParking = 1;
                                                 //noticeBlocked(blockedRow * 10 + p2);
                                                 break;
@@ -157,12 +154,9 @@ async function Fill(inputDriverID, inputExitTime)
                                 for (var p2 = 0; p2 < Config.y; p2++) {
                                     
                                     //check if parking slot is empty:
-                                    var res6 = get6();
-                                    async function get6() {
-                                        var tempid = await getIDDriverS(k2 * Config.x + p2);
-                                        return tempid;
-                                    }
-                                    if (res6 == -1) {
+                                  
+                                    var result = await getIDDB(k2 * Config.x + p2);
+                                    if (result == -1) {
                                         for (var n2 = 0; n2 < Config.isBlockingParking.length; n2++) {
                                             if ((Config.isBlockingParking[n2][0] == k2)
                                                 && (Config.isBlockingParking[n2][1] == p2)) {
@@ -172,10 +166,7 @@ async function Fill(inputDriverID, inputExitTime)
                                                     userID: inputDriverID,
                                                     exitT: inputExitTime
                                                 };
-                                                set7();
-                                                async function set7() {
-                                                    await setSlot(k2 * Config.x + p2, slot1)//update slot in DB
-                                                }
+                                                await setSlotDB(k2 * Config.x + p2, slot1);//update slot in DB
                                                 flagEndParking = 1;
 
                                                 //for notice:
@@ -408,7 +399,7 @@ async function Fill(inputDriverID, inputExitTime)
 
                 //end of 3 cases       
             } //end switch
-            var resFull = isLotFull();
+            var resFull = await isLotFull();
             //if (resFull) { window.alert("lot is full"); };
         
         if (flagEndParking == 1) break; //break fill (end of entrance of specific car)
@@ -426,8 +417,8 @@ async function isLotFull() //check if all lot is full(parking+blocking)
     for (k = 0; k < Config.x; k++) {
         for (p = 0; p < Config.y; p++) {
             if (k != 2 && k != 7) {
-                u.user = await getIDDriverSlot(k * Config.x + p);
-                if (u.user == -1) return false;
+                var resulotfull = await getIDDB(k * Config.x + p);
+                if (resulotfull == -1) return false;
             }
         }
     }
@@ -706,28 +697,29 @@ function systemRequest(slotFrom, slotEmpty, IDofFrom) //called when valet select
 }
 
 
-    function getTotalEmpty() {
+    async function getTotalEmpty() {
         var countEmpty = 0;
         for (k = 0; k < Config.x; k++) {
             for (p = 0; p < Config.y; p++) {
                 if (k != 2 && k != 7) {
-                    u.user = getIDDriverSlot(k * Config.x + p);//not writen
-                    if (u.user == -1) countEmpty++;
+                    var resultotal = await getIDDB(k * Config.x + p);
+                    if (resultotal == -1) countEmpty++;
                 }
-                    //if (mainarr[k * 10 + p].userID == null) countEmpty++;
+                    
             }
         }
         return countEmpty;
-    }
-    function getTotalBlocking() {
+}
+
+    async function getTotalBlocking() {
         var countBlocking = 0;
         for (k = 0; k < Config.x; k++) {
             for (p = 0; p < Config.y; p++) {
                 if (k == 1 || k == 3 || k == 6 || k == 8) {
-                    u.user = getIDDriverSlot(k * Config.x + p);//not writen
-                    if (u.user == -1) countEmpty++;
+                    var resultblocking= await getIDDB(k * Config.x + p);
+                    if (resultblocking != -1) countBlocking++;
                 }
-                    //if (mainarr[k * 10 + p].userID != null) countBlocking++;
+                    
             }
         }
         return countBlocking;
