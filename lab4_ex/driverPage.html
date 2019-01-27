@@ -262,7 +262,7 @@
                                     var newTime = document.getElementById('insertExitTime').value;
                                     activeDriver.exitTime = newTime;
                                     updateDriver(activeUser.user, activeDriver);
-                                    var parkingNumber = await Fill();
+                                    var parkingNumber = await Fill(67,7);
                                     document.getElementById("parking_number").innerHTML = parkingNumber;
                                     activeDriver.parkingNumber = parkingNumber;
                                     ShowPage(5);
