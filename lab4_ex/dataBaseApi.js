@@ -129,12 +129,22 @@ function deleteRequest(employeeNum, requestNumber) {
 }
 
 
+
+
 async function getExitTDriverSlot(parkingSlotNum) {
-    var driverExitT;
+    var driverExitTi;
     await database.ref('/Lot/' + parkingSlotNum).once('value').then(function (snapshot) {
-        driverExitT = snapshot.val().ExitT;
+        driverExitTi = snapshot.val().exitT;
     });
-    return driverExitT;
+    return driverExitTi;
+}
+
+async function getSlots() {
+    var lots;
+    await database.ref('/Lot/').once('value').then(function (snapshot) {
+        lots = snapshot.val();
+    });
+    return lots;
 }
 
 function setSlot(slotNum, updatedSlot) {
@@ -145,5 +155,11 @@ function setSlot(slotNum, updatedSlot) {
 function setexitT(slotNum, updatedexitT) {
     database.ref('/Lot/' + slotNum).set(updatedSlot);
     console.log(`update slot in db ${updatedSlot}`);
+}
+
+function writeUserData(userId, t1) {
+    database.ref('Lot/' + userId).set({
+        exitT: t1
+    });
 }
 
