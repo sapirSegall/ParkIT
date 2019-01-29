@@ -1,4 +1,3 @@
-﻿
 
 ////structure of the parking lot
 //var Config = {
