@@ -28,7 +28,6 @@
         document.getElementById("car_color").innerHTML = activeDriver.carColor;
         document.getElementById("exit_time").innerHTML = activeDriver.exitTime;
         document.getElementById("parking_number").innerHTML = activeDriver.parkingNumber;
-       
 
         var barcode_ = activeDriver.barcode;
         JsBarcode("#barcode", barcode_);
@@ -66,14 +65,14 @@
             </div>
         </nav>
         <!--page driver info n=0 -->
-        <div id="driverMenu" class="page" data-ttl="driverMenu">
+        <div id="thmbDiv" class="page" data-ttl="driverMenu">
             <form>
                 <fieldset>
                     <div class="container text-center">
                         <script>
                             document.getElementById("parking_number").innerHTML = activeDriver.parkingNumber;
                         </script>
-                        <h2><label>Parking number &ensp;</label><label  id="parking_number"></label></h2>
+                        <h2><label>Parking number &ensp;</label><label id="parking_number"></label></h2>
                         <img src="whiteCar.png" width="100" height="40">
                         <table align="center">
                             <tbody>
@@ -100,6 +99,22 @@
                             </tbody>
                         </table>
                         <br>
+                        <button type="button" class="btn btn-primary btn-lg" onclick="isBlock()" style="border: none; padding: 12px 16px; cursor: pointer;">
+                            isBlocked
+                        </button>
+                        <script>
+                            function isBlock() {
+                                var isBlock = activeDriver.isBlock;
+                                if (isBlock == true) {
+                                    var thumbContainer = document.getElementById("thmbDiv");
+                                    var thumbnail = document.createElement("img");
+                                    thumbnail.onload = function () {
+                                        thumbContainer.appendChild(thumbnail);
+                                    }
+                                    thumbnail.src = "car.png";
+                                }
+                            }
+                        </script>
                         <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='tel:+972-525-818-989'" style="border: none; padding: 12px 16px; cursor: pointer;">
                             Call to Valet
                         </button>
