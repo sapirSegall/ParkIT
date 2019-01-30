@@ -36,7 +36,7 @@ function addRequestsTable() {
     // print headers line
     var tr = document.createElement('TR');
     tableBody.appendChild(tr);
-    for (var j = 0; j < 4; j++) {
+    for (var j = 0; j < 3; j++) {
         var td = document.createElement('TD');
         td.width = '200';
         var text = '';
@@ -53,10 +53,6 @@ function addRequestsTable() {
                 text = "Priority";
                 td.appendChild(document.createTextNode(text));
                 break;
-            case 3:
-                text = "Parking Number Of Blocking Car";
-                td.appendChild(document.createTextNode(text));
-                break;
             default:
         }
         tr.appendChild(td);
@@ -69,7 +65,7 @@ function addRequestsTable() {
             tr.setAttribute('class', 'request-row');
             tableBody.appendChild(tr);
             //details for
-            for (var j = 0; j < 4; j++) {
+            for (var j = 0; j < 3; j++) {
                 var text = '';
                 switch (j) {
                     case 0:
@@ -80,9 +76,6 @@ function addRequestsTable() {
                         break;
                     case 2:
                         text = request.priority;
-                        break;
-                    case 3:
-                        text = getBlockingCarNumber();
                         break;
                     default:
                     // code block

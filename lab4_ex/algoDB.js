@@ -1,4 +1,4 @@
-﻿
+
 ////structure of the parking lot
 var Config = {
     x: 10, //number of rows

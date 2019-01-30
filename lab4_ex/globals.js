@@ -17,7 +17,7 @@ var request = {
     requestTime: '',
     parkingSlotNumber: '',
     priority: '',
-    //flagPriority:''
+    flagPriority2: ''
 }
 var slot = {
     userID: '',
@@ -52,19 +52,6 @@ function ShowPage(n) {
         $("#aLogin").hide();
         $("#aLogout").hide();
     }
-}
-
-async function getRequestNumber_() {
-    var random = Math.floor(Math.random() * 900000) + 100000;
-    var requests = await getRequestsByDriver(activeUser.user);
-    if (!requests) {
-        return random;
-    }
-    // if random is one of the existing requests numbers generate new one
-    while (Object.keys(requests).includes(random)) {
-        random = Math.floor(Math.random() * 900000) + 100000;
-    }
-    return random;
 }
 
 async function getRequestNumber() {

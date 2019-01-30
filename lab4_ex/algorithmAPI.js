@@ -14,14 +14,14 @@ function getTotalEmptyParkingSlot(){
 /** pie chart **/
 
 
-// requests table
-function getBlockingCarNumber(){
-    return 100;
-}
+ //requests table
+//function getBlockingCarNumber(){
+//    return 100;
+//}
 
 function getResponseParams(requestNumber){
     return {
-        parkingNumber: 6,
+        carNumber: 6,
         current: 67,
         future: 89
     };

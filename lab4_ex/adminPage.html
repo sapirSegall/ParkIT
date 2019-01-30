@@ -155,6 +155,7 @@
                             carColor: carColor,
                             carCode: carCode,
                             barcode: barcode,
+                            isBlock: false,
                             parkingNumber: ' '
                         };
                         createDriver(employeeNumber, driver);
@@ -253,6 +254,8 @@
                             carColor: carColor,
                             carCode: carCode,
                             barcode: driverFromDB.barcode,
+                            parkingNumber: driverFromDB.parkingNumber,
+                            isBlock: driverFromDB.isBlock,
                             exitTime: driverFromDB.exitTime
                         };
                         updateDriver(driverFromDB.employeeNumber, driver);
