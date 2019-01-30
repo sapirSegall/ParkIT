@@ -54,9 +54,9 @@ async function checkSystemRequest(exitTCompare, kEmpty, pEmpty, requestNum) {//k
                 if (idblocking != -1 && exitTblocking > exitTblocked)  //if slot is not empty, and blockingcar's exitT > blockedcar's exitT
                     if ((exitTCompare != null && exitTblocking <= exitTCompare) || exitTCompare == null) { //if blockingcar's exitTime<=exitTCompare
                         flagSystemReq = 1;
-                //request.requestNumber = requestNum;
-                //request.flagPriority = true;
-                //await updateRequest(employeeNum, request);
+                request.requestNumber = requestNum;
+                request.flagPriority = true;
+                await updateRequest(employeeNum, request);
                     }
             }
             if (flagSystemReq == 1) break;
@@ -65,9 +65,9 @@ async function checkSystemRequest(exitTCompare, kEmpty, pEmpty, requestNum) {//k
     }
     if (flagSystemReq != 1)  //no need systemRequest
     {
-        //request.requestNumber = requestNum;
-        //request.flagPriority = false;
-        //await updateRequest(employeeNum, request);
+        request.requestNumber = requestNum;
+        request.flagPriority = false;
+        await updateRequest(employeeNum, request);
         outPutCheckSystemReq = false;
     }
     else {//need system request
