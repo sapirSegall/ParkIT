@@ -69,7 +69,7 @@ function createRequest(employeeNum, newRequest) {
         requestTime: newRequest.requestTime,
         parkingSlotNumber: newRequest.parkingSlotNumber,
         priority: newRequest.priority,
-       // flagPriority: newRequest.flagPriority
+        flagPriority: newRequest.flagPriority
     }).catch(function (error) {
         console.log('Error writing new message to Realtime Database:', error);
     });
@@ -141,11 +141,7 @@ function setexitT(slotNum, updatedexitT) {
     console.log(`update slot in db ${updatedSlot}`);
 }
 
-
-
 function updateRequest(employeeNum, newRequest) {
     console.log(`update the request to the db ${JSON.stringify(newRequest)}`);
     createRequest(employeeNum, newRequest);
 }
-
-

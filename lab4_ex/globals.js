@@ -17,7 +17,7 @@ var request = {
     requestTime: '',
     parkingSlotNumber: '',
     priority: '',
-    flagPriority2: ''
+    flagPriority: ''
 }
 var slot = {
     userID: '',

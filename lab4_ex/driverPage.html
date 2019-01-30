@@ -156,7 +156,8 @@
                                             minute: "numeric"
                                         }),
                                         parkingSlotNumber: parkingNumber,
-                                        priority: 3
+                                        priority: 3,
+                                        flagPriority: false
                                     };
                                     createRequest(activeUser.user, newRequest);
                                     var driver = await getDriver(activeUser.user);
@@ -182,23 +183,28 @@
                             <button type="button" id="myBtn" class="btn btn-primary" onclick="sendRequest()">Send</button>
                             <script>
                                 async function sendRequest() {
-                                    var newRequest = {
-                                        requestNumber: await getRequestNumber(),
-                                        requestTime: new Date().toLocaleTimeString('en-US', {
-                                            hour12: false,
-                                            hour: "numeric",
-                                            minute: "numeric"
-                                        }),
-                                        parkingSlotNumber: activeDriver.parkingNumber,
-                                        priority: 1
-                                    };
-                                    createRequest(activeUser.user, newRequest);
-                                    modal.style.display = "block";
+                                    debugger;
+                                    if (activeDriver.isBlock == true) {
+                                        var newRequest = {
+                                            requestNumber: await getRequestNumber(),
+                                            requestTime: new Date().toLocaleTimeString('en-US', {
+                                                hour12: false,
+                                                hour: "numeric",
+                                                minute: "numeric"
+                                            }),
+                                            parkingSlotNumber: activeDriver.parkingNumber,
+                                            priority: 1,
+                                            flagPriority: true
+                                        };
+                                        createRequest(activeUser.user, newRequest);
+                                        modal.style.display = "block";
+                                    } else {
+                                        modal.style.display = "block";
+                                    }
                                 }
                             </script>
                             <!-- The Modal -->
                             <div id="myModal" class="modal">
-
                                 <!-- Modal content -->
                                 <div class="modal-content">
                                     <div class="modal-body">
@@ -256,9 +262,11 @@
                                             minute: "numeric"
                                         }),
                                         parkingSlotNumber: activeDriver.parkingNumber,
-                                        priority: 2
+                                        priority: 2,
+                                        flagPriority: false
                                     };
                                     createRequest(activeUser.user, newRequest);
+                                    checkScheduleReq(activeDriver.parkingNumber, activeUser.user, activeDriver.exitTime, newRequest.requestNumber);
                                 }
                             </script>
                         </div>
