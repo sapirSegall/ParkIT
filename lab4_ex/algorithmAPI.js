@@ -5,11 +5,11 @@ function getParkingNumber(employeeNumber){
 
 /** pie chart **/
 function getTotalBlockingCarsNumber(){
-    return 6;
+    return 60;
 }
 
 function getTotalEmptyParkingSlot(){
-    return 7;
+    return 40;
 }
 /** pie chart **/
 

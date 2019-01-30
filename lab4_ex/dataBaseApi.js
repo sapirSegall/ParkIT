@@ -68,7 +68,8 @@ function createRequest(employeeNum, newRequest) {
     database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({
         requestTime: newRequest.requestTime,
         parkingSlotNumber: newRequest.parkingSlotNumber,
-        priority: newRequest.priority
+        priority: newRequest.priority,
+       // flagPriority: newRequest.flagPriority
     }).catch(function (error) {
         console.log('Error writing new message to Realtime Database:', error);
     });
@@ -133,8 +134,18 @@ function setSlot(slotNum, updatedSlot) {
     database.ref('/Lot/' + slotNum).set(updatedSlot);
     console.log(`update slot in db ${updatedSlot}`);
 }
-function writeUserData(userId, t1) {
-    database.ref('Lot/' + userId).set({
-        exitT: t1
-    });
+
+//change:
+function setexitT(slotNum, updatedexitT) {
+    database.ref('/Lot/' + slotNum).set(updatedSlot);
+    console.log(`update slot in db ${updatedSlot}`);
 }
+
+
+
+function updateRequest(employeeNum, newRequest) {
+    console.log(`update the request to the db ${JSON.stringify(newRequest)}`);
+    createRequest(employeeNum, newRequest);
+}
+
+
