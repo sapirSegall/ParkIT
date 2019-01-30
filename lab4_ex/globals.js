@@ -9,14 +9,20 @@ var activeDriver = {
     carSeries: '',
     carColor: '',
     parkingNumber: '',
-    exitTime: ''
+    exitTime: '',
+    isBlock:''
 };
 var request = {
     requestNumber: '',
     requestTime: '',
     parkingSlotNumber: '',
-    priority:''
+    priority: '',
+    //flagPriority:''
 }
+var slot = {
+    userID: '',
+    exitT: ''
+};
 function ShowPage(n) {
     $(".page").hide();
     $(".page").eq(n).show();
