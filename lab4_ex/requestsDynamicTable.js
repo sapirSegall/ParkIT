@@ -25,7 +25,46 @@ async function deleteRequestRow(obj) {
     // call algorithm
 }
 
-function addRequestsTable() {
+function sortTable() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("requestsTable");
+    switching = true;
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[2];
+            y = rows[i + 1].getElementsByTagName("TD")[2];
+            //check if the two rows should switch place:
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                //if so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /*If a switch has been marked, make the switch
+            and mark that a switch has been done:*/
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
+
+function createPopUpText(current, future, carNumber) {
+    return `Please move car number ${carNumber} \n from parking slot ${current} to empty parking slot ${future}`;
+}
+
+async function addRequestsTable() {
     var table = document.getElementById("requestsTable");
     table.border = '1';
     var tableBody = document.getElementById("requestsTableBody");
@@ -61,39 +100,63 @@ function addRequestsTable() {
     //requests for
     for (const [employeeNumber, employeeRequests] of Object.entries(requests)) {
         for (const [requestNumber, request] of Object.entries(employeeRequests)) {
-            var tr = document.createElement('TR');
-            tr.setAttribute('class', 'request-row');
-            tableBody.appendChild(tr);
-            //details for
-            for (var j = 0; j < 3; j++) {
-                var text = '';
-                switch (j) {
-                    case 0:
-                        text = requestNumber;
-                        break;
-                    case 1:
-                        text = request.requestTime;
-                        break;
-                    case 2:
-                        text = request.priority;
-                        break;
-                    default:
-                    // code block
+            if (request.flagPriority == true) {
+                var tr = document.createElement('TR');
+                tr.setAttribute('class', 'request-row');
+                tableBody.appendChild(tr);
+                //details for
+                for (var j = 0; j < 3; j++) {
+                    var text = '';
+                    switch (j) {
+                        case 0:
+                            text = requestNumber;
+                            break;
+                        case 1:
+                            text = request.requestTime;
+                            break;
+                        case 2:
+                            text = request.priority;
+                            break;
+                        default:
+                        // code block
+                    }
+
+                    var td = document.createElement('TD');
+                    td.width = '200';
+                    td.appendChild(document.createTextNode(text));
+                    tr.appendChild(td);
                 }
-            var td = document.createElement('TD');
-            td.width = '200';
-            td.appendChild(document.createTextNode(text));
-            tr.appendChild(td);
             }
         }
     }
     sortTable();
     $(document).ready(function($) {
-        $(".request-row").click(function() {
+        $(".request-row").click(async function () {
             var row = this;
-            var requestNumber = this.getElementsByTagName("td")[1].innerText;
-            var params = getResponseParams(requestNumber);
-            var popUpText = createPopUpText(params.current, params.future, params.parkingNumber);
+            //var params;
+            var currentRequestNumber = this.getElementsByTagName("td")[0].innerText;
+            var requestPriority = this.getElementsByTagName("td")[2].innerText;
+            if (requestPriority == 1) {
+                for (const [employeeNumber, employeeRequests] of Object.entries(requests)) {
+                    for (const [requestNumber, request] of Object.entries(employeeRequests)) {
+                        if (requestNumber == currentRequestNumber) {
+                            var hello = await userRequest(request.parkingSlotNumber, employeeNumber);
+                            console.log(`check in db ${hello}`);
+                            debugger;
+                            var newOutPutRequest = await getOutPutRequest();
+                            //params.parkingNumber = newOutPutRequest.carNumber;
+                            //params.current = newOutPutRequest.current;
+                            //params.future = newOutPutRequest.future;
+                        }
+                    }
+                }
+            } else if (requestPriority == 2) {
+
+            } else {
+
+            }
+            //var params = getResponseParams(requestNumber);
+            var popUpText = createPopUpText(newOutPutRequest.current, newOutPutRequest.future, newOutPutRequest.carNumber);
             $('#pop').html(popUpText);
             $('#pop').dialog({
                 buttons: {
@@ -106,41 +169,3 @@ function addRequestsTable() {
     });
 }
 
-function sortTable() {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("requestsTable");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[2];
-      y = rows[i + 1].getElementsByTagName("TD")[2];
-      //check if the two rows should switch place:
-      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        //if so, mark as a switch and break the loop:
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
-
-function createPopUpText(current, future, carNumber){
-    return `Please move car number ${carNumber} \n from parking slot ${current} to empty parking slot ${future}`;
-}

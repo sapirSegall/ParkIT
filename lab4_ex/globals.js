@@ -18,11 +18,18 @@ var request = {
     parkingSlotNumber: '',
     priority: '',
     flagPriority: ''
-}
+};
 var slot = {
     userID: '',
     exitT: ''
 };
+
+//var outPutRequest = {
+//    carNumber: '',
+//    current: '',
+//    future: ''
+//}
+
 function ShowPage(n) {
     $(".page").hide();
     $(".page").eq(n).show();

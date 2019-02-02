@@ -28,7 +28,12 @@
         document.getElementById("car_color").innerHTML = activeDriver.carColor;
         document.getElementById("exit_time").innerHTML = activeDriver.exitTime;
         document.getElementById("parking_number").innerHTML = activeDriver.parkingNumber;
-
+        if (activeDriver.isBlock == true) {
+            var elem = document.createElement("img");
+            var div = document.getElementById("block");
+            div.appendChild(elem);
+            elem.src = "car.png";
+        }
         var barcode_ = activeDriver.barcode;
         JsBarcode("#barcode", barcode_);
         ShowPage(0);
@@ -65,7 +70,7 @@
             </div>
         </nav>
         <!--page driver info n=0 -->
-        <div id="thmbDiv" class="page" data-ttl="driverMenu">
+        <div  class="page" data-ttl="driverMenu">
             <form>
                 <fieldset>
                     <div class="container text-center">
@@ -99,22 +104,7 @@
                             </tbody>
                         </table>
                         <br>
-                        <button type="button" class="btn btn-primary btn-lg" onclick="isBlock()" style="border: none; padding: 12px 16px; cursor: pointer;">
-                            isBlocked
-                        </button>
-                        <script>
-                            function isBlock() {
-                                var isBlock = activeDriver.isBlock;
-                                if (isBlock == true) {
-                                    var thumbContainer = document.getElementById("thmbDiv");
-                                    var thumbnail = document.createElement("img");
-                                    thumbnail.onload = function () {
-                                        thumbContainer.appendChild(thumbnail);
-                                    }
-                                    thumbnail.src = "car.png";
-                                }
-                            }
-                        </script>
+                        <div id="block" style="position: absolute; top: 50px; left: 50px;"></div>
                         <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='tel:+972-525-818-989'" style="border: none; padding: 12px 16px; cursor: pointer;">
                             Call to Valet
                         </button>

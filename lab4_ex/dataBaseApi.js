@@ -38,7 +38,6 @@ async function getPassword(employeeNum) {
     });
     return password;
 }
-
 async function getUserType(employeeNum) {
     var type;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
@@ -46,7 +45,6 @@ async function getUserType(employeeNum) {
     });
     return type;
 }
-
 async function getEmail(employeeNum) {
     var email;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
@@ -54,7 +52,6 @@ async function getEmail(employeeNum) {
     });
     return email;
 }
-
 function createUser(employeeNum, newUser) {
     firebase.database().ref('/Users/' + employeeNum).set({
         employeeNum: newUser.employeeNum,
@@ -134,14 +131,23 @@ function setSlot(slotNum, updatedSlot) {
     database.ref('/Lot/' + slotNum).set(updatedSlot);
     console.log(`update slot in db ${updatedSlot}`);
 }
-
-//change:
 function setexitT(slotNum, updatedexitT) {
     database.ref('/Lot/' + slotNum).set(updatedSlot);
     console.log(`update slot in db ${updatedSlot}`);
 }
-
 function updateRequest(employeeNum, newRequest) {
     console.log(`update the request to the db ${JSON.stringify(newRequest)}`);
     createRequest(employeeNum, newRequest);
+}
+
+async function getOutPutRequest() {
+    var newOutPutRequest;
+    await database.ref('/outPutRequest/').once('value').then(function (snapshot) {
+        newOutPutRequest = snapshot.val();
+    });
+    return newOutPutRequest;
+}
+
+function setOutPutRequest(newOutPutRequest) {
+    database.ref('/outPutRequest/').set(newOutPutRequest);
 }

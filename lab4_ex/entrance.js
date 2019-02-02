@@ -51,21 +51,26 @@ async function blockingFunc1(inputDriverID, inputExitTime) {
                         for (var n2 = 0; n2 < Config.isBlockingParking.length; n2++) {
                             if ((Config.isBlockingParking[n2][0] == k2) && (Config.isBlockingParking[n2][1] == p2)) {
                                 outputSlotNum = k2 * Config.x + p2;
-                                activeDriver.parkingNumber = outputSlotNum;
-                                updateDriver(inputDriverID, activeDriver);
+                                var driver = await getDriver(inputDriverID);
+                                driver.parkingNumber = outputSlotNum;
+                                updateDriver(inputDriverID, driver);
+                                //activeDriver.parkingNumber = outputSlotNum;
+                                //updateDriver(inputDriverID, activeDriver);
                                 counter++;
                                 var slot1 = {
                                     userID: inputDriverID,
                                     exitT: inputExitTime
                                 };
 
-                                await setSlotDB(k2 * Config.x + p2, slot1);//update slot in DB
+                                setSlot(k2 * Config.x + p2, slot1);//update slot in DB
                                 flagEndParking = 1;
 
                                 //update in DB the flag of the blocked car:
                                 var resIDBlocked = await getIDDB(blockedRow * 10 + p2);
-                                activeDriver.isBlock = true;
-                                updateDriver(resIDBlocked, activeDriver);
+                                driver.isBlock = true;
+                                updateDriver(resIDBlocked, driver);
+                                //activeDriver.isBlock = true;
+                                //updateDriver(resIDBlocked, activeDriver);
 
                                 break;
                             }
@@ -89,14 +94,17 @@ async function blockingFunc1(inputDriverID, inputExitTime) {
                         if ((Config.isBlockingParking[n2][0] == k2)
                             && (Config.isBlockingParking[n2][1] == p2)) {
                             outputSlotNum = k2 * Config.x + p2;
-                            activeDriver.parkingNumber = outputSlotNum;
-                            updateDriver(inputDriverID, activeDriver);
+                            var driver = await getDriver(inputDriverID);
+                            driver.parkingNumber = outputSlotNum;
+                            updateDriver(inputDriverID, driver);
+                            //activeDriver.parkingNumber = outputSlotNum;
+                            //updateDriver(inputDriverID, activeDriver);
                             counter++;
                             var slot1 = {
                                 userID: inputDriverID,
                                 exitT: inputExitTime
                             };
-                            await setSlotDB(k2 * Config.x + p2, slot1);//update slot in DB
+                            setSlot(k2 * Config.x + p2, slot1);//update slot in DB
 
                             flagEndParking = 1;
 
@@ -108,8 +116,10 @@ async function blockingFunc1(inputDriverID, inputExitTime) {
 
                             //update in DB the flag of the blocked car:
                             var resIDBlocked = await getIDDB(blockedRow * 10 + p2);
-                            activeDriver.isBlock = true;
-                            updateDriver(resIDBlocked, activeDriver);
+                            driver.isBlock = true;
+                            updateDriver(resIDBlocked, driver);
+                            //activeDriver.isBlock = true;
+                            //updateDriver(resIDBlocked, activeDriver);
 
                             break;
                         }
@@ -145,15 +155,18 @@ async function entranceCar(inputDriverID, inputExitTime) {
                         for (var n = 0; n < Config.IsParking.length; n++) {
                             if ((Config.IsParking[n][0] == k) && (Config.IsParking[n][1] == p)) {
                                 outputSlotNum = k * Config.x + p;
-                                activeDriver.parkingNumber = outputSlotNum;
-                                updateDriver(inputDriverID, activeDriver);
+                                var driver = await getDriver(inputDriverID);
+                                driver.parkingNumber = outputSlotNum;
+                                updateDriver(inputDriverID, driver);
+                                //activeDriver.parkingNumber = outputSlotNum;
+                                //updateDriver(inputDriverID, activeDriver);
                                 counter++;
 
                                 var slot1 = {
                                     userID: inputDriverID,
                                     exitT: inputExitTime
                                 };
-                                await setSlotDB(k * Config.x + p, slot1);//update slot in DB
+                                setSlot(k * Config.x + p, slot1);//update slot in DB
 
                                 flagEndParking = 1;
                                 if (Config.IsParking[n][0] == 9 && Config.IsParking[n][1] == 9) {//need?
