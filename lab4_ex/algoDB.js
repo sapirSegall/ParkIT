@@ -40,6 +40,20 @@ async function getexitTDB(slotNumber) {
     return tempexitTt;
 }
 
+//check if all lot is full(parking+blocking)
+async function isLotFull() 
+{
+    for (var k4 = 0; k4 < Config.x; k4++) {
+        for (p4 = 0; p4 < Config.y; p4++) {
+            if (k4 != 2 && k4 != 7) {
+                var resulotfull = await getIDDB(k4 * Config.x + p4);
+                if (resulotfull == -1) return false;
+            }
+        }
+    }
+    return true; //full
+}
+
 
 //pie chart functions:
 async function getTotalEmpty() {

@@ -13,31 +13,54 @@ async function userRequest(inputSlot, inputID) {
     else if (tempRowNum == 5) blockingRow = 6;
     else if (tempRowNum == 9) blockingRow = 8;
 
+    //save for if full:
+    var blockedexitTime = await getexitTDB(inputSlot);
+    var blockedid = await getIDDB(inputSlot);
     //save for entranceCar() function:
     var blockingexitTime = await getexitTDB(blockingRow * 10 + tempColNum);
     var blockingUserID = await getIDDB(blockingRow * 10 + tempColNum);
-    var resEntrance= await entranceCar(blockingUserID, blockingexitTime); //find parking slot for the blocking car
 
-    //update empty slot in DB:
-    slot.exitT = -1;
-    slot.userID = -1;
-    setSlot(blockingRow * 10 + tempColNum, slot);//update new exit time in db
+    //check if lot is full:
+    var resfull = await isLotFull();
+    if (resfull == true) //if full- replace beetween them
+    {
+        slot.exitT = blockingexitTime;
+        slot.userID = blockingUserID;
+        setSlot(inputSlot, slot);
+        slot.exitT = blockedexitTime;
+        slot.userID = blockedid;
+        setSlot(blockingRow * 10 + tempColNum, slot);//update new exit time in db
+        //update in DB the flag of the blocked car
+        var driver = await getDriver(blockingUserID);
+        driver.isBlock = true;
+        updateDriver(blockingUserID, driver);
+        var driver = await getDriver(blockedid);
+        driver.isBlock = false;
+        updateDriver(blockedid, driver);
+    }
+    else {
+        var resEntrance = await entranceCar(blockingUserID, blockingexitTime); //find parking slot for the blocking car
 
-    //update in DB the flag of the blocked car(no blocked now)
-    var driver = await getDriver(inputID);
-    driver.isBlock = false;
-    updateDriver(inputID, driver);
+        //update empty slot in DB:
+        slot.exitT = -1;
+        slot.userID = -1;
+        setSlot(blockingRow * 10 + tempColNum, slot);//update new exit time in db
 
-    var outPutRequest = {
-        carNumber: blockingUserID,
-        current: (blockingRow * 10 + tempColNum),
-        future: resEntrance
-    };
-    setOutPutRequest(outPutRequest);
-    //outPutRequest.car = blockingUserID;//the driver we want to moving to the empty slot
-    //outPutRequest.current = (blockingRow * 10 + tempColNum); //the slot of the car we want to move
-    //outPutRequest.future = resEntrance;//the empty slot
-    return "hallo";
+        //update in DB the flag of the blocked car(no blocked now)
+        var driver = await getDriver(inputID);
+        driver.isBlock = false;
+        updateDriver(inputID, driver);
 
+        var outPutRequest = {
+            carNumber: blockingUserID,
+            current: (blockingRow * 10 + tempColNum),
+            future: resEntrance
+        };
+        setOutPutRequest(outPutRequest);
+        //outPutRequest.car = blockingUserID;//the driver we want to moving to the empty slot
+        //outPutRequest.current = (blockingRow * 10 + tempColNum); //the slot of the car we want to move
+        //outPutRequest.future = resEntrance;//the empty slot
+        return "hallo";
+    }
 }//end of function userRequest
 
