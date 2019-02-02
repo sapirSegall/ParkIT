@@ -83,6 +83,7 @@ async function systemRequest(IDFrom, slotFrom, slotEmpty, exitTCompare, requestN
 {
     var resCheck2 = [];
     var resSysReq = [];
+    var outSystemReq = [];
 
     var tempParkingSNum = slotFrom;
     var kFrom = Math.floor(tempParkingSNum / 10);
@@ -95,6 +96,9 @@ async function systemRequest(IDFrom, slotFrom, slotEmpty, exitTCompare, requestN
     var upToDateIdFrom = await getIDDB(kFrom * Config.x + pFrom);
     if (upToDateIdFrom == IDFrom) //if still there:
     {
+        outSystemReq.push(IDFrom);
+        outSystemReq.push(slotFrom);
+        outSystemReq.push(slotEmpty);
         //save details of the user we move from
         var tempUserID = await getIDDB(kFrom * 10 + pFrom);//idFrom?delete?
         var tempExitT = await getexitTDB(kFrom * 10 + pFrom);
@@ -127,8 +131,12 @@ async function systemRequest(IDFrom, slotFrom, slotEmpty, exitTCompare, requestN
         (resCheck2 = await checkSystemRequest(exitTCompare, kEmpty, pEmpty, requestNum));//check again
         if (resCheck2 == false) return false; //return false= the car is not still there and there is not another car
         else {
+            outSystemReq.push(resCheck2[0]);
+            outSystemReq.push(resCheck2[1]);
+            outSystemReq.push(resCheck2[2]);
             resSysReq= await systemRequest(resCheck2[0], resCheck2[1], resCheck2[2], resCheck2[3], requestNum);
         }
     }
+    return outSystemReq;
 }//end of systemRequest func
 
