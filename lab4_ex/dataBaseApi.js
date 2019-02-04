@@ -139,7 +139,6 @@ function updateRequest(employeeNum, newRequest) {
     console.log(`update the request to the db ${JSON.stringify(newRequest)}`);
     createRequest(employeeNum, newRequest);
 }
-
 async function getOutPutRequest() {
     var newOutPutRequest;
     await database.ref('/outPutRequest/').once('value').then(function (snapshot) {
@@ -147,7 +146,17 @@ async function getOutPutRequest() {
     });
     return newOutPutRequest;
 }
-
 function setOutPutRequest(newOutPutRequest) {
     database.ref('/outPutRequest/').set(newOutPutRequest);
+}
+async function getRequest(employeeNum, requestNum) {
+    var request;
+    await database.ref('/Requests/' + employeeNum).child(requestNum).once('value').then(function (snapshot) {
+        request = snapshot.val();
+    });
+    return request;
+}
+function setRequest(requestNum, priorityFlag) {
+    database.ref('/Requests/' + requestNum).set(priorityFlag);
+    console.log(`update priority flag to db ${JSON.stringify(priorityFlag)}`);
 }

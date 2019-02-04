@@ -112,7 +112,7 @@ function addDriversTable() {
                 td.innerHTML = '<input type="button" value ="x" onClick="Javacsript:deleteDriverRow(this)">';
             } else if (j == 1) {
                 td.width = '20';
-                td.innerHTML = '<input type="image" onClick="Javacsript:editDriverDetails(this)" src="edit.png">';
+                td.innerHTML = '<input type="image" onClick="Javacsript:editDriverDetails(this)" src="pencil.png" width="20" height="20">';
             } else {
                 td.width = '200';
                 td.appendChild(document.createTextNode(text));

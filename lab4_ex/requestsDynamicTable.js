@@ -133,29 +133,30 @@ async function addRequestsTable() {
     $(document).ready(function($) {
         $(".request-row").click(async function () {
             var row = this;
-            //var params;
+            debugger;
             var currentRequestNumber = this.getElementsByTagName("td")[0].innerText;
             var requestPriority = this.getElementsByTagName("td")[2].innerText;
-            if (requestPriority == 1) {
-                for (const [employeeNumber, employeeRequests] of Object.entries(requests)) {
-                    for (const [requestNumber, request] of Object.entries(employeeRequests)) {
-                        if (requestNumber == currentRequestNumber) {
+            var flagParkingFound = 0;
+            for (const [employeeNumber, employeeRequests] of Object.entries(requests)) {
+                for (const [requestNumber, request] of Object.entries(employeeRequests)) {
+                    if (requestNumber == currentRequestNumber) {
+                        if (requestPriority == 1) {
                             var hello = await userRequest(request.parkingSlotNumber, employeeNumber);
-                            console.log(`check in db ${hello}`);
-                            debugger;
                             var newOutPutRequest = await getOutPutRequest();
-                            //params.parkingNumber = newOutPutRequest.carNumber;
-                            //params.current = newOutPutRequest.current;
-                            //params.future = newOutPutRequest.future;
+                            flagParkingFound = 1;
+                            break;
+                        } else if (requestPriority == 2) {
+                            var hello = await scheduleReq(request.parkingSlotNumber, employeeNumber)
+                            var newOutPutRequest = await getOutPutRequest();
+                            flagParkingFound = 1;
+                            break;
+                        } else {
+
                         }
                     }
                 }
-            } else if (requestPriority == 2) {
-
-            } else {
-
-            }
-            //var params = getResponseParams(requestNumber);
+                if (flagParkingFound == 1) break;
+            } 
             var popUpText = createPopUpText(newOutPutRequest.current, newOutPutRequest.future, newOutPutRequest.carNumber);
             $('#pop').html(popUpText);
             $('#pop').dialog({

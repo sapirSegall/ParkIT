@@ -8,11 +8,14 @@
     <script src="requestsDynamicTable.js"></script>
     <script src="valetFunctions.js"></script>
     <script src="algorithmAPI.js"></script>
+    <script src="entrance.js"></script>
+    <script src="algoDB.js"></script>
     <script src="userReq.js"></script>
+    <script src="scheduleReq.js"></script>
     <script type="text/javascript" src="globals.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
     <script type="text/javascript" src="dataBaseApi.js"></script>
-    
+
     <link rel="import" href="adminPage.html">
     <link rel="import" href="driverPage.html">
     <link rel="import" href="valetPage.html">
@@ -32,9 +35,14 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <script src="entrance.js"></script>
     <style>
         table#requestsTable {
+            border-collapse: collapse;
+        }
+        table#valetDriversTable {
+            border-collapse: collapse;
+        }
+        table#driversTable {
             border-collapse: collapse;
         }
 
@@ -43,29 +51,57 @@
             border-top: 1px solid #fff;
             color: black;
         }
+        #driversTable tr {
+            background-color: #eee;
+            border-top: 1px solid #fff;
+            color: black;
+        }
+        #valetDriversTable tr {
+            background-color: #eee;
+            border-top: 1px solid #fff;
+            color: black;
+        }
 
-            #requestsTable tr:hover {
-                background-color: #ccc;
+        #requestsTable tr:hover {
+                background-color: #56CC9D;
             }
+        #driversTable tr:hover {
+            background-color: #56CC9D;
+        }
+        #valetDriversTable tr:hover {
+            background-color: #56CC9D;
+        }
 
         #requestsTable th {
+            background-color: #fff;
+        }
+        #driversTable th {
+            background-color: #fff;
+        }
+        #valetDriversTable th {
             background-color: #fff;
         }
 
         #requestsTable th, #requestsTable td {
             padding: 3px 5px;
         }
+        #driversTable th, #driversTable td {
+            padding: 3px 5px;
+        }
+        #valetDriversTable th, #valetDriversTable td {
+            padding: 3px 5px;
+        }
 
-            #requestsTable td:hover {
+        #requestsTable td:hover {
                 cursor: pointer;
             }
-    </style>
-    <script src="algoDB.js"></script>
-    <!--<link href="inc/bootstrapAlex.css" rel="stylesheet" />-->
-    <!--<link href="inc/bootstrap.css" rel="stylesheet" />-->
-    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
-    <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">-->
-    <style>
+        #driversTable td:hover {
+            cursor: pointer;
+        }
+        #valetDriversTable td:hover {
+            cursor: pointer;
+        }
+
         body {
             background-image: url("img/background.jpg");
         }
@@ -91,6 +127,7 @@
             text-align: center;
         }
     </style>
+
     <script>
         $(function () {
             // on document ready
