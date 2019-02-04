@@ -43,7 +43,7 @@ async function userRequest(inputSlot, inputID) {
         updateDriver(blockedid, driver);
 
         var outPutRequest = {
-            carNumber: blockedid,
+            carNumber: driver.carNumber,
             current: inputSlot,
             future: (blockingRow * 10 + tempColNum)
         };
@@ -64,8 +64,9 @@ async function userRequest(inputSlot, inputID) {
         driver.isBlock = false;
         updateDriver(inputID, driver);
 
+        var driver = await getDriver(blockingUserID);
         var outPutRequest = {
-            carNumber: blockingUserID,
+            carNumber: driver.carNumber,
             current: (blockingRow * 10 + tempColNum),
             future: resEntrance
         };

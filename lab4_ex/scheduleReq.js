@@ -59,7 +59,6 @@ async function scheduleReq(slotNum, DriverID) {
     var tempParkingSNum = slotNum;
     var tempRowNum = Math.floor(tempParkingSNum / 10);
     var tempColNum = tempParkingSNum % 10;
-    var outPutScheduleReq = [];
 
     //check if lot is full:
     var resfull = await isLotFull();
@@ -85,15 +84,13 @@ async function scheduleReq(slotNum, DriverID) {
         driver.isBlock = false;
         updateDriver(DriverID, driver);
 
+        var driver = await getDriver(idBlocking);
         var outPutRequest = {
-            carNumber: idBlocking,
+            carNumber: driver.carNumber,
             current: (blockingRow * Config.x + tempColNum),
             future: resEntrance
         };
         setOutPutRequest(outPutRequest);
-        //outPutScheduleReq.push(idBlocking);//the driver we want to moving to the empty slot
-        //outPutScheduleReq.push(blockingRow * Config.x + tempColNum); //the slot of the car we want to move
-        //outPutScheduleReq.push(resEntrance);//the empty slot
     }
     else if ((tempRowNum == 1 || tempRowNum == 3 || tempRowNum == 6 || tempRowNum == 8)) {//if blocking row
 
@@ -116,15 +113,13 @@ async function scheduleReq(slotNum, DriverID) {
         driver.isBlock = false;
         updateDriver(resIDBlocked, driver);
 
+        var driver = await getDriver(DriverID);
         var outPutRequest = {
-            carNumber: DriverID,
+            carNumber: driver.carNumber,
             current: slotNum,
             future: resEntranc
         };
-        setOutPutRequest(outPutRequest);
-        //outPutScheduleReq.push(DriverID);//the driver we want to moving to the empty slot
-        //outPutScheduleReq.push(slotNum); //the slot of the car we want to move
-        //outPutScheduleReq.push(resEntranc);//the empty slot  
+        setOutPutRequest(outPutRequest); 
     }
     return "hallo";
 }
