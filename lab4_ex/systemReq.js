@@ -1,10 +1,9 @@
-﻿
-//change: input: parkingSlot number
+﻿//when an employee exits the parking lot, the exitCar() function is called and that call to checkSystemRequest function
+//input: parking Slot number of the employee that exits, Request number
+//output: update in DB the empty parking slot
 async function exitCar(inputSlotNum, requestNum)
 {
-    var resCheck = [];//the output of checkSystemRequest function;
-
-    //update empty slot in DB 
+    //update empty slot in DB:
     slot.exitT = -1;
     slot.userID = -1;
     setSlot(inputSlotNum, slot);
@@ -14,7 +13,7 @@ async function exitCar(inputSlotNum, requestNum)
     var tempColNum = tempParkingSNum % 10;
 
     if (tempRowNum == 0 || tempRowNum == 4 || tempRowNum == 5 || tempRowNum == 9)//when the row is 'isParking' row
-        resCheck = await checkSystemRequest(null, tempRowNum, tempColNum, requestNum);// check if to add a system request to DB
+        await checkSystemRequest(null, tempRowNum, tempColNum, requestNum);// check if to add a system request to valet's tasks table
     else if (tempRowNum == 1 || tempRowNum == 3 || tempRowNum == 6 || tempRowNum == 8) //when the row is 'isBlockingParking' row
     {
         if (tempRowNum == 1) blockedRow = 0;
@@ -26,18 +25,17 @@ async function exitCar(inputSlotNum, requestNum)
         activeDriver.isBlock = false;
         updateDriver(blockedRow * 10 + tempColNum, activeDriver);
 
-        var ExitTisParking = await getExitTDriverSlot(blockedRow * 10 + tempColNum)
-        resCheck = await checkSystemRequest(ExitTisParking, tempRowNum, tempColNum, requestNum);// check if to add a system request to DB
-     }
-    return resCheck;
+        //var ExitTisParking = await getExitTDriverSlot(blockedRow * 10 + tempColNum)
+        await checkSystemRequest(ExitTisParking, tempRowNum, tempColNum, requestNum);// check if to add a system request to valet's tasks table
+    }
 } //end of exitCars function
 
 
-
-async function checkSystemRequest(exitTCompare, kEmpty, pEmpty, requestNum) {//kEmpty,pEmpty: is the empty parking slot
+//checkSystemRequest function checks if the valet should move a blocking car to the empty parking slot of the employee that exited
+async function checkSystemRequest(exitTCompare) {
     var blockedRow;
     var flagSystemReq;
-    var outPutCheckSystemReq = [];
+    var outPutCheckSystemReq=[];
 
     for (var k = 0; k < Config.x; k++) {
         for (var p = 0; p < Config.y; p++) {
@@ -51,92 +49,95 @@ async function checkSystemRequest(exitTCompare, kEmpty, pEmpty, requestNum) {//k
                 var exitTblocking = await getexitTDB(k * 10 + p);
                 var exitTblocked = await getexitTDB(blockedRow * 10 + p);
 
-                if (idblocking != -1 && exitTblocking > exitTblocked)  //if slot is not empty, and blockingcar's exitT > blockedcar's exitT
+                if (idblocking != -1 && exitTblocking > exitTblocked)  //if parking slot is not empty, and blockingcar's exitT > blockedcar's exitT
                     if ((exitTCompare != null && exitTblocking <= exitTCompare) || exitTCompare == null) { //if blockingcar's exitTime<=exitTCompare
                         flagSystemReq = 1;
-                request.requestNumber = requestNum;
-                request.flagPriority = true;
-                await updateRequest(employeeNum, request);
+                        request.requestNumber = requestNum;
+                        request.flagPriority = true;
+                        await updateRequest(employeeNum, request);
+                    }
+                    else {
+                        request.requestNumber = requestNum;
+                        request.flagPriority = false;
+                        await updateRequest(employeeNum, request);
                     }
             }
             if (flagSystemReq == 1) break;
         }
         if (flagSystemReq == 1) break;
     }
-    if (flagSystemReq != 1)  //no need systemRequest
-    {
-        request.requestNumber = requestNum;
-        request.flagPriority = false;
-        await updateRequest(employeeNum, request);
-        outPutCheckSystemReq = false;
-    }
+    //the output is only used in systemRequest function
+    if (flagSystemReq != 1) return false;//no need system request
     else {//need system request
         outPutCheckSystemReq.push(idblocking);//the driver we want to moving to the empty slot
         outPutCheckSystemReq.push(k * 10 + p); //the slot of the car we want to move
         outPutCheckSystemReq.push(kEmpty * 10 + pEmpty);//the empty slot
-        outPutCheckSystemReq.push(exitTCompare);
         return outPutCheckSystemReq;
     }
 }
 
-async function systemRequest(IDFrom, slotFrom, slotEmpty, exitTCompare, requestNum) //called when valet select this task
+//async function systemRequest(IDFrom, slotFrom, slotEmpty, exitTCompare, requestNum) //called when valet select this task
+//input: parking slot number of the employee that exited
+async function systemRequest(slotEmpty)
 {
-    var resCheck2 = [];
-    var resSysReq = [];
-    var outSystemReq = [];
+    var exitTCompare;
+    var flagEmptyIsBlocking = 0;
+    var resCheck = [];
 
-    var tempParkingSNum = slotFrom;
-    var kFrom = Math.floor(tempParkingSNum / 10);
-    var pFrom = tempParkingSNum % 10;
     var tempParkingSNum2 = slotEmpty;
     var kEmpty = Math.floor(tempParkingSNum2 / 10);
     var pEmpty = tempParkingSNum2 % 10;
 
-    //check if the car in the slotFrom is still there:
-    var upToDateIdFrom = await getIDDB(kFrom * Config.x + pFrom);
-    if (upToDateIdFrom == IDFrom) //if still there:
+    //call to checkSystemRequest function:
+    //find exitT to compare:
+    if (kEmpty == 0 || kEmpty == 4 || kEmpty == 5 || kEmpty == 9)//when the row is 'isParking' row
+        exitTCompare == '24:00'; 
+    else if (kEmpty == 1 || kEmpty == 3 || kEmpty == 6 || kEmpty == 8) {//if it is a blocking row
+        flagEmptyIsBlocking = 1;
+        if (kEmpty == 1) blockedRow = 0;
+        else if (kEmpty == 3) blockedRow = 4;
+        else if (kEmpty == 6) blockedRow = 5;
+        else if (kEmpty == 8) blockedRow = 9;
+        exitTCompare = await getexitTDB(blockedRow * 10 + p);
+    }
+    resCheck = await checkSystemRequest(exitTCompare);
+    if (resCheck!=false) //if the valet need to move car to the empty parking slot
     {
-        outSystemReq.push(IDFrom);
-        outSystemReq.push(slotFrom);
-        outSystemReq.push(slotEmpty);
         //save details of the user we move from
-        var tempUserID = await getIDDB(kFrom * 10 + pFrom);//idFrom?delete?
-        var tempExitT = await getexitTDB(kFrom * 10 + pFrom);
-
+        var tempUserID = await getIDDB(resCheck[1]);
+        var tempExitT = await getexitTDB(resCheck[1]);
         //update at db that the slot is empty:
         slot.exitT = -1;
         slot.userID = -1;
-        setSlot(kFrom * 10 + pFrom, slot);
+        setSlot(resCheck[1], slot);
         //update in DB the flag of the blocked car:
-        if (kFrom == 1) blockedRow = 0;
-        else if (kFrom == 3) blockedRow = 4;
-        else if (kFrom == 6) blockedRow = 5;
-        else if (kFrom == 8) blockedRow = 9;
-        activeDriver.isBlock = true;
+        if (resCheck[1] == 1) blockedRow = 0;
+        else if (resCheck[1] == 3) blockedRow = 4;
+        else if (resCheck[1] == 6) blockedRow = 5;
+        else if (resCheck[1] == 8) blockedRow = 9;
+        activeDriver.isBlock = false;
         updateDriver(blockedRow * 10 + pFrom, activeDriver);
 
         //move to the empty parking slot:
         slot.exitT = tempExitT;
         slot.userID = tempUserID;
-        setSlot(kEmpty * 10 + pEmpty, slot);
-        //update in DB the flag of the blocked car:
-        if (kEmpty == 1) blockedRow = 0;
-        else if (kEmpty == 3) blockedRow = 4;
-        else if (kEmpty == 6) blockedRow = 5;
-        else if (kEmpty == 8) blockedRow = 9;
-        activeDriver.isBlock = true;
-        updateDriver(blockedRow * 10 + pEmpty, activeDriver);
-    }
-    else {//if not still there:
-        (resCheck2 = await checkSystemRequest(exitTCompare, kEmpty, pEmpty, requestNum));//check again
-        if (resCheck2 == false) return false; //return false= the car is not still there and there is not another car
-        else {
-            outSystemReq.push(resCheck2[0]);
-            outSystemReq.push(resCheck2[1]);
-            outSystemReq.push(resCheck2[2]);
-            resSysReq= await systemRequest(resCheck2[0], resCheck2[1], resCheck2[2], resCheck2[3], requestNum);
+        setSlot(resCheck[2], slot);
+
+        if (flagEmptyIsBlocking==1) {//if it is a blocking row
+            //update in DB the flag of the blocked car:
+            activeDriver.isBlock = true;
+            updateDriver(blockedRow * 10 + pEmpty, activeDriver);
         }
+
+        var tempUserID = await getIDDB(slotEmpty);
+        var driver = await getDriver(tempUserID);
+        var outPutRequest = {
+            carNumber: driver.carNumber,
+            current: resCheck[1],
+            future: resCheck[2]
+        };
+        setOutPutRequest(outPutRequest);
     }
-    return outSystemReq;
+    else if (resCheck == false) return false; //return false=there is not car to move to the empty parking slot
 }//end of systemRequest func
 
