@@ -3,6 +3,7 @@
 //output: update in DB the empty parking slot
 async function exitCar(inputSlotNum, requestNum)
 {
+    var resCheck1;
     //update empty slot in DB:
     slot.exitT = -1;
     slot.userID = -1;
@@ -13,7 +14,7 @@ async function exitCar(inputSlotNum, requestNum)
     var tempColNum = tempParkingSNum % 10;
 
     if (tempRowNum == 0 || tempRowNum == 4 || tempRowNum == 5 || tempRowNum == 9)//when the row is 'isParking' row
-        await checkSystemRequest(null, tempRowNum, tempColNum, requestNum);// check if to add a system request to valet's tasks table
+        resCheck1= await checkSystemRequest(null);// check if to add a system request to valet's tasks table
     else if (tempRowNum == 1 || tempRowNum == 3 || tempRowNum == 6 || tempRowNum == 8) //when the row is 'isBlockingParking' row
     {
         if (tempRowNum == 1) blockedRow = 0;
@@ -21,12 +22,22 @@ async function exitCar(inputSlotNum, requestNum)
         else if (tempRowNum == 6) blockedRow = 5;
         else if (tempRowNum == 8) blockedRow = 9;
 
-        //update in DB the flag of the blocked car:
+        //update in DB 
         activeDriver.isBlock = false;
         updateDriver(blockedRow * 10 + tempColNum, activeDriver);
 
-        //var ExitTisParking = await getExitTDriverSlot(blockedRow * 10 + tempColNum)
-        await checkSystemRequest(ExitTisParking, tempRowNum, tempColNum, requestNum);// check if to add a system request to valet's tasks table
+        var ExitTisParking = await getExitTDriverSlot(blockedRow * 10 + tempColNum)
+        resCheck1= await checkSystemRequest(ExitTisParking);// check if to add a system request to valet's tasks table
+    }
+    if (resCheck1 != false) {//if find
+        request.requestNumber = requestNum;
+        request.flagPriority = true;
+        await updateRequest(employeeNum, request);
+    }
+    else {
+        request.requestNumber = requestNum;
+        request.flagPriority = false;
+        await updateRequest(employeeNum, request);
     }
 } //end of exitCars function
 
@@ -50,17 +61,8 @@ async function checkSystemRequest(exitTCompare) {
                 var exitTblocked = await getexitTDB(blockedRow * 10 + p);
 
                 if (idblocking != -1 && exitTblocking > exitTblocked)  //if parking slot is not empty, and blockingcar's exitT > blockedcar's exitT
-                    if ((exitTCompare != null && exitTblocking <= exitTCompare) || exitTCompare == null) { //if blockingcar's exitTime<=exitTCompare
-                        flagSystemReq = 1;
-                        request.requestNumber = requestNum;
-                        request.flagPriority = true;
-                        await updateRequest(employeeNum, request);
-                    }
-                    else {
-                        request.requestNumber = requestNum;
-                        request.flagPriority = false;
-                        await updateRequest(employeeNum, request);
-                    }
+                    if ((exitTCompare != null && exitTblocking <= exitTCompare) || exitTCompare == null)  //if blockingcar's exitTime<=exitTCompare
+                        flagSystemReq = 1;   
             }
             if (flagSystemReq == 1) break;
         }
@@ -71,7 +73,7 @@ async function checkSystemRequest(exitTCompare) {
     else {//need system request
         outPutCheckSystemReq.push(idblocking);//the driver we want to moving to the empty slot
         outPutCheckSystemReq.push(k * 10 + p); //the slot of the car we want to move
-        outPutCheckSystemReq.push(kEmpty * 10 + pEmpty);//the empty slot
+        outPutCheckSystemReq.push(blockedRow * 10 + p);//the empty slot
         return outPutCheckSystemReq;
     }
 }
@@ -91,7 +93,7 @@ async function systemRequest(slotEmpty)
     //call to checkSystemRequest function:
     //find exitT to compare:
     if (kEmpty == 0 || kEmpty == 4 || kEmpty == 5 || kEmpty == 9)//when the row is 'isParking' row
-        exitTCompare == '24:00'; 
+        exitTCompare == null; 
     else if (kEmpty == 1 || kEmpty == 3 || kEmpty == 6 || kEmpty == 8) {//if it is a blocking row
         flagEmptyIsBlocking = 1;
         if (kEmpty == 1) blockedRow = 0;
