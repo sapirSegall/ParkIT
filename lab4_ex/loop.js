@@ -247,6 +247,7 @@ var outputExitT = [];
                                 {
                                     //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //���� �������
                                     countMoves++;
+                                    console.log('countermoves: ' + countMoves);
                                     //window.alert(k, p); //just for debugging
                                 }
                             }
@@ -350,6 +351,7 @@ var outputExitT = [];
                             if ((exitTCompare != null && mainarr[k * 10 + p].exitT <= exitTCompare) || exitTCompare == null) { //if blockingcar's exitTime<=exitTCompare
                                 flagSystemReq = 1;
                                 countMoves++;
+                                console.log('countermoves: ' + countMoves);
                                 //systemRequest(k,p, kEmpty, pEmpty)// for debugging
                                 //sendSystemReqToDB(mainarr[k * 10 + p].userID, kEmpty,pEmpty ); //����
                             }
