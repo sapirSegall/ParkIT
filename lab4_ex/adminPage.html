@@ -69,37 +69,37 @@
             <form>
                 <p>
                     <label for="employeeNumber">Employee Number:</label>
-                    <input name="employeeNumber" id="employeeNumber" type="text">
+                    <input name="employeeNumber" id="employeeNumber" type="text" class="tab" required />
                 </p>
 
                 <p>
                     <label for="firstName">First Name:</label>
-                    <input name="firstName" id="firstName" type="text">
+                    <input name="firstName" id="firstName" type="text"  class="tab">
                 </p>
 
                 <p>
                     <label for="lastName">Last Name:</label>
-                    <input name="lastName" id="lastName" type="text">
+                    <input name="lastName" id="lastName" type="text" class="tab">
                 </p>
 
                 <p>
                     <label for="email">Email:</label>
-                    <input name="email" id="email" type="email">
+                    <input name="email" id="email" type="email" class="tab">
                 </p>
 
                 <p>
                     <label for="phoneNumber">Phone Number:</label>
-                    <input name="phone" id="phoneNumber" type="tel">
+                    <input name="phone" id="phoneNumber" type="tel" class="tab">
                 </p>
 
                 <p>
                     <label for="carNumber">Car Number:</label>
-                    <input name="carNumber" id="carNumber" type="number">
+                    <input name="carNumber" id="carNumber" type="number" class="tab">
                 </p>
 
                 <p>
                     <label for="carType">Car type:</label>
-                    <select name="carType" id="carType">
+                    <select name="carType" id="carType" class="tab">
                         <option>Company Car</option>
                         <option>Private Car</option>
                     </select>
@@ -107,29 +107,45 @@
 
 
                 <p>
-                    <label for="carSeries">Car Series:</label>
-                    <select name="carSeries" id="carSeries">
+                    <label for="carSeries">Car Brand:</label>
+                    <select name="carSeries" id="carSeries" class="tab">
                         <option>Honda</option>
                         <option>Hundai</option>
                         <option>Mazda</option>
+                        <option>Suzuki</option>
+                        <option>Chevrolet</option>
+                        <option>Ford</option>
+                        <option>Fiat</option>
+                        <option>Toyota</option>
+                        <option>Citroen</option>
+                        <option>Jaguar</option>
+                        <option>Audi</option>
+                        <option>Alfa Romeo</option>
+                        <option>Nissan</option>
+                        <option>Kia</option>
+                        <option>Peugeot</option>
+                        <option>Renault</option>
                     </select>
                 </p>
 
                 <p>
                     <label for="carColor">Car Color:</label>
-                    <select name="carColor" id="carColor">
+                    <select name="carColor" id="carColor" class="tab">
                         <option>Grey</option>
                         <option>Blue</option>
                         <option>Red</option>
+                        <option>White</option>
+                        <option>Black</option>
+                        <option>Yellow</option>
                     </select>
                 </p>
 
                 <p>
                     <label for="carCode">Car Code:</label>
-                    <input name="carCode" id="carCode" type="text">
+                    <input name="carCode" id="carCode" type="text" class="tab">
                 </p>
 
-                <button type="button" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
+                <button type="submit" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
                 <script type="text/javascript">
                     async function setDriverData() {
                         var employeeNumber = document.getElementById('employeeNumber').value;
@@ -177,61 +193,78 @@
             <form>
                 <p>
                     <label for="firstNameUpdate">First Name:</label>
-                    <input name="firstNameU" id="firstNameUpdate" type="text">
+                    <input name="firstNameU" id="firstNameUpdate" type="text" class="tab" required>
                 </p>
 
                 <p>
                     <label for="lastNameUpdate">Last Name:</label>
-                    <input name="lastNameU" id="lastNameUpdate" type="text">
+                    <input name="lastNameU" id="lastNameUpdate" type="text" class="tab">
                 </p>
 
                 <p>
                     <label for="emailUpdate">Email:</label>
-                    <input name="emailU" id="emailUpdate" type="email">
+                    <input name="emailU" id="emailUpdate" type="email" class="tab">
                 </p>
 
                 <p>
                     <label for="phoneNumberUpdate">Phone Number:</label>
-                    <input name="phone" id="phoneNumberUpdate" type="tel">
+                    <input name="phone" id="phoneNumberUpdate" type="tel" class="tab">
                 </p>
 
                 <p>
                     <label for="carNumberUpdate">Car Number:</label>
-                    <input name="carNumberU" id="carNumberUpdate" type="number">
+                    <input name="carNumberU" id="carNumberUpdate" type="number" class="tab">
                 </p>
 
                 <p>
                     <label for="carTypeUpdate">Car type:</label>
-                    <select name="carTypeU" id="carTypeUpdate">
+                    <select name="carTypeU" id="carTypeUpdate" class="tab">
                         <option>Company Car</option>
                         <option>Private Car</option>
                     </select>
                 </p>
 
                 <p>
-                    <label for="carSeriesUpdate">Car Series:</label>
-                    <select name="carSeriesU" id="carSeriesUpdate">
+                    <label for="carSeriesUpdate">Car Brand:</label>
+                    <select name="carSeriesU" id="carSeriesUpdate" class="tab">
                         <option>Honda</option>
                         <option>Hundai</option>
                         <option>Mazda</option>
+                        <option>Suzuki</option>
+                        <option>Chevrolet</option>
+                        <option>Ford</option>
+                        <option>Fiat</option>
+                        <option>Toyota</option>
+                        <option>Citroen</option>
+                        <option>Jaguar</option>
+                        <option>Audi</option>
+                        <option>Alfa Romeo</option>
+                        <option>Nissan</option>
+                        <option>Kia</option>
+                        <option>Peugeot</option>
+                        <option>Renault</option>
                     </select>
                 </p>
 
                 <p>
                     <label for="carColorUpdate">Car Color:</label>
-                    <select name="carColorU" id="carColorUpdate">
+                    <select name="carColorU" id="carColorUpdate" class="tab">
                         <option>Grey</option>
                         <option>Blue</option>
                         <option>Red</option>
+                        <option>White</option>
+                        <option>Black</option>
+                        <option>Yellow</option>
                     </select>
                 </p>
 
                 <p>
                     <label for="carCodeUpdate">Car Code:</label>
-                    <input name="carCodeU" id="carCodeUpdate" type="text">
+                    <input name="carCodeU" id="carCodeUpdate" type="text" class="tab">
                 </p>
 
-                <button type="button" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
+                <button type="submit" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
+
                 <script type="text/javascript">
                     async function updateDriverData() {
                         var firstName = document.getElementById('firstNameUpdate').value;

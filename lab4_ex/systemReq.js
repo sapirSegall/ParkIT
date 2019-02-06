@@ -1,7 +1,7 @@
 ﻿//when an employee exits the parking lot, the exitCar() function is called and that call to checkSystemRequest function
 //input: parking Slot number of the employee that exits, Request number
 //output: update in DB the empty parking slot
-async function exitCar(inputSlotNum, requestNum)
+async function exitCar(inputSlotNum, employeeNum, requestNum)
 {
     var resCheck1;
     //update empty slot in DB:
@@ -22,23 +22,26 @@ async function exitCar(inputSlotNum, requestNum)
         else if (tempRowNum == 6) blockedRow = 5;
         else if (tempRowNum == 8) blockedRow = 9;
 
-        //update in DB 
-        activeDriver.isBlock = false;
-        updateDriver(blockedRow * 10 + tempColNum, activeDriver);
+        //update in DB
+        var resIDBlocked = await getIDDB(blockedRow * 10 + tempColNum);
+        var driver = getDriver(resIDBlocked);
+        driver.isBlock = false;
+        updateDriver(resIDBlocked, driver);
 
         var ExitTisParking = await getExitTDriverSlot(blockedRow * 10 + tempColNum)
         resCheck1= await checkSystemRequest(ExitTisParking);// check if to add a system request to valet's tasks table
     }
     if (resCheck1 != false) {//if find
+        var request = await getRequest(employeeNum, requestNum);
         request.requestNumber = requestNum;
         request.flagPriority = true;
-        await updateRequest(employeeNum, request);
+        updateRequest(employeeNum, request);
     }
-    else {
-        request.requestNumber = requestNum;
-        request.flagPriority = false;
-        await updateRequest(employeeNum, request);
-    }
+    //else {
+    //    request.requestNumber = requestNum;
+    //    request.flagPriority = false;
+    //    await updateRequest(employeeNum, request);
+    //}
 } //end of exitCars function
 
 
