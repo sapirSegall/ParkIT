@@ -53,13 +53,8 @@ async function getEmail(employeeNum) {
     return email;
 }
 function createUser(employeeNum, newUser) {
-    firebase.database().ref('/Users/' + employeeNum).set({
-        employeeNum: newUser.employeeNum,
-        password: newUser.password
-    }).catch(function (error) {
-        console.log('Error writing new message to Realtime Database:', error);
-    });
-    console.log(`add the new driver to the db ${newDriver}`);
+    database.ref('/Users/' + employeeNum).set(newUser);
+    console.log(`add the new user to the db ${newUser}`);
 }
 function createRequest(employeeNum, newRequest) {
     database.ref(`/Requests/${employeeNum}/${newRequest.requestNumber}`).set({

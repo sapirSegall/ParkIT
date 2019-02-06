@@ -142,16 +142,16 @@
         });
         function ResetUser() {
             activeUser = {
-                mail: "",
                 user: "",
-                pass: ""
+                pass: "",
+                type: ""
             };
             $("input").val("");
         }
         function Register() {
             activeUser = {
-                type: "driver",
-                pass: $("#inpPassword").val()
+                pass: $("#inpPassword").val(),
+                type: "driver"
             }
             createUser($("#inpEmployeeNum").val(), activeUser);
             ShowPage(2);
@@ -199,14 +199,14 @@
                     <fieldset>
                         <div class="form-group">
                             <label for="inpEmployeeNum">Employee Number</label>
-                            <input type="password" class="form-control" id="inpEmployeeNum" placeholder="Enter employee number">
+                            <input type="password" class="form-control" id="inpEmployeeNum" placeholder="Enter employee number" onblur="validateTextBox()">
                         </div>
                         <div class="form-group">
                             <label for="inpPassword">Password</label>
                             <input type="password" class="form-control" id="inpPassword" placeholder="Enter password">
                         </div>
                         <div>
-                            <button type="button" class="btn btn-primary" onclick="Register()">Register</button>
+                            <button type="button" class="btn btn-primary" onclick="validateTextBox(); Register();">Register</button>
                             <button type="button" class="btn btn-primary" onclick="ShowPage(1)">Sign In</button>
                         </div>
                     </fieldset>
@@ -240,7 +240,7 @@
 
             <!--page error login n=3 -->
             <div class="alert alert-warning page" data-ttl="Error Login">
-                <strong>Error login!</strong>
+                <strong>Please contact your system Administrator for login</strong>
             </div>
 
             <!--buttons of one page appw'-->

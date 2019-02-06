@@ -89,6 +89,8 @@ function addDriversTable() {
     //drivers for
     for (const [employeeNumber, driver] of Object.entries(drivers)) {
         var tr = document.createElement('TR');
+        //evry row will be from thid type of class
+        tr.setAttribute('class', 'driver-row');
         tableBody.appendChild(tr);
         //details for
         for (var j = 0; j < 5; j++) {
@@ -120,4 +122,18 @@ function addDriversTable() {
             tr.appendChild(td);
         }
     }
+
+    $(document).ready(function ($) {
+        $(".driver-row").click(async function () {
+            var popuptext = 'bla bla';
+            $('#pop').html(popuptext);
+            $('#pop').dialog({
+                buttons: {
+                    'done': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        });
+    });
 }

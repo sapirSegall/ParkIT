@@ -24,11 +24,11 @@ var slot = {
     exitT: ''
 };
 
-//var outPutRequest = {
-//    carNumber: '',
-//    current: '',
-//    future: ''
-//}
+function validateTextBox() {
+    if (document.getElementById("textbox").value != "") { } else {
+        alert("Please enter a value");
+    }
+}
 
 function ShowPage(n) {
     $(".page").hide();
