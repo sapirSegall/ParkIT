@@ -3,23 +3,13 @@
 <head>
     <title>Parking Simulator</title>
     <meta charset="utf-8" />
-    <script src="inc/jquery-2.0.0.min.js"></script>
+ 
     <script src="inc/jquery-3.2.1.min.js"></script>
-    <script src="inc/jquery-1.10.2.js"></script>
     <script src="inc/bootstrap.min.js"></script>
     <link href="inc/bootstrap.min.css" rel="stylesheet" />
-
-    <script src="inc/jquery-3.2.1.min.js"></script>
-    <script src="inc/jquery-1.10.2.js"></script>
-    <script src="inc/jquery-2.1.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.8.0/dist/JsBarcode.all.min.js"></script>
-    <script src="JsBarcode.all.min.js"></script>
-    <link href="inc/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 
@@ -154,11 +144,11 @@
 
         var resf = Fill();
         function Fill() {
-            for (var f = 0; f < 1; f++) {
+            for (var f = 0; f < 10; f++) {
                 //init to new day
                 init();
                 i = 0;
-                for (var f2 = 0; f2 < 40; f2++) {
+                for (var f2 = 0; f2 < 1; f2++) {
                     var flagEndParking = 0; //flag==1 when the algoritem find parking slot
                     flagUserReq = 0;
                     while (1) {
