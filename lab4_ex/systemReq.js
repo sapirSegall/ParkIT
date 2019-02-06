@@ -1,8 +1,8 @@
-﻿//when an employee exits the parking lot, the exitCar() function is called and that call to checkSystemRequest function
+﻿
+//when an employee exits the parking lot, the exitCar() function is called and that call to checkSystemRequest function
 //input: parking Slot number of the employee that exits, Request number
 //output: update in DB the empty parking slot
-async function exitCar(inputSlotNum, employeeNum, requestNum)
-{
+async function exitCar(inputSlotNum, employeeNum, requestNum) {
     var resCheck1;//output of checkSystemRequest function
 
     //update empty slot in DB:
@@ -25,7 +25,7 @@ async function exitCar(inputSlotNum, employeeNum, requestNum)
 
         //update in DB the flag of the blocked car:
         var resIDBlocked = await getIDDB(blockedRow * 10 + tempColNum);
-        var driver = getDriver(resIDBlocked);
+        var driver = await getDriver(resIDBlocked);
         driver.isBlock = false;
         updateDriver(resIDBlocked, driver);
 
@@ -39,8 +39,8 @@ async function exitCar(inputSlotNum, employeeNum, requestNum)
         request.flagPriority = true;
         updateRequest(employeeNum, request);
 
-} //end of exitCars function
-
+    } //end of exitCars function
+}
 
 //checkSystemRequest function checks if the valet should move a blocking car to the empty parking slot of the employee that exited
 async function checkSystemRequest(exitTCompare,emptyS) {
@@ -121,8 +121,11 @@ async function systemRequest(slotEmpty)
         else if (rowResFrom == 3) blockedRow2 = 4;
         else if (rowResFrom == 6) blockedRow2 = 5;
         else if (rowResFrom == 8) blockedRow2 = 9;
-        activeDriver.isBlock = false;
-        updateDriver(blockedRow2 * 10 + colResFrom, activeDriver);
+
+        var idBlocked = await getIDDB(blockedRow2 * 10 + colResFrom);
+        var driver = await getDriver(idBlocked);
+        driver.isBlock = false;
+        updateDriver(idBlocked, driver);
 
         //move to the empty parking slot:
         slot.exitT = tempExitT;
@@ -140,4 +143,3 @@ async function systemRequest(slotEmpty)
     }
     else if (resCheck == false) return false; //return false=there is not car to move to the empty parking slot
 }//end of systemRequest func
-

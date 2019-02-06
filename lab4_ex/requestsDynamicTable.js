@@ -64,6 +64,10 @@ function createPopUpText(current, future, carNumber) {
     return `Please move car number ${carNumber} \n from parking slot ${current} to empty parking slot ${future}`;
 }
 
+function createPopUpText2() {
+    return 'There is no conflict for now, feel free to rest';
+}
+
 async function addRequestsTable() {
     var table = document.getElementById("requestsTable");
     table.border = '1';
@@ -133,7 +137,6 @@ async function addRequestsTable() {
     $(document).ready(function($) {
         $(".request-row").click(async function () {
             var row = this;
-            debugger;
             var currentRequestNumber = this.getElementsByTagName("td")[0].innerText;
             var requestPriority = this.getElementsByTagName("td")[2].innerText;
             var flagParkingFound = 0;
@@ -146,26 +149,44 @@ async function addRequestsTable() {
                             flagParkingFound = 1;
                             break;
                         } else if (requestPriority == 2) {
-                            var hello = await scheduleReq(request.parkingSlotNumber, employeeNumber)
+                            var hello = await scheduleReq(request.parkingSlotNumber, employeeNumber);
                             var newOutPutRequest = await getOutPutRequest();
                             flagParkingFound = 1;
                             break;
                         } else {
-
+                            debugger;
+                            var conflict = await systemRequest(request.parkingSlotNumber);
+                            var newOutPutRequest = await getOutPutRequest();
+                            flagParkingFound = 1;
+                            break;
                         }
                     }
                 }
                 if (flagParkingFound == 1) break;
-            } 
-            var popUpText = createPopUpText(newOutPutRequest.current, newOutPutRequest.future, newOutPutRequest.carNumber);
-            $('#pop').html(popUpText);
-            $('#pop').dialog({
-                buttons: {
-                    'Done': function() {
-                      $(this).dialog('close');
-                      deleteRequestRow(row);
-                    }              
-            }});
+            }
+            if (conflict == false) {
+                var popUpText = createPopUpText2();
+                $('#pop').html(popUpText);
+                $('#pop').dialog({
+                    buttons: {
+                        'Done': function () {
+                            $(this).dialog('close');
+                            deleteRequestRow(row);
+                        }
+                    }
+                });
+            } else {
+                var popUpText = createPopUpText(newOutPutRequest.current, newOutPutRequest.future, newOutPutRequest.carNumber);
+                $('#pop').html(popUpText);
+                $('#pop').dialog({
+                    buttons: {
+                        'Done': function () {
+                            $(this).dialog('close');
+                            deleteRequestRow(row);
+                        }
+                    }
+                });
+            }
         });
     });
 }
