@@ -64,14 +64,14 @@ var outputExitT = [];
 
 
         function Fill() {
-            for (var f = 0; f < 1000; f++) {
+            for (var f = 0; f < 1; f++) {
                 //init to new day
                 init();
                 i = 0;
                 //for (var i = 0; i < 24; i++) {
                     var flagEndParking = 0; //flag==1 when the algoritem find parking slot
                     flagUserReq = 0;
-                    while (i<6) {
+                    while (i<23) {
                         if (arrCars[i] > 0 || flagUserReq == 1) { //if there is more car in this hour
                             if (flagUserReq == 0) {
                                 var entranceTime = i;
@@ -165,7 +165,7 @@ var outputExitT = [];
                                         }
                                         if (flagEndParking == 1) break;
                                     }
-                                    //}
+                                    }
                                     //check2: (when car1 blocking car2 that car1's exitT>car2's exitT)
                                     if (k2 == 10) flagBlocking2 = 1;
                                     if (flagBlocking2 == 1) {
@@ -192,7 +192,7 @@ var outputExitT = [];
                                         }
                                     }//end of check2
                                     
-                                }
+                                //}
                             }// end blockingFunc function
                                     //break;
                                 
@@ -217,15 +217,7 @@ var outputExitT = [];
             }
             return true;
         }
-        //func_scheduleUserRequest(14, 23);//check
-        function func_scheduleUserRequest(parkingSlotNum, newExitTime) {//implementation of schedule user request.
-            var tempParkingSNum = parkingSlotNum;
-            if (tempParkingSNum > (Config.x * Config.y)) return false; //if tempParkingSNum is not exist?
-            var tempRowNum = Math.floor(tempParkingSNum / 10);
-            var tempColNum = tempParkingSNum % 10;
-            if ((mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT) < i) return false; //if the user send exit time that earlier then this hour// ����� �� ����� ��������� ���
-            mainarr[Math.floor(tempRowNum * 10 + tempColNum)].exitT = newExitTime;
-        }
+     
         //check if need to alert the driver to send a request to move the blocking car(user request)
         function funcIsCarBlocked(i) {
             var blockingRow;
@@ -248,6 +240,7 @@ var outputExitT = [];
                                     //sendAlertToUserRequest(mainarr[k * 10 + p].userID); //���� �������
                                     countMoves++;
                                     console.log('countermoves: ' + countMoves);
+                                    //debugger;
                                     //window.alert(k, p); //just for debugging
                                 }
                             }
@@ -352,6 +345,7 @@ var outputExitT = [];
                                 flagSystemReq = 1;
                                 countMoves++;
                                 console.log('countermoves: ' + countMoves);
+                                //debugger;
                                 //systemRequest(k,p, kEmpty, pEmpty)// for debugging
                                 //sendSystemReqToDB(mainarr[k * 10 + p].userID, kEmpty,pEmpty ); //����
                             }

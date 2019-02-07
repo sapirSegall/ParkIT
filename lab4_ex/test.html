@@ -3,17 +3,16 @@
 <head>
 
 
-    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>‏
+
     <title></title>
-    <meta charset="utf-8" />
+    <!--<meta charset="utf-8" />
     <script src="driversDynamicTable.js"></script>
     <script src="valetDriversDynamicTable.js"></script>
     <script src="requestsDynamicTable.js"></script>
     <script src="valetFunctions.js"></script>
     <script src="algorithmAPI.js"></script>
     <script type="text/javascript" src="globals.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
-    <script type="text/javascript" src="dataBaseApi.js"></script>
+    <script type="text/javascript" src="dataBaseApi.js"></script>-->
 
     <script src="inc/jquery-3.2.1.min.js"></script>
     <script src="inc/jquery-1.10.2.js"></script>
@@ -26,24 +25,27 @@
     <script src="JsBarcode.all.min.js"></script>
     <link href="inc/bootstrap.min.css" rel="stylesheet" />
     <link href="inc/app.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>‏-->
     <!--<script src="entrance.js"></script>
     <script src="scheduleReq.js"></script>
     <script src="userReq.js"></script>
     <script src="systemReq.js"></script>
     <script src="algoDB.js"></script>-->
-    <!--<script src="loop.js"></script>-->
-    <script src="systemReq.js"></script>
-    <script src="algoDB.js"></script>-->
+    <script src="loop.js"></script>
+    <!--<script src="systemReq.js"></script>-->
+    <!--<script src="algoDB.js"></script>-->-->
 
 
     <script>
         async function func() {
-            var temp = [];
+            
             //var tt= await entranceCar(67, 7);
             //var x = await ScheduleReq(10, 30529);
             //var t = await userRequest(0, 67);
@@ -52,9 +54,9 @@
             // var e = await testi(98);
             //var e1= await getTotalEmpty();
             //var e1 = await getTotalBlocking();
-            //var resf = Fill();
+            var resf = Fill();
             //exitCar(2, 1111);
-            var r = systemRequest(12);
+            //var r = systemRequest(12);
         }
     </script>
 
@@ -66,8 +68,8 @@
     <div style="width: 500px; margin: 20px auto">
         <table class="table table-condensed table-bordered" id="parking"></table>
         <div style="text-align: center">
-            <button type="button" class="btn btn-primary" onclick="func()">Fill</button>
-            <button type="button" class="btn btn-warning" onclick="Clear()">Clear</button>
+            <button type="button" class="btn btn-primary" onclick="var t= Fill()">Ran Algorithm 1</button>
+            
         </div>
     </div>
     <!--<p id="demo"></p>-->
