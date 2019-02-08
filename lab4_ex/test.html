@@ -38,14 +38,15 @@
     <script src="userReq.js"></script>
     <script src="systemReq.js"></script>
     <script src="algoDB.js"></script>-->
-    <script src="loop.js"></script>
+    <script src="simulationAlg1.js"></script>
     <!--<script src="systemReq.js"></script>-->
     <!--<script src="algoDB.js"></script>-->-->
+    <script src="loopSimulationFunc.js"></script>
 
 
     <script>
         async function func() {
-            
+
             //var tt= await entranceCar(67, 7);
             //var x = await ScheduleReq(10, 30529);
             //var t = await userRequest(0, 67);
@@ -54,10 +55,19 @@
             // var e = await testi(98);
             //var e1= await getTotalEmpty();
             //var e1 = await getTotalBlocking();
-            var resf = Fill();
+            var summoves = 0;
+            for (var f = 0; f < 1000; f++) {
+                var moves = Fill();
+                summoves = summoves + moves;
+            }
+            var averageMoves = Math.floor(summoves / 1000);
             //exitCar(2, 1111);
             //var r = systemRequest(12);
         }
+        simulationAlg1();
+        simulationAlg2();
+        simulationAlg3();
+
     </script>
 
 
@@ -68,7 +78,7 @@
     <div style="width: 500px; margin: 20px auto">
         <table class="table table-condensed table-bordered" id="parking"></table>
         <div style="text-align: center">
-            <button type="button" class="btn btn-primary" onclick="var t= Fill()">Ran Algorithm 1</button>
+            <button type="button" class="btn btn-primary" onclick="var t= func()">Ran Algorithm 1</button>
             
         </div>
     </div>
