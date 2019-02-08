@@ -34,7 +34,7 @@ function updateDriver(employeeNum, newDriver) {
 async function getPassword(employeeNum) {
     var password;
     await database.ref('/Users/' + employeeNum).once('value').then(function (snapshot) {
-        password = snapshot.val().password;
+        password = snapshot.val().pass;
     });
     return password;
 }

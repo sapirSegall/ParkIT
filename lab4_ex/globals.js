@@ -35,7 +35,7 @@ function ShowPage(n) {
     $(".page").eq(n).show();
     if (n == 0) {/*registertion page*/
         $("#aReg").hide();
-        $("#aLogin").show();
+        $("#aLogin").hide();
         $("#aLogout").hide();
     }
     else if (n == 1) {/* login page*/
@@ -46,7 +46,7 @@ function ShowPage(n) {
     else if (n == 2) {/*weclome page*/
         $("#aReg").hide();
         $("#aLogin").hide();
-        $("#aLogout").show();
+        $("#aLogout").hide();
         $("#userName").text(activeUser.user + " [" + activeUser.mail + "]");
     }
     else if (n == 3) {/*error login*/

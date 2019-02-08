@@ -149,37 +149,45 @@
             $("input").val("");
         }
         function Register() {
+            var userNum = $("#inpEmployeeNum").val();
             activeUser = {
                 pass: $("#inpPassword").val(),
                 type: "driver"
             }
-            createUser($("#inpEmployeeNum").val(), activeUser);
-            ShowPage(2);
+            if (userNum == "") {
+                alert("Please enter a employee number");
+            } else if (activeUser.pass == "") {
+                alert("Please enter a password");
+            } else {
+                createUser($("#inpEmployeeNum").val(), activeUser);
+                ShowPage(2);
+            }
         }
         async function Login() {
+            debugger;
             var u = {
                 user: $("#inpUser1").val(),
                 pass: $("#inpPassword1").val()
             }
             var passwordFromDB = await getPassword(u.user);
-            if (passwordFromDB == undefined) {
-                ShowPage(3);
-            } else {
-                if (passwordFromDB == u.pass) {
-                    u.type = await getUserType(u.user);
-                    u.mail = await getEmail(u.user);
-                    activeUser = u;
-                    if (u.type == "driver") {
-                        activeDriver = await getDriver(activeUser.user);
-                        $("#container").load("driverPage.html");
-                    } else if (u.type == "admin") {
-                        $("#container").load("adminPage.html");
-                    } else if (u.type == "valet") {
-                        $("#container").load("valetPage.html");
-                    } else {
-                        ShowPage(1);
-                        window.alert("wrong password!");
-                    }
+            if (u.user == "") {
+                alert("Please enter a employee number");
+            } else if (u.pass == "") {
+                alert("Please enter a password");
+            } else if (passwordFromDB != u.pass) {
+                alert("wrong password!");
+                //ShowPage(3);
+            } else if (passwordFromDB == u.pass) {
+                u.type = await getUserType(u.user);
+                u.mail = await getEmail(u.user);
+                activeUser = u;
+                if (u.type == "driver") {
+                    activeDriver = await getDriver(activeUser.user);
+                    $("#container").load("driverPage.html");
+                } else if (u.type == "admin") {
+                    $("#container").load("adminPage.html");
+                } else if (u.type == "valet") {
+                    $("#container").load("valetPage.html");
                 }
             }
         }
@@ -199,7 +207,7 @@
                     <fieldset>
                         <div class="form-group">
                             <label for="inpEmployeeNum">Employee Number</label>
-                            <input type="password" class="form-control" id="inpEmployeeNum" placeholder="Enter employee number" onblur="validateTextBox()">
+                            <input type="password" class="form-control" id="inpEmployeeNum" placeholder="Enter employee number">
                         </div>
                         <div class="form-group">
                             <label for="inpPassword">Password</label>
@@ -234,13 +242,15 @@
             </div>
 
             <!--page welcome page n=2 -->
-            <div class="alert alert-info page" data-ttl="Welcome Page">
-                <p>Welcome <strong id="userName"></strong> !</p>
-            </div>
+                <div class="alert alert-info page" data-ttl="Welcome Page">
+                    <p>You are now successfully registered !</p>
+                    <p>please wait until the administrator will activate your user</p>
+                    <button type="button" class="btn btn-primary" onclick="ShowPage(0);">back</button>
+                </div>
 
-            <!--page error login n=3 -->
+            <!--page there is no driver login n=3 -->
             <div class="alert alert-warning page" data-ttl="Error Login">
-                <strong>Please contact your system Administrator for login</strong>
+                <strong>Please contact your system Administrator befor you login</strong>
             </div>
 
             <!--buttons of one page appw'-->
