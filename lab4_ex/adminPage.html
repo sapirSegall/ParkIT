@@ -146,7 +146,7 @@
                     <input name="carCode" id="carCode" type="text" class="tab">
                 </p>
 
-                <button type="submit" id="createDriverBtn" class="btn btn-primary" onclick="setDriverData()">Create</button>
+                <button type="button" id="createDriverBtn" class="btn btn-primary" onclick=" setDriverData()">Create</button>
                 <script type="text/javascript">
                     async function setDriverData() {
                         var employeeNumber = document.getElementById('employeeNumber').value;
@@ -175,9 +175,14 @@
                             isBlock: false,
                             parkingNumber: ' '
                         };
-                        createDriver(employeeNumber, driver);
-                        addDriversTableWrap();
-                        ShowPage(0);
+                        debugger;
+                        if (employeeNumber != "" & firstName != "" & lastName != "" & email != "" & phoneNumber != "" & carNumber != "" & carType != "" & carSeries != "" & carColor != "" & carCode != "") {
+                            createDriver(employeeNumber, driver);
+                            addDriversTableWrap();
+                            ShowPage(0);
+                        } else{
+                            alert("some fields are empty");
+                        }
                     }
                 </script>
                 <button type="button" id="cancelCreateDriverBtn" class="btn btn-primary" onclick="cancel()">Cancel</button>
@@ -264,8 +269,7 @@
                     <input name="carCodeU" id="carCodeUpdate" type="text" class="tab">
                 </p>
 
-                <button type="submit" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
-
+                <button type="button" id="updateDriverBtn" class="btn btn-primary" onclick="updateDriverData()">Update</button>
                 <script type="text/javascript">
                     async function updateDriverData() {
                         var firstName = document.getElementById('firstNameUpdate').value;
@@ -292,6 +296,7 @@
                             isBlock: driverFromDB.isBlock,
                             exitTime: driverFromDB.exitTime
                         };
+                        debugger;
                         updateDriver(driverFromDB.employeeNumber, driver);
                         addDriversTableWrap();
                         ShowPage(0);
