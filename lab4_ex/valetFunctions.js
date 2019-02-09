@@ -1,10 +1,12 @@
 async function createChart() {
     var carTypes = await getCarTypeNumbers();
+    var totalEmpty = await getTotalEmpty();
+    var totalBlocking = await getTotalBlocking();
     var chart = new CanvasJS.Chart("chartContainer", {
         backgroundColor: "rgba(225,150,150,0)",
         animationEnabled: true,
         title: {
-            text: JSON.stringify(getTotalBlockingCarsNumber()),
+            text: totalBlocking,
             fontSize: 40,
             fontColor: "white",
             verticalAlign: "center"
@@ -17,13 +19,13 @@ async function createChart() {
           ],
         data: [{
             type: "doughnut",
-            startAngle: 240,
+            startAngle: 200,
             yValueFormatString: "##0",
             indexLabel: "{label}",
             dataPoints: [
                 { y: carTypes.company, label: "Company Cars",  indexLabelFontColor: "white", color: "rgb(35,171,190)"},
                 { y: carTypes.private, label: "Private Cars",  indexLabelFontColor: "white", color: "rgb(128,100,161)" },
-                { y: getTotalEmptyParkingSlot(), label: "Empty Parking Slots",  indexLabelFontColor: "white", color: "rgb(247,150,71)"},
+                { y: totalEmpty, label: "Empty Parking Slots",  indexLabelFontColor: "white", color: "rgb(247,150,71)"},
             ]
         }]
     });
