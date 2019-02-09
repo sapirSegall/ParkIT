@@ -22,6 +22,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="ShowPage(2)">Tasks</a>
+                </li>                
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="ShowPage(3)">About</a>
                 </li>
             </ul>
         </div>
@@ -37,7 +40,7 @@
 
         <!--HomePage-->
         <div class="page" id="HomePAge">
-             <script>
+            <script>
                 async function addValetDriversTableWrap() {
                     valetDrivers = await getDrivers();
                     addValetDriversTable();
@@ -46,10 +49,10 @@
             </script>
 
             <div id="chartContainer" style="height: 700px; width: 1200px"></div>
- 
+
             <script>
                 window.onload = createChart();
-            </script> 
+            </script>
         </div>
 
         <!--driversDynamicTable-->
@@ -89,7 +92,7 @@
             <div>
                 <p style="font-size:10px">
                     <h2 align="center">Tasks List</h2>
-                        <br>
+                    <br>
                 </p>
             </div>
             <table id="requestsTable">
@@ -103,6 +106,34 @@
                 addRequestsTableWrap();
             </script>
             <div id="pop" class="pop" title="Driver Request"></div>
+        </div>
+
+        <!--page about n=3 -->
+        <div class="page" data-ttl="about">
+            <p>
+                <br />
+            </p>
+            <p style="color:#56CC9D; font-size:40px; text-align: center" class="oblique">
+                ParkIT provides an official tool for managing parking lots.
+            </p>
+            <p style="color:#56CC9D; font-size:30px; text-align: center" class="oblique">
+                We are all aware of the parking shortage problem, which exists in work parking lots, where the
+                parking lot is filled to capacity and drivers are forced to block other cars in the
+                parking lot.
+
+            </p>
+            <p style="color:#56CC9D; font-size:30px; text-align: center" class="oblique">
+                The system would be used by the valet and for customers who park in the
+                parking lot.
+            </p>
+            <p style="color:#56CC9D; font-size:20px; text-align: center" class="oblique">
+                In order to make the parking lots management more efficient, we decided to
+                develop an information system, called <b>ParkIT</b>, that will provide an IT solution for
+                Stakeholders - company employees and parking valets.
+                The system will manage the parking lot by means of an efficient and intelligent
+                placement algorithm, based on Monte Karlo method that will significantly
+                minimize the transportation of blocking vehicles throughout the day.
+            </p>
         </div>
     </div>
 </body>

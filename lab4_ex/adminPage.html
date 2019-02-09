@@ -37,7 +37,6 @@
             <script>
                 async function addDriversTableWrap() {
                     drivers = await getDrivers();
-                    console.log("here");
                     addDriversTable();
                 }
                 addDriversTableWrap();
@@ -175,7 +174,6 @@
                             isBlock: false,
                             parkingNumber: ' '
                         };
-                        debugger;
                         if (employeeNumber != "" & firstName != "" & lastName != "" & email != "" & phoneNumber != "" & carNumber != "" & carType != "" & carSeries != "" & carColor != "" & carCode != "") {
                             createDriver(employeeNumber, driver);
                             addDriversTableWrap();
@@ -296,7 +294,6 @@
                             isBlock: driverFromDB.isBlock,
                             exitTime: driverFromDB.exitTime
                         };
-                        debugger;
                         updateDriver(driverFromDB.employeeNumber, driver);
                         addDriversTableWrap();
                         ShowPage(0);

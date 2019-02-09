@@ -154,7 +154,6 @@ async function addRequestsTable() {
                             flagParkingFound = 1;
                             break;
                         } else {
-                            debugger;
                             var conflict = await systemRequest(request.parkingSlotNumber);
                             var newOutPutRequest = await getOutPutRequest();
                             flagParkingFound = 1;

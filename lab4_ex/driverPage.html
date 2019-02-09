@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Page</title>
+    <title>Driver Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         table, td, th {
             border: 1.5px solid #343a40;
@@ -39,38 +40,42 @@
         ShowPage(0);
     </script>
 
-    <div id="user" >
+    <div id="user">
         <img src="logoParkIT.png" alt="logo" style=" border: none; padding: 12px 16px; cursor: pointer;
          position: absolute; bottom: 0px; right: 30px;">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">ParkIT</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarColor03">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#" onclick="ShowPage(0)">Home<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(1)">Scan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(2)">Blocked</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="ShowPage(3)">Exit time</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">ParkIT</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#" onclick="ShowPage(0)">Home<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="ShowPage(1)">Scan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="ShowPage(2)">Blocked</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="ShowPage(3)">Exit time</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="ShowPage(4)">About</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
+
         <!--page driver info n=0 -->
-        <div  class="page" data-ttl="driverMenu">
+        <div class="page" data-ttl="driverMenu">
             <form>
                 <fieldset>
                     <div class="container text-center">
@@ -132,11 +137,11 @@
                             start scaning
                         </button>
                         <script>
-                            async function isInParking(){
+                            async function isInParking() {
                                 var parkingNumber = await getParkingNumber(activeUser.user);
                                 console.log(`check parking: ${parkingNumber}`);
-                                if (parkingNumber == ''){
-                                    ShowPage(4);
+                                if (parkingNumber == '') {
+                                    ShowPage(5);
                                 } else {
                                     var newRequest = {
                                         requestNumber: await getRequestNumber(),
@@ -155,7 +160,7 @@
                                     var driver = await getDriver(activeUser.user);
                                     driver.parkingNumber = '';
                                     updateDriver(activeUser.user, driver);
-                                    ShowPage(6);
+                                    ShowPage(7);
                                 }
                             }
                         </script>
@@ -259,6 +264,7 @@
                                     };
                                     createRequest(activeUser.user, newRequest);
                                     checkScheduleReq(activeDriver.parkingNumber, activeUser.user, activeDriver.exitTime, newRequest.requestNumber);
+                                    ShowPage(0);
                                 }
                             </script>
                         </div>
@@ -267,7 +273,35 @@
             </form>
         </div>
 
-        <!--page insert exit time n=4 -->
+        <!--page about n=4 -->
+        <div class="page" data-ttl="about">
+            <p>
+                <br />
+            </p>
+            <p style="color:#56CC9D; font-size:40px; text-align: center" class="oblique">
+                ParkIT provides an official tool for managing parking lots.
+            </p>
+            <p style="color:#56CC9D; font-size:30px; text-align: center" class="oblique">
+                    We are all aware of the parking shortage problem, which exists in work parking lots, where the
+                    parking lot is filled to capacity and drivers are forced to block other cars in the
+                    parking lot.
+
+            </p>
+            <p style="color:#56CC9D; font-size:30px; text-align: center" class="oblique">
+                The system would be used by the valet and for customers who park in the
+                parking lot.
+            </p>
+            <p style="color:#56CC9D; font-size:20px; text-align: center" class="oblique">
+                    In order to make the parking lots management more efficient, we decided to
+                    develop an information system, called <b>ParkIT</b>, that will provide an IT solution for
+                    Stakeholders - company employees and parking valets.
+                    The system will manage the parking lot by means of an efficient and intelligent
+                    placement algorithm, based on Monte Karlo method that will significantly
+                    minimize the transportation of blocking vehicles throughout the day.
+            </p>
+        </div>
+
+        <!--page insert exit time n=5 -->
         <div class="page" data-ttl="Exit time">
             <form>
                 <fieldset>
@@ -281,8 +315,8 @@
                                     var newTime = document.getElementById('insertExitTime').value;
                                     activeDriver.exitTime = newTime;
                                     updateDriver(activeUser.user, activeDriver);
-                                    await entranceCar(activeUser.user,activeDriver.exitTime);
-                                    ShowPage(5);
+                                    await entranceCar(activeUser.user, activeDriver.exitTime);
+                                    ShowPage(6);
                                 }
                             </script>
                         </div>
@@ -291,7 +325,7 @@
             </form>
         </div>
 
-        <!--page parking number n=5 -->
+        <!--page parking number n=6 -->
         <div class="page" data-ttl="Parking Number">
             <form>
                 <fieldset>
@@ -307,8 +341,8 @@
                 </fieldset>
             </form>
         </div>
-        
-        <!--page Goodbye n=6 -->
+
+        <!--page Goodbye n=7 -->
         <div class="page" data-ttl="GoodBye">
             <p style="font-size:100px">
                 <br>
@@ -317,6 +351,8 @@
                 GoodBye
             </p>
         </div>
+
+
     </div>
 </body>
 </html>

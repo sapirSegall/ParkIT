@@ -90,7 +90,7 @@ function addDriversTable() {
     for (const [employeeNumber, driver] of Object.entries(drivers)) {
         var tr = document.createElement('TR');
         //evry row will be from thid type of class
-        tr.setAttribute('class', 'driver-row');
+        //tr.setAttribute('class', 'driver-row');
         tableBody.appendChild(tr);
         //details for
         for (var j = 0; j < 5; j++) {
@@ -116,6 +116,7 @@ function addDriversTable() {
                 td.width = '20';
                 td.innerHTML = '<input type="image" onClick="Javacsript:editDriverDetails(this)" src="pencil.png" width="20" height="20">';
             } else {
+                td.setAttribute('class', 'driver-row');
                 td.width = '200';
                 td.appendChild(document.createTextNode(text));
             }
@@ -123,17 +124,20 @@ function addDriversTable() {
         }
     }
 
-    $(document).ready(function ($) {
-        $(".driver-row").click(async function () {
-            var popuptext = 'bla bla';
-            $('#pop').html(popuptext);
-            $('#pop').dialog({
-                buttons: {
-                    'done': function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
-        });
-    });
+    //$(document).ready(function($) {
+    //    $(".driver-row").click(async function () {
+    //        debugger;
+    //        var employeeNumber = this.innerText;
+    //        var driver = await getDriver(employeeNumber);
+    //        var popuptext = driver.firstName; driver.lastName;
+    //        $('#pop').html(popuptext);
+    //        $('#pop').dialog({
+    //            buttons: {
+    //                'call': function () {
+    //                    $(this).dialog('close');
+    //                }
+    //            }
+    //        });
+    //    });
+    //});
 }
