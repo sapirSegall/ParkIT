@@ -1,4 +1,4 @@
-﻿
+
 
 //fill the parking lot:
 var countMoves; //count moves of cars in one simulation/day
@@ -14,7 +14,19 @@ var outputExitT = [];
 
 function simulationAlg2() {
     countMoves = 0;
-    var arrCars = [70, 1, 1, 1, 1, 1, 1, 10, 10, 10, 10, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; //24 hours
+    var arrCars = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //24 hours
+    for (var i = 0; i < 100; i++) {
+        var timeGroup = getRandom(0, 100);
+        if (timeGroup < 90) arrCars[8]++;
+        else if (90 <= timeGroup < 90.1) arrCars[6]++;
+        else if (90.1 <= timeGroup < 90.2) arrCars[7]++;
+        else if (90.2 <= timeGroup < 90.3) arrCars[9]++;
+        else if (90.3 <= timeGroup < 90.4) arrCars[10]++;
+        else if (90.4 <= timeGroup < 90.5) arrCars[11]++;
+        else if (90.5 <= timeGroup < 90.6) arrCars[12]++;
+        else if (90.6 <= timeGroup < 90.7) arrCars[13]++;
+        else if (90.7 <= timeGroup < 90.8) arrCars[14]++;
+    }
 
     init();
     i = 0;
@@ -24,9 +36,16 @@ function simulationAlg2() {
     while (i < 24) {
         if (arrCars[i] > 0 || flagUserReq == 1) { //if there is more car in this hour
             if (flagUserReq == 0) {
-                var entranceTime = i;
-                if (i >= 18) { exitTime = getRandom(i + 1, 23); }
-                if (i < 18) { exitTime = getRandom(i + 5, 23); } //enforce exitTime>= entranceTime
+                if (i == 8) { exitTime = 17; }
+                else if (i == 6) { exitTime = 15; }
+                else if (i == 7) { exitTime = 16; }
+                else if (i == 9) { exitTime = 18; }
+                else if (i == 10) { exitTime = 19; }
+                else if (i == 11) { exitTime = 20; }
+                else if (i == 12) { exitTime = 21; }
+                else if (i == 13) { exitTime = 22; }
+                else if (i == 14) { exitTime = 23; }
+                else exitTime = 17;
             }
 
             flagEndParking = 0;
@@ -38,7 +57,7 @@ function simulationAlg2() {
                                 && (Config.IsParking[n][1] == mainarr[k * 10 + p].ParkingSlotNum[1])) {
                                 mainarr[k * 10 + p].exitT = exitTime;
                                 counter++;
-                                mainarr[k * 10 + p].userID = 40; 
+                                mainarr[k * 10 + p].userID = 40;
                                 if (flagUserReq == 0) { if (arrCars[i] > 0) arrCars[i]--; }
                                 flagEndParking = 1;
                                 break; //break for of n
@@ -94,7 +113,7 @@ function simulationAlg2() {
                             if (flagEndParking == 1) break;
                         }
                     }//end of if
-                    
+
                 }// end blockingFunc function
                 if (flagEndParking == 1) break;
             }//end for of k
@@ -102,12 +121,12 @@ function simulationAlg2() {
 
 
             var res2 = isLotFull();
-            if (res2) {  i++; exitCars(i); funcIsCarBlocked(i); };
+            if (res2) { i++; exitCars(i); funcIsCarBlocked(i); };
         }
         else if (flagUserReq == 0) { i++; exitCars(i); funcIsCarBlocked(i) }; //go here if arrCars[i]== 0 (no more cars in this hour), so i++ is the next hour
-        
+
     }//end of while
-    
+
     return countMoves;
 }//end of fill function
 
